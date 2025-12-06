@@ -1,0 +1,246 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Urbanist", sans-serif;
+    line-height: 1.4;
+}
+
+/*   .gb {
+    border: 1px solid red;
+}  */
+
+
+
+.windowBarrier {
+    width: 100%;
+    height: 100svh;
+    position: fixed;
+    top: 0%;
+    left: 0%;
+    backdrop-filter: blur(10px);
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+}
+
+
+.redditDetailWindow {
+    width: 700px;
+    height: 90%;
+    background-color: #005792;
+    border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    
+    /* Allow scrolling without scrollbars */
+    overflow-y: scroll; /* Enable scrolling */
+    -ms-overflow-style: none; /* for Internet Explorer, Edge */
+    scrollbar-width: none; /* for Firefox */
+
+    /* For Safari */
+    &::-webkit-scrollbar {
+        display: none; /* Safari */
+    }
+}
+
+.closeBtn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #FF6B6B;
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    right: 10px;
+    top: 10px;
+    position: sticky;
+    float: right;
+    z-index: 2000;
+    scale: 1;
+    transition: scale 0.3s linear;
+}
+.closeBtn svg {
+    width: 80%;
+    height: 80%;
+}
+@media (hover: hover) {
+    .closeBtn:hover {
+        scale: 1.2;
+        transition: scale 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+}
+.closeBtn:active {
+    opacity: 50%;
+}
+
+
+.redditDetail {
+    padding-top: 50px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+
+}
+
+.redditInfoLine {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.scoreDiv {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.arrowUp {
+    width: 20px;
+    height: 20px;
+    background-color: transparent;
+    border: none;
+}
+.arrowUp svg {
+    width: 100%;
+    height: 100%;
+    color: #DAF6FB;
+}
+
+.votes {
+    font-weight: 700;
+    color: #DAF6FB;
+}
+
+.redditUser {
+    display: block;
+    text-decoration: none;
+    font-weight: 700;
+    color: #FF6B6B;
+    font-size: 25px;
+    margin-left: 30px;
+    margin-right: 30px;
+    transition: opacity 0.3s linear;
+}
+@media (hover: hover) {
+    .redditUser:hover {
+        opacity: 70%;
+        transition: opacity 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+}
+.redditUser:active {
+    opacity: 50%;
+}
+.redditTimePosted {
+    font-weight: 400;
+    font-size: 15px;
+    color: #80abc9;
+}
+
+.redditTitle {
+    padding: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+.redditTitle h4 {
+    font-size: 17px;
+    color: #FFF;
+}
+
+/* COMMENT SECTION */
+
+.commentsH2 {
+    margin-top: 30px;
+    background-color: white;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    padding-top: 30px;
+    font-size: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #005792;
+
+}
+
+.commentsSection {
+    background-color: white;
+    padding: 10px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+
+.noComments {
+    width: 100%;
+    text-align: center;
+}
+
+
+@media only screen and (max-width: 750px) {
+    .windowBarrier {
+        width: 100%;
+        height: 100%;
+    }
+    .redditDetailWindow {
+        width: 100%;
+        height: 100%;
+        border-radius: 0px;
+        box-shadow: none;
+    }
+}
+
+@media only screen and (max-width: 560px) {
+
+    .redditDetail {
+        padding-top: 30px;
+    }
+    .redditInfoLine {
+        flex-direction: column;
+    }
+    .redditTitle {
+        margin-top: 20px;
+    }
+
+    .redditUser {
+        font-size: 22px;
+        margin-left: 0px;
+        margin-right: 0px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+    .redditTimePosted {
+        font-size: 12px;
+    }
+    
+    .redditTitle h4 {
+        font-size: 15px;
+    }
+    .commentsSection {
+        padding-bottom: 200px;
+    }
+    .commentsH2 {
+        margin-top: 20px;
+        font-size: 20px;
+    }
+
+
+
+}

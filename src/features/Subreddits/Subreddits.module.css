@@ -1,0 +1,188 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Urbanist", sans-serif;
+    line-height: 1.4;
+}
+
+/* .gb {
+    border: 1px solid red;
+}   */
+
+@keyframes blendShift {
+    0% {
+        opacity: 0;
+        margin-top: -50px;
+    }
+    100% {
+        opacity: 1;
+        margin-top: 0px;
+    }
+}
+
+.srManagerCon {
+    margin: 0 auto;
+    width: 100%;
+    margin-top: -50px; /* Start position above the original position */
+  animation: blendShift 0.5s ease-out forwards;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.mySubredditsCon {
+    width: 100%;
+}
+.mySubredditsH2 {
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    color: #005792;
+}
+.mySubreddits {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+    padding: 0px 20px 0px 20px;
+}
+.searchSubredditsCon {
+    width: 90%;
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #FEE;
+    border-radius: 20px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    padding-bottom: 20px;
+}
+.submitSearchSubredditsBtn {
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #FF6B6B;
+    cursor: pointer;
+    border: none;
+    border-radius: 50%;
+    transition: scale 0.3s linear;
+}
+@media (hover: hover) {
+    .submitSearchSubredditsBtn:hover {
+        scale: 0.9;
+        transition: scale 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+}
+.submitSearchSubredditsBtn:active {
+    opacity: 50%;
+}
+.submitSearchSubredditsBtn svg {
+    width: 80%;
+    height: 80%;
+    color: white;
+}
+
+.searchedSubreddits {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+    padding: 0px 20px 0px 20px;
+    margin-top: 35px;
+}
+
+.searchSubredditsH2 {
+    height: 100px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    color: #005792;
+}
+
+@media only screen and (max-width: 815px) {
+    .searchSubredditsCon {
+        width: 100%;
+    }
+}
+@media only screen and (max-width: 740px) {
+    .mySubreddits {
+        gap: 12px;
+        padding: 0px 10px 0px 10px;
+    }
+    .searchedSubreddits {
+        gap: 12px;
+        padding: 0px 10px 0px 10px;
+    }
+}
+
+@media only screen and (max-width: 640px) {
+    .mySubredditsH2,.searchSubredditsH2 {
+        font-size: 20px;
+        height: 80px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.searchSubredditsSection {
+    padding: 0px 20px 20px 20px;
+    width: 100%;
+}
+
+input[type="search"]:-webkit-autofill,
+input[type="search"]:-webkit-autofill:hover,
+input[type="search"]:-webkit-autofill:focus,
+input[type="search"]:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0px 1000px white inset !important; /* Change 'white' to your input's background color */
+  box-shadow: 0 0 0px 1000px white inset !important;
+  -webkit-text-fill-color: black !important; /* Change to your desired text color */
+}
+
+.searchField {
+    display: block;
+    width: 90%;
+    height: 40px;   
+    border-radius: 20px;
+    border: 1px solid #005792;
+    font-size: 16px;
+    padding-left: 10px;
+    padding-right: 10px;
+    outline: none;
+    color: black;
+    margin: 0 auto;
+    text-align: center;
+    background-color: white;
+
+}
+.searchField::placeholder {
+    font-size: 16px;
+    text-align: center;
+    color: #005792;
+    margin-right: -10px;
+}
+
+@media only screen and (max-width: 560px) {
+    .searchField {
+        height: 30px;
+        width: 98%;
+    }
+    
+}

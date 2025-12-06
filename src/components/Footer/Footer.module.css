@@ -1,0 +1,136 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Urbanist", sans-serif;
+    line-height: 1.4;
+}
+
+/*    .gb {
+    border: 1px solid red;
+}   */
+
+
+
+/*********************FOOTER **/
+/*********************FOOTER **/
+/*********************FOOTER **/
+/*********************FOOTER **/
+/*********************FOOTER **/
+/*********************FOOTER **/
+.appFooter {
+  
+    border-top: 1px solid #c4dde2;
+    width: 100%;
+    padding-top: 100px;
+    padding-bottom: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    color:#FF6B6B;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #DAF6FB;
+}
+.appFooter a {
+    text-decoration: none;
+    color: #FF6B6B;
+    display: block;
+}
+#footerLogo figure {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 10px;
+}
+#footerLogo figure img {
+    width: 100%;
+    height: auto;
+}
+.copyright {
+    color: #FF6B6B;
+    font-size: 14px;
+    margin-top: 10px;
+}
+.copyright span {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#socials {
+    width: 150px;
+    height: 60px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#socials a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #FF6B6B;
+    height: 50px;
+    width: 50px;
+}
+
+#socials a svg {
+    width: 80%;
+    height: 80%;
+}
+#socials a svg:hover,#socials a svg:active {
+    width: 100%;
+    height: 100%;
+    transition: all 0.3s ease-out;
+}
+#mobileCopyright {
+    display: none;
+    padding-top: 20px;
+    color: #999;
+    font-size: 14px;
+}
+@media only screen and (max-width: 600px) {
+    .copyright {
+        display: none;
+    }
+    .appFooter {
+        flex-wrap: wrap;
+        padding-bottom: 20px;
+    }
+    #footerLogo {
+        width: 40%;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        flex-direction: column;
+    }
+    #footerLogo figure {
+        width: 60px;
+        height: 60px;
+    }
+    #footerLogo a {
+        font-size: 12px;
+        padding-bottom: 7px;
+    }
+    #footerNav {
+        width: 40%;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        flex-direction: column;
+    }
+    #footerNav a {
+        font-size: 15px;
+    }
+    #footerContact {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    #mobileCopyright {
+        display: block;
+    }
+    #mobileCopyright span {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+}

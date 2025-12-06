@@ -1,0 +1,107 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Subreddit component matches the snapshot for the component 1`] = `
+<DocumentFragment>
+  <section
+    aria-label="Test Subreddit"
+    class="srCon"
+  >
+    <figure
+      class="srBanner"
+      role="presentation"
+    >
+      <img
+        alt="Test Subreddit banner"
+        src="test-banner.png"
+      />
+    </figure>
+    <div
+      class="srInfo"
+      role="presentation"
+    >
+      <figure
+        class="srIcon"
+        role="presentation"
+      >
+        <img
+          alt="Test Subreddit icon"
+          src="test-icon.png"
+        />
+      </figure>
+      <div
+        class="srNameTitle"
+        role="presentation"
+      >
+        <h3
+          class="srName"
+        >
+          Test Subreddit
+        </h3>
+      </div>
+    </div>
+    <div
+      class="srButtons"
+      role="presentation"
+    >
+      <a
+        aria-label="Open information window for this subreddit"
+        class="srDetail"
+        href="/test-subreddit"
+      >
+        <svg
+          aria-hidden="true"
+          height="1em"
+          viewBox="0 0 24 24"
+          width="1em"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M11 17h2v-6h-2zm1-8q.425 0 .713-.288T13 8t-.288-.712T12 7t-.712.288T11 8t.288.713T12 9m0 13q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12t-2.325-5.675T12 4T6.325 6.325T4 12t2.325 5.675T12 20m0-8"
+            fill="currentColor"
+          />
+        </svg>
+      </a>
+      <button
+        aria-label="Add subreddit to your selection"
+        class="srDeleteOrAdd"
+      >
+        <svg
+          aria-hidden="true"
+          height="1em"
+          viewBox="0 0 48 48"
+          width="1em"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <defs>
+            <mask
+              id="ipSAddOne0"
+            >
+              <g
+                fill="none"
+                stroke-linejoin="round"
+                stroke-width="4"
+              >
+                <path
+                  d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20Z"
+                  fill="#fff"
+                  stroke="#fff"
+                />
+                <path
+                  d="M24 16v16m-8-8h16"
+                  stroke="#000"
+                  stroke-linecap="round"
+                />
+              </g>
+            </mask>
+          </defs>
+          <path
+            d="M0 0h48v48H0z"
+            fill="currentColor"
+            mask="url(#ipSAddOne0)"
+          />
+        </svg>
+      </button>
+    </div>
+  </section>
+</DocumentFragment>
+`;

@@ -1,0 +1,169 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Urbanist", sans-serif;
+    line-height: 1.4;
+}
+
+/* .gb {
+    border: 1px solid red;
+}    */
+
+@keyframes blendShift {
+    0% {
+        opacity: 0;
+        top: -50px;
+    }
+    100% {
+        opacity: 1;
+        top: 0px;
+    }
+}
+
+
+.srCon {
+    width: 150px;
+    height: 150px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  /*   top: -50px; */ /* Start position above the original position */
+  /*   animation: blendShift 0.5s ease-out forwards; */
+}
+
+.srBanner {
+    width: 100%;
+    height: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    background-color: #005792;
+}
+
+.srBanner img {
+    width: 100%;
+    height: auto;
+}
+
+.srInfo {
+    width: 100%;
+    height: 50%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: -20px;
+}
+
+
+.srIcon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background-color: #005792;
+}
+
+.srIcon img,.srIcon svg {
+    width: 100%;
+    height: 100%;
+    color: #FF6B6B;
+}
+
+.srNameTitle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.srName {
+    color: #005792;
+    font-size: 15px;
+    padding: 0px 3px;
+    word-break: break-all;
+    text-align: center;
+}
+
+
+.srButtons {
+    width: 100%;
+    height: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.srDetail,.srDeleteOrAdd {
+    width: 30px;
+    height: 30px;
+    background-color: transparent;
+    cursor: pointer;
+    border: none;
+    transition: scale 0.3s linear;
+}
+@media (hover: hover) {
+    .srDetail:hover,.srDeleteOrAdd:hover {
+        scale: 1.2;
+        transition: scale 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+}
+.srDetail:active,.srDeleteOrAdd:active {
+    opacity: 50%;
+}
+
+.srDetail svg,.srDeleteOrAdd svg {
+    width: 100%;
+    height: 100%;
+    color: #FF6B6B;
+}
+
+@media only screen and (max-width: 520px) {
+    .srCon {
+        width: 120px;
+        height: 120px;
+        border-radius: 20px;
+    }
+    .srInfo {
+        margin-top: -17px;
+    }
+    .srIcon {
+        width: 30px;
+        height: 30px;
+    }
+    .srDetail,.srDeleteOrAdd {
+        width: 25px;
+        height: 25px;
+    }
+    .srName {
+        font-size: 13px;
+    }
+}
+ @media only screen and (max-width: 410px) {
+    .srCon {
+        width: 97px;
+        height: 97px;
+        border-radius: 20px;
+    }
+    .srInfo {
+        margin-top: -15px;
+    }
+    .srIcon {
+        width: 28px;
+        height: 28px;
+    }
+    .srDetail,.srDeleteOrAdd {
+        width: 20px;
+        height: 20px;
+    }
+    .srName {
+        font-size: 10px;
+    }
+} 
