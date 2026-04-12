@@ -39,7 +39,7 @@ describe('CommunitiesSwiper Component', () => {
     renderComponent();
 
     // Check that Swiper component is present
-    const swiperContainer = screen.getByRole('group', { name: /popular reddits/i });
+    const swiperContainer = screen.getByRole('group', { name: /popular posts/i });
     expect(swiperContainer).toBeInTheDocument();
 
     // Check navigation buttons
@@ -52,7 +52,7 @@ describe('CommunitiesSwiper Component', () => {
   it('renders popular community slide correctly', () => {
     renderComponent();
 
-    const popularSlide = screen.getByRole('group', { name: /popular reddits/i });
+    const popularSlide = screen.getByRole('group', { name: /popular posts/i });
     expect(popularSlide).toBeInTheDocument();
 
     const popularLink = screen.getByRole('link', { name: /popular/i });

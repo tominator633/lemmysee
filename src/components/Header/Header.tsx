@@ -5,13 +5,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import styles from "./Header.module.css";
 import CommunitiesSwiper from "../CommunitiesSwiper/CommunitiesSwiper";
 import { useNavigate, createSearchParams, useParams, NavLink, useSearchParams, useLocation } from "react-router-dom";
-import { searchBtnVar, searchRedditsFormVar, searchRedditsFieldVar } from "./headerFMVariants";
-import { selectSavedReddits } from "../../features/Reddits/redditsSlice";
+import { searchBtnVar, searchPostsFormVar, searchPostsFieldVar } from "./headerFMVariants";
+import { selectSavedPosts } from "../../features/Posts/postsSlice";
 
 export default function Header(): React.ReactElement {
     const isBelow900px = useMediaQuery({ query: "(max-width: 900px)" });
 
-    const savedReddits = useAppSelector(selectSavedReddits);
+    const savedPosts = useAppSelector(selectSavedPosts);
 
     const navigate = useNavigate();
     const { communityName } = useParams<{ communityName?: string }>();
@@ -23,7 +23,7 @@ export default function Header(): React.ReactElement {
     const [, setSearchParams] = useSearchParams();
     const searchInputRef = useRef<HTMLInputElement | null>(null);
 
-    const handleSavedRedditsBtnClick = (): void => {
+    const handleSavedPostsBtnClick = (): void => {
         setSearchBtn(false);
         setSearchInput("");
     };
@@ -66,10 +66,10 @@ export default function Header(): React.ReactElement {
     };
 
     useEffect(() => {
-        if (path === "/saved" && savedReddits.length === 0) {
+        if (path === "/saved" && savedPosts.length === 0) {
             setSearchBtn(false);
         }
-    }, [path, savedReddits.length]);
+    }, [path, savedPosts.length]);
 
     useEffect(() => {
         if (searchBtn && searchInputRef.current) {
@@ -105,12 +105,12 @@ export default function Header(): React.ReactElement {
                     </NavLink>
                     <NavLink
                         to="/saved"
-                        className={({ isActive }) => (isActive ? styles.activeSavedRedditsBtn : styles.inactiveSavedRedditsBtn)}
-                        onClick={handleSavedRedditsBtnClick}
-                        aria-label="Saved reddits"
+                        className={({ isActive }) => (isActive ? styles.activeSavedPostsBtn : styles.inactiveSavedPostsBtn)}
+                        onClick={handleSavedPostsBtnClick}
+                        aria-label="Saved posts"
                     >
                         <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512"><path fill="currentColor" d="M410.9 0H85.1C72.3 0 61.8 10.4 61.8 23.3V512L248 325.8L434.2 512V23.3c0-12.9-10.4-23.3-23.3-23.3"/></svg>
-                        <p className={styles.savedBtnNum} aria-label={`The number of your saved reddits is: ${savedReddits.length}`}>{savedReddits.length}</p>
+                        <p className={styles.savedBtnNum} aria-label={`The number of your saved posts is: ${savedPosts.length}`}>{savedPosts.length}</p>
                     </NavLink>
 
                     <AnimatePresence>
@@ -126,7 +126,7 @@ export default function Header(): React.ReactElement {
                             >
                                 <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 0 0 1.48-5.34c-.47-2.78-2.79-4.99-5.58-5.34A6.49 6.49 0 0 0 3.03 9h2.02c.24-2.12 1.92-3.8 4.06-3.98C11.65 4.8 14 6.95 14 9.5c0 2.49-2.01 4.5-4.5 4.5c-.17 0-.33-.03-.5-.05v2.02l.01.01c1.8.13 3.47-.47 4.72-1.55l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0s.41-1.08 0-1.49z"/><path fill="currentColor" d="M6.12 11.17L4 13.29l-2.12-2.12c-.2-.2-.51-.2-.71 0s-.2.51 0 .71L3.29 14l-2.12 2.12c-.2.2-.2.51 0 .71s.51.2.71 0L4 14.71l2.12 2.12c.2.2.51.2.71 0s.2-.51 0-.71L4.71 14l2.12-2.12c.2-.2.2-.51 0-.71a.513.513 0 0 0-.71 0"/></svg>
                             </motion.button>
-                        ) : communityName || (path === "/saved" && savedReddits.length > 0) ? (
+                        ) : communityName || (path === "/saved" && savedPosts.length > 0) ? (
                             <motion.button
                                 className={styles.searchBtn}
                                 onClick={handleSearchBtnClick}
@@ -146,10 +146,10 @@ export default function Header(): React.ReactElement {
             <AnimatePresence>
                 {searchBtn && (
                     <motion.form
-                        className={styles.searchRedditsForm}
-                        id="searchRedditsForm"
-                        aria-label="search reddits bar"
-                        variants={searchRedditsFormVar(isBelow900px)}
+                        className={styles.searchPostsForm}
+                        id="searchPostsForm"
+                        aria-label="search posts bar"
+                        variants={searchPostsFormVar(isBelow900px)}
                         initial="hidden"
                         animate="visible"
                         exit="hidden"
@@ -158,15 +158,15 @@ export default function Header(): React.ReactElement {
                         <motion.input
                             className={styles.searchField}
                             onChange={handleSearchFieldChange}
-                            id="searchRedditsField"
+                            id="searchPostsField"
                             value={searchInput}
                             ref={searchInputRef}
-                            placeholder="Search reddits"
+                            placeholder="Search posts"
                             maxLength={60}
                             pattern="[A-Za-z0-9\s]+"
                             title="Alphanumeric characters only"
-                            aria-label="Search reddits by keywords"
-                            variants={searchRedditsFieldVar}
+                            aria-label="Search posts by keywords"
+                            variants={searchPostsFieldVar}
                             initial="hidden"
                             animate="visible"
                             exit="hidden"

@@ -12,7 +12,7 @@ export const searchBtnVar = {
   }
 
 
-export const searchRedditsFormVar = (isBelow900px) => ({
+export const searchPostsFormVar = (isBelow900px) => ({
     visible: {
       marginTop: "0px",
       transition: {
@@ -29,7 +29,7 @@ export const searchRedditsFormVar = (isBelow900px) => ({
     },
   });
 
-export const searchRedditsFieldVar = {
+export const searchPostsFieldVar = {
 visible: {
     opacity: 1,
     transition: {

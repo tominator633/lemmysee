@@ -5,7 +5,7 @@ import type { ApiPostItem, ApiPostListResponse, LemmySeePost } from '../../types
 
 /* Types */
 
-/* export interface Reddit {
+/* export interface Post {
     id: string;
     user: string;
     created: number;
@@ -24,17 +24,17 @@ import type { ApiPostItem, ApiPostListResponse, LemmySeePost } from '../../types
 } */
 
 export interface LemmyPostsState {
-    resultReddits: LemmySeePost[];
+    resultPosts: LemmySeePost[];
     isLoading: boolean;
     hasError: boolean;
-    savedReddits: LemmySeePost[];
+    savedPosts: LemmySeePost[];
 }
 
 interface RootState {
-    reddits: LemmyPostsState;
+    posts: LemmyPostsState;
 }
 
-/* interface RedditPost {
+/* interface PostPost {
     data: {
         id: string;
         author: string;
@@ -46,7 +46,7 @@ interface RootState {
         url: string;
         is_video: boolean;
         media?: {
-            reddit_video: {
+            post_video: {
                 fallback_url: string;
                 dash_url: string;
             };
@@ -59,26 +59,26 @@ interface RootState {
 
 /* interface ApiResponse {
     data: {
-        children: RedditPost[];
+        children: PostPost[];
     };
 } */
 
 
 /* "https://lemmy.ml/api/v3/community?name=memes" */
 /* const proxyUrl = "https://corsproxy.io/?";
-const baseUrl = "https://www.reddit.com"; */
+const baseUrl = "https://www.post.com"; */
 
 
 const baseUrl = "https://lemmy.ml/api/v3";
 
 
 /* Thunk */
-export const loadReddits = createAsyncThunk<
+export const loadPosts = createAsyncThunk<
     LemmySeePost[],
     string,
     { rejectValue: string }
 >(
-    "reddits/loadReddits",
+    "posts/loadPosts",
     async (community: string = "memes", thunkAPI) => {
         try {
             const searchEndpoint = `/post/list?community_name=${community}&sort=Hot&limit=5`;
@@ -90,7 +90,7 @@ export const loadReddits = createAsyncThunk<
 
             const jsonResponse: ApiPostListResponse = await response.json();
             
-            const redditsArr: LemmySeePost[] = jsonResponse.posts.map((apiPostItem: ApiPostItem) => {
+            const postsArr: LemmySeePost[] = jsonResponse.posts.map((apiPostItem: ApiPostItem) => {
 
                 return {
                     id: String(apiPostItem.post.id),
@@ -102,7 +102,7 @@ export const loadReddits = createAsyncThunk<
             });
             
             console.log(jsonResponse);
-            return redditsArr;
+            return postsArr;
         } catch (error: any) {
             return thunkAPI.rejectWithValue(error?.message ?? "Unknown error");
         }
@@ -112,39 +112,39 @@ export const loadReddits = createAsyncThunk<
 /* Slice */
 
 const initialState: LemmyPostsState = {
-    resultReddits: [],
+    resultPosts: [],
     isLoading: false,
     hasError: false,
-    savedReddits: [],
+    savedPosts: [],
 };
 
-export const redditsSlice = createSlice({
-    name: "reddits",
+export const postsSlice = createSlice({
+    name: "posts",
     initialState,
     reducers: {
-        saveReddit: (state, action: PayloadAction<LemmySeePost>) => {
-            if (!state.savedReddits.some(reddit => reddit.id === action.payload.id)) {
-                state.savedReddits.push(action.payload);
+        savePost: (state, action: PayloadAction<LemmySeePost>) => {
+            if (!state.savedPosts.some(post => post.id === action.payload.id)) {
+                state.savedPosts.push(action.payload);
             }
         },
-        unsaveReddit: (state, action: PayloadAction<{ id: string }>) => {
-            const updatedSavedRedditsArr = state.savedReddits.filter(reddit => reddit.id !== action.payload.id);
-            state.savedReddits = updatedSavedRedditsArr;
+        unsavePost: (state, action: PayloadAction<{ id: string }>) => {
+            const updatedSavedPostsArr = state.savedPosts.filter(post => post.id !== action.payload.id);
+            state.savedPosts = updatedSavedPostsArr;
         }
     },
     extraReducers: (builder) => {
         builder
-            .addCase(loadReddits.pending, (state) => {
+            .addCase(loadPosts.pending, (state) => {
                 state.isLoading = true;
                 state.hasError = false;
             })
-            .addCase(loadReddits.rejected, (state) => {
+            .addCase(loadPosts.rejected, (state) => {
                 state.isLoading = false;
                 state.hasError = true;
-                state.resultReddits = [];
+                state.resultPosts = [];
             })
-            .addCase(loadReddits.fulfilled, (state, action: PayloadAction<LemmySeePost[]>) => {
-                state.resultReddits = action.payload;
+            .addCase(loadPosts.fulfilled, (state, action: PayloadAction<LemmySeePost[]>) => {
+                state.resultPosts = action.payload;
                 state.isLoading = false;
                 state.hasError = false;
             });
@@ -153,15 +153,15 @@ export const redditsSlice = createSlice({
 
 /* Selectors */
 
-export const selectResultReddits = (state: RootState): LemmySeePost[] => state.reddits.resultReddits;
-export const selectIsLoading = (state: RootState): boolean => state.reddits.isLoading;
-export const selectHasError = (state: RootState): boolean => state.reddits.hasError;
-export const selectSavedReddits = (state: RootState): LemmySeePost[] => state.reddits.savedReddits;
+export const selectResultPosts = (state: RootState): LemmySeePost[] => state.posts.resultPosts;
+export const selectIsLoading = (state: RootState): boolean => state.posts.isLoading;
+export const selectHasError = (state: RootState): boolean => state.posts.hasError;
+export const selectSavedPosts = (state: RootState): LemmySeePost[] => state.posts.savedPosts;
 
-export const filterReddits = (query: string, reddits: LemmySeePost[]): LemmySeePost[] => {
-    return reddits.filter(reddit => reddit.title.toLowerCase().includes(query.toLowerCase()));
+export const filterPosts = (query: string, posts: LemmySeePost[]): LemmySeePost[] => {
+    return posts.filter(post => post.title.toLowerCase().includes(query.toLowerCase()));
 };
 
-export const { saveReddit, unsaveReddit } = redditsSlice.actions;
+export const { savePost, unsavePost } = postsSlice.actions;
 
-export default redditsSlice.reducer;
+export default postsSlice.reducer;

@@ -102,7 +102,7 @@ export default function Communities(): React.ReactElement {
                     <search className={styles.searchCommunitiesSection}
                             onKeyDown={handleKeyDown}
                             role="search"
-                            aria-label="Search communities in Reddit database based on keywords">
+                            aria-label="Search communities in Post database based on keywords">
                         <input className={styles.searchField} 
                                 aria-label="search field for your query"
                                 aria-required="true"

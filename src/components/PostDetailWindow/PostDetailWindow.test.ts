@@ -1,21 +1,21 @@
-// RedditDetailWindow.test.js
+// PostDetailWindow.test.js
 
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import configureStore from 'redux-mock-store';
-import { loadComments, emptyComments } from '../../features/Reddit/redditSlice';
-import RedditDetailWindow from './RedditDetailWindow';
+import { loadComments, emptyComments } from '../../features/Post/postSlice';
+import PostDetailWindow from './PostDetailWindow';
 
 const mockStore = configureStore([]);
 
-describe('RedditDetailWindow Component', () => {
+describe('PostDetailWindow Component', () => {
     let store;
     let mockDispatch;
 
-    // Default mock data for `currentReddit` with `score` defined
-    const defaultCurrentReddit = {
+    // Default mock data for `currentPost` with `score` defined
+    const defaultCurrentPost = {
         score: 1000,
         user: 'test_user',
         created: 1632926400,
@@ -25,8 +25,8 @@ describe('RedditDetailWindow Component', () => {
 
     beforeEach(() => {
         store = mockStore({
-            reddit: {
-                currentReddit: defaultCurrentReddit, // Set score in default data
+            post: {
+                currentPost: defaultCurrentPost, // Set score in default data
                 comments: [],
                 isCommentsLoading: false,
                 hasCommentsError: false
@@ -40,18 +40,18 @@ describe('RedditDetailWindow Component', () => {
         render(
             <Provider store={store}>
                 <Router>
-                    <RedditDetailWindow />
+                    <PostDetailWindow />
                 </Router>
             </Provider>
         );
 
-    test('renders RedditDetailWindow with correct data', () => {
+    test('renders PostDetailWindow with correct data', () => {
         renderComponent();
 
-        // Check if the reddit details are displayed
+        // Check if the post details are displayed
         expect(screen.getByText('Test Title')).toBeInTheDocument();
-        expect(screen.getByLabelText("The score of this reddit is 1000")).toBeInTheDocument();
-        expect(screen.getByLabelText("View test_user's profile on Reddit in a new tab")).toBeInTheDocument();
+        expect(screen.getByLabelText("The score of this post is 1000")).toBeInTheDocument();
+        expect(screen.getByLabelText("View test_user's profile on Post in a new tab")).toBeInTheDocument();
     });
 
     test('loads comments when the component mounts', () => {
@@ -86,8 +86,8 @@ describe('RedditDetailWindow Component', () => {
 
     test('shows loading component when comments are loading', () => {
         store = mockStore({
-            reddit: {
-                currentReddit: defaultCurrentReddit,
+            post: {
+                currentPost: defaultCurrentPost,
                 comments: [],
                 isCommentsLoading: true,
                 hasCommentsError: false
@@ -102,8 +102,8 @@ describe('RedditDetailWindow Component', () => {
 
     test('shows error message and reload button when there is an error loading comments', () => {
         store = mockStore({
-            reddit: {
-                currentReddit: defaultCurrentReddit,
+            post: {
+                currentPost: defaultCurrentPost,
                 comments: [],
                 isCommentsLoading: false,
                 hasCommentsError: true
@@ -124,8 +124,8 @@ describe('RedditDetailWindow Component', () => {
 
     test('displays comments if there are any', () => {
         store = mockStore({
-            reddit: {
-                currentReddit: defaultCurrentReddit,
+            post: {
+                currentPost: defaultCurrentPost,
                 comments: [{ id: 1, content: 'Test comment' }],
                 isCommentsLoading: false,
                 hasCommentsError: false

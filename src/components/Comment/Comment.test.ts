@@ -98,7 +98,7 @@ describe('Comment component', () => {
         render(<Comment content={mockContent} />);
 
         const profileLink = screen.getByRole('link', { name: /Visit profile of test_user/i });
-        expect(profileLink).toHaveAttribute('href', 'https://www.reddit.com/user/test_user/');
+        expect(profileLink).toHaveAttribute('href', 'https://www.post.com/user/test_user/');
     });
 
     test('renders replies only when repliesButton is true', () => {

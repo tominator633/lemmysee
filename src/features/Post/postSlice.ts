@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 const proxyUrl = "https://corsproxy.io/?";
-const baseUrl = "https://api.reddit.com";
+const baseUrl = "https://api.post.com";
 
 /* Types */
 
@@ -22,7 +22,7 @@ export interface Comment {
     replies: Reply[];
 }
 
-export interface CurrentReddit {
+export interface CurrentPost {
     permalink: string;
     score: number;
     user: string;
@@ -30,8 +30,8 @@ export interface CurrentReddit {
     title: string;
 }
 
-export interface RedditState {
-    currentReddit: CurrentReddit | null;
+export interface PostState {
+    currentPost: CurrentPost | null;
     comments: Comment[];
     isCommentsLoading: boolean;
     hasCommentsError: boolean;
@@ -44,7 +44,7 @@ export const loadComments = createAsyncThunk<
     string,                  // arg type (permalink)
     { rejectValue: string }  // thunkAPI config
 >(
-    "reddit/loadComments",
+    "post/loadComments",
     async (permalink, thunkAPI) => {
         try {
             const searchEndpoint = `/${permalink}.json`;
@@ -92,19 +92,19 @@ export const loadComments = createAsyncThunk<
 
 /* Slice */
 
-const initialState: RedditState = {
-    currentReddit: null,
+const initialState: PostState = {
+    currentPost: null,
     comments: [],
     isCommentsLoading: false,
     hasCommentsError: false,
 };
 
-export const redditSlice = createSlice({
-    name: "reddit",
+export const postSlice = createSlice({
+    name: "post",
     initialState,
     reducers: {
-        setCurrentReddit: (state, action: PayloadAction<CurrentReddit | null>) => {
-            state.currentReddit = action.payload;
+        setCurrentPost: (state, action: PayloadAction<CurrentPost | null>) => {
+            state.currentPost = action.payload;
         },
         emptyComments: (state) => {
             state.comments = [];
@@ -134,12 +134,12 @@ export const redditSlice = createSlice({
  * If you have a RootState type in your store, replace the inline type below with it:
  *   import type { RootState } from '../../app/store';
  */
-export type RootState = { reddit: RedditState };
+export type RootState = { post: PostState };
 
-export const selectCurrentReddit = (state: RootState): CurrentReddit | null => state.reddit.currentReddit;
-export const selectComments = (state: RootState): Comment[] => state.reddit.comments;
-export const selectIsCommentsLoading = (state: RootState): boolean => state.reddit.isCommentsLoading;
-export const selectHasCommentsError = (state: RootState): boolean => state.reddit.hasCommentsError;
+export const selectCurrentPost = (state: RootState): CurrentPost | null => state.post.currentPost;
+export const selectComments = (state: RootState): Comment[] => state.post.comments;
+export const selectIsCommentsLoading = (state: RootState): boolean => state.post.isCommentsLoading;
+export const selectHasCommentsError = (state: RootState): boolean => state.post.hasCommentsError;
 
-export const { setCurrentReddit, emptyComments } = redditSlice.actions;
-export default redditSlice.reducer;
+export const { setCurrentPost, emptyComments } = postSlice.actions;
+export default postSlice.reducer;

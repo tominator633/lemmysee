@@ -1,6 +1,6 @@
 
 
-export const savedRedditVar = {
+export const savedPostVar = {
     hidden: { 
         opacity: 0,
         x: 50 

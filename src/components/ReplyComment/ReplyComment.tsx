@@ -3,7 +3,7 @@ import styles from "./ReplyComment.module.css";
 import { epochToAgo, formatNumberWithSpaces } from "../../utils/utils";
 import MarkdownIt from "markdown-it";
 import DOMPurify from "dompurify";
-import type { Reply } from "../../features/Reddit/redditSlice";
+import type { Reply } from "../../features/Post/postSlice";
 
 const md = new MarkdownIt();
 
@@ -27,7 +27,7 @@ export default function ReplyComment({ replyContent }: ReplyCommentProps): React
                     className={styles.replyAuthor}
                     target="_blank"
                     rel="noreferrer noopener"
-                    href={`https://www.reddit.com/user/${replyContent.rAuthor ?? ""}/`}
+                    href={`https://www.post.com/user/${replyContent.rAuthor ?? ""}/`}
                     aria-label={`Visit profile of ${replyContent.rAuthor ?? "unknown"}`}
                 >
                     {replyContent.rAuthor}

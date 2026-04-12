@@ -42,7 +42,7 @@ describe('Header component', () => {
 
   beforeEach(() => {
     store = mockStore({
-      reddits: { savedReddits: [] },
+      posts: { savedPosts: [] },
     });
 
     navigateMock = jest.fn();
@@ -68,13 +68,13 @@ describe('Header component', () => {
 
     expect(screen.getByLabelText('App header')).toBeInTheDocument();
     expect(screen.getByLabelText('Manage communities')).toBeInTheDocument();
-    expect(screen.getByLabelText('Saved reddits')).toBeInTheDocument();
+    expect(screen.getByLabelText('Saved posts')).toBeInTheDocument();
   });
 
-  test('displays the search button conditionally based on saved reddits and communityName', () => {
-    // Test with savedReddits and communityName
+  test('displays the search button conditionally based on saved posts and communityName', () => {
+    // Test with savedPosts and communityName
     useParams.mockReturnValue({ communityName: 'reactjs' });
-    useSelector.mockImplementation(() => [{ id: 1, title: 'Sample Reddit' }]);
+    useSelector.mockImplementation(() => [{ id: 1, title: 'Sample Post' }]);
 
     render(
       <Provider store={store}>
@@ -97,7 +97,7 @@ describe('Header component', () => {
     fireEvent.click(openSearchBtn);
 
     await waitFor(() => {
-      expect(screen.getByLabelText('search reddits bar')).toBeInTheDocument();
+      expect(screen.getByLabelText('search posts bar')).toBeInTheDocument();
     });
 
     // Close the search bar
@@ -105,7 +105,7 @@ describe('Header component', () => {
     fireEvent.click(closeSearchBtn);
 
     await waitFor(() => {
-      expect(screen.queryByLabelText('search reddits bar')).not.toBeInTheDocument();
+      expect(screen.queryByLabelText('search posts bar')).not.toBeInTheDocument();
     });
   });
 
@@ -121,21 +121,21 @@ describe('Header component', () => {
     fireEvent.click(openSearchBtn);
 
     // Update search input field
-    const searchInput = screen.getByLabelText('Search reddits by keywords');
+    const searchInput = screen.getByLabelText('Search posts by keywords');
     fireEvent.change(searchInput, { target: { value: 'react' } });
 
     expect(setSearchParamsMock).toHaveBeenCalledWith({ title: 'react' });
   });
 
-  test('navigates to the saved page when "Saved reddits" button is clicked', () => {
+  test('navigates to the saved page when "Saved posts" button is clicked', () => {
     render(
       <Provider store={store}>
         <Header />
       </Provider>
     );
 
-    const savedRedditsBtn = screen.getByLabelText('Saved reddits');
-    fireEvent.click(savedRedditsBtn);
+    const savedPostsBtn = screen.getByLabelText('Saved posts');
+    fireEvent.click(savedPostsBtn);
 
     expect(navigateMock).toHaveBeenCalledWith('/saved');
   });
@@ -152,12 +152,12 @@ describe('Header component', () => {
     fireEvent.click(openSearchBtn);
 
     await waitFor(() => {
-      const searchInput = screen.getByLabelText('Search reddits by keywords');
+      const searchInput = screen.getByLabelText('Search posts by keywords');
       expect(searchInput).toHaveFocus();
     });
   });
 
-  test('disables the search button if on the saved page and no saved reddits are present', () => {
+  test('disables the search button if on the saved page and no saved posts are present', () => {
     useLocation.mockReturnValue({ pathname: '/saved' });
 
     render(

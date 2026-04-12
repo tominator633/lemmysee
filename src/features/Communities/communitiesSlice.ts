@@ -2,10 +2,10 @@ import { createAsyncThunk, createSlice, type PayloadAction } from '@reduxjs/tool
 import { initialCommunitiesSelection } from "../../utils/utils";
 
 const proxyUrl = "https://corsproxy.io/?";
-const baseUrl = "https://www.reddit.com";
+const baseUrl = "https://www.post.com";
 
 
-/* const proxyUrl = "https://reddit-proxy-ftie.onrender.com"; */
+/* const proxyUrl = "https://post-proxy-ftie.onrender.com"; */
 
 /* Types */
 

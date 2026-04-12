@@ -15,7 +15,7 @@ export const windowBarrierVar = {
     },
     }
 
-export const redditDetailWindowVar = {
+export const postDetailWindowVar = {
     visible: {
         marginTop: "0px",
         transition: {

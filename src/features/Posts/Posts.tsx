@@ -1,26 +1,26 @@
 import React, { useEffect } from "react";
-import styles from "./Reddits.module.css";
+import styles from "./Posts.module.css";
 import { useAppDispatch, useAppSelector } from "../../app/reduxHooks";
 import { useParams, Outlet, useSearchParams } from 'react-router-dom';
-import Reddit from "../Reddit/Reddit";
-import { loadReddits, selectResultReddits, selectIsLoading, selectHasError, filterReddits } from "./redditsSlice";
+import Post from "../Post/Post";
+import { loadPosts, selectResultPosts, selectIsLoading, selectHasError, filterPosts } from "./postsSlice";
 import Loading from "../../components/Loading/Loading";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 
-export default function Reddits(): React.ReactElement {
+export default function Posts(): React.ReactElement {
     const dispatch = useAppDispatch();
-    const resultReddits = useAppSelector(selectResultReddits);
+    const resultPosts = useAppSelector(selectResultPosts);
     const isLoading = useAppSelector(selectIsLoading);
     const hasError = useAppSelector(selectHasError);
     const { communityName } = useParams<{ communityName?: string }>();
     const [searchParams] = useSearchParams();
     const title = searchParams.get("title");
 
-    const redditsToRender = title ? filterReddits(title, resultReddits) : resultReddits;
+    const postsToRender = title ? filterPosts(title, resultPosts) : resultPosts;
 
     useEffect(() => {
         if (communityName) {
-            dispatch(loadReddits(communityName));
+            dispatch(loadPosts(communityName));
         }
     }, [dispatch, communityName]);
 
@@ -30,18 +30,18 @@ export default function Reddits(): React.ReactElement {
 
     const handleErrorBtnClick = (): void => {
         if (communityName) {
-            dispatch(loadReddits(communityName));
+            dispatch(loadPosts(communityName));
         }
     };
     
     if (isLoading) {
         return (
-            <Loading loadingText="Loading reddits..." />
+            <Loading loadingText="Loading posts..." />
         );
     } else if (hasError) {
         return (
             <section role="presentation">
-                <h2 className={styles.redditsH2}>{communityName}</h2>
+                <h2 className={styles.postsH2}>{communityName}</h2>
                 <ErrorMessage 
                     message="Request failed" 
                     onClick={handleErrorBtnClick}
@@ -51,14 +51,14 @@ export default function Reddits(): React.ReactElement {
     } else {
         return (
             <section role="presentation">
-                <h2 className={styles.redditsH2}>{communityName}</h2>
-                <section className={styles.reddits}
+                <h2 className={styles.postsH2}>{communityName}</h2>
+                <section className={styles.posts}
                         role="region"
-                        aria-label={`Reddits from ${communityName}`}>
+                        aria-label={`Posts from ${communityName}`}>
                     {
-                        redditsToRender.length > 0 ?
-                            redditsToRender.map((content) => (
-                                <Reddit 
+                        postsToRender.length > 0 ?
+                            postsToRender.map((content) => (
+                                <Post 
                                     content={content} 
                                     key={content.id} 
                                 />

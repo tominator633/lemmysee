@@ -1,13 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
-import redditsReducer from '../features/Reddits/redditsSlice';
+import postsReducer from '../features/Posts/postsSlice';
 import communitiesReducer from '../features/Communities/communitiesSlice';
-import redditReducer from '../features/Reddit/redditSlice';
+import postReducer from '../features/Post/postSlice';
 
 export const store = configureStore({
     reducer: {
-        reddits: redditsReducer,
+        posts: postsReducer,
         communities: communitiesReducer,
-        reddit: redditReducer,
+        post: postReducer,
     }
 });
 

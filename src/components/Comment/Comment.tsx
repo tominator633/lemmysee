@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {replyCommentVar} from "./commentFMVariants";
 import MarkdownIt from 'markdown-it';
 import DOMPurify from 'dompurify';
-import type { Comment, Reply } from "../../features/Reddit/redditSlice";
+import type { Comment, Reply } from "../../features/Post/postSlice";
 
 const md = new MarkdownIt();
 
@@ -39,7 +39,7 @@ export default function Comment ({ content }: CommentProps): React.ReactElement 
                 <a className={styles.commentUser}
                     target="_blank"
                     rel="noreferrer noopener" 
-                    href={`https://www.reddit.com/user/${content.author}/`}
+                    href={`https://www.post.com/user/${content.author}/`}
                     aria-label={`Visit profile of ${content.author}`} >{content.author}</a>
                 <time className={styles.commentTimePosted}
                     aria-label={`Posted ${epochToAgo(content.created || 0)}`}>{epochToAgo(content.created || 0)}</time>

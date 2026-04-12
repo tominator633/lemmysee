@@ -38,7 +38,7 @@ describe('ReplyComment Component', () => {
     expect(article).toHaveClass('replyComment');
 
     const authorLink = screen.getByRole('link', { name: /visit profile of testUser/i });
-    expect(authorLink).toHaveAttribute('href', 'https://www.reddit.com/user/testUser/');
+    expect(authorLink).toHaveAttribute('href', 'https://www.post.com/user/testUser/');
     expect(authorLink).toHaveTextContent('testUser');
 
     const timePosted = screen.getByText('2 days ago');

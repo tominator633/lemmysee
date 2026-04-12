@@ -73,7 +73,7 @@ export default function CommunitiesSwiper({ setSearchBtn, setSearchInput }: Comm
 
             <SwiperSlide 
                 className={styles.swiperSlide}
-                aria-label="popular reddits"
+                aria-label="popular posts"
             >
                 <div role="presentation">
                     <NavLink 

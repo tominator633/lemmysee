@@ -1,21 +1,21 @@
 import React, {useEffect} from "react";
-import styles from "./SavedReddits.module.css";
+import styles from "./SavedPosts.module.css";
 import { useAppSelector } from "../../app/reduxHooks";
-import { selectSavedReddits, filterReddits, type Reddit } from "../../features/Reddits/redditsSlice";
+import { selectSavedPosts, filterPosts, type Post } from "../../features/Posts/postsSlice";
 import { Outlet, useSearchParams } from 'react-router-dom';
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
-import RedditComponent from "../../features/Reddit/Reddit";
+import PostComponent from "../../features/Post/Post";
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
-import { savedRedditVar } from "./savedRedditsFMVariants";
+import { savedPostVar } from "./savedPostsFMVariants";
 
 
-export default function SavedReddits (): React.ReactElement {
+export default function SavedPosts (): React.ReactElement {
 
-    const savedReddits = useAppSelector(selectSavedReddits);
+    const savedPosts = useAppSelector(selectSavedPosts);
     const [searchParams] = useSearchParams();
     const title = searchParams.get("title");
 
-    const redditsToRender = title ? filterReddits(title, savedReddits) : savedReddits;
+    const postsToRender = title ? filterPosts(title, savedPosts) : savedPosts;
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -23,23 +23,23 @@ export default function SavedReddits (): React.ReactElement {
 
     return (
         <>
-        <h2 className={styles.savedRedditsH2}>{`Saved reddits (${savedReddits.length})`}</h2>
-        <section className={styles.savedReddits}
+        <h2 className={styles.savedPostsH2}>{`Saved posts (${savedPosts.length})`}</h2>
+        <section className={styles.savedPosts}
                 role="region"
-                aria-label="Saved reddits section">
+                aria-label="Saved posts section">
             <AnimatePresence> 
             {
-            redditsToRender.length > 0 ?
-            redditsToRender.map((content: Reddit) => {
+            postsToRender.length > 0 ?
+            postsToRender.map((content: Post) => {
                 return (
                     <LayoutGroup key={content.id}>
-                        <motion.article className={styles.savedRedditWrapper}
-                                    variants={savedRedditVar}
+                        <motion.article className={styles.savedPostWrapper}
+                                    variants={savedPostVar}
                                     layout
                                     exit="exit"
                                     transition={{ duration: 0.2 }}
                                     role="presentation">
-                            <RedditComponent content={content} 
+                            <PostComponent content={content} 
                                     key={content.id} />
                         </motion.article>
                             
@@ -47,7 +47,7 @@ export default function SavedReddits (): React.ReactElement {
                 )
             } )
             :
-            <ErrorMessage message={title ? "No reddits found for the given input" : "No reddits saved"} />
+            <ErrorMessage message={title ? "No posts found for the given input" : "No posts saved"} />
             }
             </AnimatePresence> 
         </section>

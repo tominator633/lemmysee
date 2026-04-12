@@ -1,22 +1,22 @@
 import React from 'react';
 import AppLayout from './AppLayout';
-import Reddits from '../features/Reddits/Reddits';
-import RedditDetailWindow from '../components/RedditDetailWindow/RedditDetailWindow';
+import Posts from '../features/Posts/Posts';
+import PostDetailWindow from '../components/PostDetailWindow/PostDetailWindow';
 import Communities from '../features/Communities/Communities';
 import CommunityDetailWindow from '../components/CommunityDetailWindow/CommunityDetailWindow';
-import SavedReddits from '../components/SavedReddits/SavedReddits';
+import SavedPosts from '../components/SavedPosts/SavedPosts';
 import { RouterProvider, createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
 
 const appRouter = createBrowserRouter(createRoutesFromElements(
   <Route path='/' element={<AppLayout/>} >
-      <Route path=':communityName' element={<Reddits/>}>
-        <Route path=':redditId' element={<RedditDetailWindow/>}/>
+      <Route path=':communityName' element={<Posts/>}>
+        <Route path=':postId' element={<PostDetailWindow/>}/>
       </Route>
       <Route path='communities' element={<Communities/>}>
         <Route path=':communityId' element={<CommunityDetailWindow/>} />
       </Route>
-      <Route path='saved' element={<SavedReddits/>}>
-        <Route path=':redditId' element={<RedditDetailWindow/>}/>
+      <Route path='saved' element={<SavedPosts/>}>
+        <Route path=':postId' element={<PostDetailWindow/>}/>
       </Route>
   </Route>
 ));
