@@ -1,12 +1,11 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import type { ApiPostItem, ApiPostListResponse, LemmySeePost } from '../../types';
 
-/* const proxyUrl = "https://reddit-proxy-ftie.onrender.com"; */
-const proxyUrl = "https://corsproxy.io/?";
-const baseUrl = "https://www.reddit.com";
+
 
 /* Types */
 
-export interface Reddit {
+/* export interface Reddit {
     id: string;
     user: string;
     created: number;
@@ -22,20 +21,20 @@ export interface Reddit {
     url: string;
     isSelfpost: boolean;
     permalink: string;
-}
+} */
 
-export interface RedditsState {
-    resultReddits: Reddit[];
+export interface LemmyPostsState {
+    resultReddits: LemmySeePost[];
     isLoading: boolean;
     hasError: boolean;
-    savedReddits: Reddit[];
+    savedReddits: LemmySeePost[];
 }
 
 interface RootState {
-    reddits: RedditsState;
+    reddits: LemmyPostsState;
 }
 
-interface RedditPost {
+/* interface RedditPost {
     data: {
         id: string;
         author: string;
@@ -56,78 +55,50 @@ interface RedditPost {
         is_self: boolean;
         permalink: string;
     };
-}
+} */
 
-interface ApiResponse {
+/* interface ApiResponse {
     data: {
         children: RedditPost[];
     };
-}
+} */
+
+
+/* "https://lemmy.ml/api/v3/community?name=memes" */
+/* const proxyUrl = "https://corsproxy.io/?";
+const baseUrl = "https://www.reddit.com"; */
+
+
+const baseUrl = "https://lemmy.ml/api/v3";
+
 
 /* Thunk */
-
 export const loadReddits = createAsyncThunk<
-    Reddit[],
+    LemmySeePost[],
     string,
     { rejectValue: string }
 >(
     "reddits/loadReddits",
-    async (subreddit: string = "popular", thunkAPI) => {
+    async (subreddit: string = "memes", thunkAPI) => {
         try {
-            const searchEndpoint = `/r/${subreddit}.json`;
-            const response = await fetch(proxyUrl + baseUrl + searchEndpoint);
+            const searchEndpoint = `/post/list?community_name=${subreddit}&sort=Hot&limit=5`;
+            const response = await fetch(baseUrl + searchEndpoint);
             
             if (!response.ok) {
                 return thunkAPI.rejectWithValue(`Network error: ${response.status}`);
             }
 
-            const jsonResponse: ApiResponse = await response.json();
+            const jsonResponse: ApiPostListResponse = await response.json();
             
-            const redditsArr: Reddit[] = jsonResponse.data.children.map((post: RedditPost) => {
+            const redditsArr: LemmySeePost[] = jsonResponse.posts.map((apiPostItem: ApiPostItem) => {
 
-                let imgThumbnail: string | null;
-                const thumbnailIsImg = /\.(jpeg|jpg|png)$/i;
-                if (thumbnailIsImg.test(post.data.thumbnail)) {
-                    imgThumbnail = post.data.thumbnail;
-                } else {
-                    imgThumbnail = null;
-                }
-
-                let imgUrl: string | null;
-                const urlIncludesImg = /\.(jpeg|jpg|png)$/i;
-                if (urlIncludesImg.test(post.data.url)) {
-                    imgUrl = post.data.url;
-                } else {
-                    imgUrl = null;
-                }
-
-                let videoUrl: string | null;
-                let videoDashUrl: string | null;
-                if (post.data.is_video && post.data.media?.reddit_video) {
-                    videoUrl = post.data.media.reddit_video.fallback_url;
-                    videoDashUrl = post.data.media.reddit_video.dash_url;
-                } else {
-                    videoUrl = null;
-                    videoDashUrl = null;
-                }
-        
                 return {
-                    id: post.data.id,
-                    user: post.data.author,
-                    created: post.data.created,
-                    subreddit: post.data.subreddit,
-                    title: post.data.title,
-                    text: post.data.selftext,
-                    imgSrc: imgUrl,
-                    isVideo: post.data.is_video,
-                    videoSrc: videoUrl,
-                    videoDashUrl: videoDashUrl,
-                    score: post.data.score,
-                    thumbnail: imgThumbnail,
-                    url: post.data.url,
-                    isSelfpost: post.data.is_self,
-                    permalink: post.data.permalink,
-                } as Reddit;
+                    id: String(apiPostItem.post.id),
+                    creator: apiPostItem.creator.name,
+                    timePublished: apiPostItem.post.published,
+                    community: apiPostItem.community.name,
+                    title: apiPostItem.post.name,
+                } as LemmySeePost;
             });
             
             console.log(jsonResponse);
@@ -140,7 +111,7 @@ export const loadReddits = createAsyncThunk<
 
 /* Slice */
 
-const initialState: RedditsState = {
+const initialState: LemmyPostsState = {
     resultReddits: [],
     isLoading: false,
     hasError: false,
@@ -151,7 +122,7 @@ export const redditsSlice = createSlice({
     name: "reddits",
     initialState,
     reducers: {
-        saveReddit: (state, action: PayloadAction<Reddit>) => {
+        saveReddit: (state, action: PayloadAction<LemmySeePost>) => {
             if (!state.savedReddits.some(reddit => reddit.id === action.payload.id)) {
                 state.savedReddits.push(action.payload);
             }
@@ -172,7 +143,7 @@ export const redditsSlice = createSlice({
                 state.hasError = true;
                 state.resultReddits = [];
             })
-            .addCase(loadReddits.fulfilled, (state, action: PayloadAction<Reddit[]>) => {
+            .addCase(loadReddits.fulfilled, (state, action: PayloadAction<LemmySeePost[]>) => {
                 state.resultReddits = action.payload;
                 state.isLoading = false;
                 state.hasError = false;
@@ -182,12 +153,12 @@ export const redditsSlice = createSlice({
 
 /* Selectors */
 
-export const selectResultReddits = (state: RootState): Reddit[] => state.reddits.resultReddits;
+export const selectResultReddits = (state: RootState): LemmySeePost[] => state.reddits.resultReddits;
 export const selectIsLoading = (state: RootState): boolean => state.reddits.isLoading;
 export const selectHasError = (state: RootState): boolean => state.reddits.hasError;
-export const selectSavedReddits = (state: RootState): Reddit[] => state.reddits.savedReddits;
+export const selectSavedReddits = (state: RootState): LemmySeePost[] => state.reddits.savedReddits;
 
-export const filterReddits = (query: string, reddits: Reddit[]): Reddit[] => {
+export const filterReddits = (query: string, reddits: LemmySeePost[]): LemmySeePost[] => {
     return reddits.filter(reddit => reddit.title.toLowerCase().includes(query.toLowerCase()));
 };
 

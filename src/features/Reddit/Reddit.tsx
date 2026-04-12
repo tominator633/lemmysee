@@ -1,26 +1,27 @@
-import React, { useEffect, useRef } from "react";
+import React/* , { useEffect, useRef }  */from "react";
 import styles from "./Reddit.module.css";
 import { Link } from "react-router-dom";
-import { setCurrentReddit, loadComments } from "./redditSlice";
-import { saveReddit, unsaveReddit, selectSavedReddits, type Reddit } from "../Reddits/redditsSlice";
-import { useAppDispatch, useAppSelector } from "../../app/reduxHooks";
-import { epochToAgo, formatNumberWithSpaces } from "../../utils/utils";
-import { MediaPlayer } from 'dashjs';
+/* import { setCurrentReddit, loadComments } from "./redditSlice"; */
+import { /* saveReddit, unsaveReddit, */ selectSavedReddits } from "../Reddits/redditsSlice";
+import { /* useAppDispatch, */ useAppSelector } from "../../app/reduxHooks";
+import { /* epochToAgo, */ formatNumberWithSpaces } from "../../utils/utils";
+/* import { MediaPlayer } from 'dashjs';
 import MarkdownIt from 'markdown-it';
-import DOMPurify from 'dompurify';
+import DOMPurify from 'dompurify'; */
+import type {LemmySeePost } from '../../types';
 
-const md = new MarkdownIt();
+/* const md = new MarkdownIt(); */
 
 interface RedditProps {
-    content: Reddit;
+    content: LemmySeePost;
 }
 
 export default function RedditComponent({ content }: RedditProps): React.ReactElement {
-    const dispatch = useAppDispatch();
+   /*  const dispatch = useAppDispatch(); */
     const savedReddits = useAppSelector(selectSavedReddits);
-    const videoRef = useRef<HTMLVideoElement | null>(null);
+/*     const videoRef = useRef<HTMLVideoElement | null>(null); */
 
-    const handleDetailsClick = (): void => {
+/*     const handleDetailsClick = (): void => {
         dispatch(setCurrentReddit(content));
         dispatch(loadComments(content.permalink));
     };
@@ -53,12 +54,12 @@ export default function RedditComponent({ content }: RedditProps): React.ReactEl
             return { __html: sanitizedHtml };
         }
         return null;
-    };
+    }; */
 
     return (
         <article className={styles.reddit} 
             id={content.id}
-            aria-label={`A reddit by ${content.user}`}>
+            aria-label={`A reddit by ${content.creator}`}>
             <div className={styles.votesColumn} 
                 role="presentation">
                 <figure className={styles.arrowUp}
@@ -66,7 +67,7 @@ export default function RedditComponent({ content }: RedditProps): React.ReactEl
                     <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M10.586 3L4 9.586a2 2 0 0 0-.434 2.18l.068.145A2 2 0 0 0 5.414 13H8v7a2 2 0 0 0 2 2h4l.15-.005A2 2 0 0 0 16 20l-.001-7h2.587A2 2 0 0 0 20 9.586L13.414 3a2 2 0 0 0-2.828 0"></path></svg>
                 </figure>
                 <p className={styles.votes} 
-                    aria-label={`The score of this reddit is ${content.score}`}>{formatNumberWithSpaces(content.score)}</p>
+                    aria-label={`The score of this reddit is ${content.id}`}>{formatNumberWithSpaces(content.id)}</p>
             </div>
 
             <div className={styles.redditColumn} 
@@ -76,16 +77,16 @@ export default function RedditComponent({ content }: RedditProps): React.ReactEl
                     <a className={styles.redditUser}
                         target="_blank"
                         rel="noreferrer noopener"
-                        href={`https://www.reddit.com/user/${content.user}/`}
-                        aria-label={`The link to user profile of ${content.user}`}>{content.user}</a>
-                    <time className={styles.redditTimePosted}>{epochToAgo(content.created)}</time>
+                        href={`https://www.reddit.com/user/${content.creator}/`}
+                        aria-label={`The link to user profile of ${content.creator}`}>{content.creator}</a>
+                    <time className={styles.redditTimePosted}>{/* epochToAgo */content.id}</time>
                 </div>
 
                 <div className={styles.redditContent}
                         role="presentation">
                     <h4 className={styles.redditTitle}>{content.title}</h4>
 
-                    {content.text && (
+              {/*       {content.text && (
                         <p  className={styles.selftextContent}
                             dangerouslySetInnerHTML={renderSelfText() ?? undefined}
                             aria-label="Reddit self text content"
@@ -126,14 +127,14 @@ export default function RedditComponent({ content }: RedditProps): React.ReactEl
                             preload="metadata" 
                             aria-label="Video content"
                         />
-                    }
+                    } */}
                 </div>
             </div>
 
             <div className={styles.rightColumn} 
                     role="presentation">
                 <Link to={`${content.id}`}  
-                      onClick={handleDetailsClick}  
+                    /*   onClick={handleDetailsClick}   */
                       className={`${styles.commentsButton} ${styles.redditRightColumnBtn}`}
                       aria-label="go to reddit detail window with comments section">
                     <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16">
@@ -142,7 +143,7 @@ export default function RedditComponent({ content }: RedditProps): React.ReactEl
                     </svg>
                 </Link>
                 <a className={`${styles.redditLink} ${styles.redditRightColumnBtn}`}
-                   href={content.url}
+                  /*  href={content.url} */
                    target="_blank"
                    rel="noreferrer noopener"
                    aria-label="view this reddit on the official Reddit platform (link)">
@@ -152,13 +153,13 @@ export default function RedditComponent({ content }: RedditProps): React.ReactEl
                 </a>
                 {savedReddits.some(reddit => reddit.id === content.id) ?
                 <button className={`${styles.unsaveRedditBtn} ${styles.redditRightColumnBtn}`}
-                        onClick={handleUnsaveRedditBtnClick}
+                      /*   onClick={handleUnsaveRedditBtnClick} */
                         aria-label="unsave this reddit">
                     <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512"><path fill="currentColor" d="M418.9 0H93.1C80.2 0 69.8 10.4 69.8 23.3V512L256 325.8L442.2 512V23.3c0-12.9-10.4-23.3-23.3-23.3m-46.5 186.2H139.6v-46.5h232.7v46.5z"/></svg>
                 </button>
                 :
                 <button className={`${styles.saveRedditBtn} ${styles.redditRightColumnBtn}`}
-                        onClick={handleSaveRedditBtnClick}
+                      /*   onClick={handleSaveRedditBtnClick} */
                         aria-label="save this reddit">
                     <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512"><path fill="currentColor" d="M432.9 0H107.1C94.3 0 83.8 10.4 83.8 23.3V512L270 325.8L456.2 512V23.3c0-12.9-10.4-23.3-23.3-23.3m-46.5 186.2h-93.1v93.1h-46.5v-93.1h-93.1v-46.5h93.1V46.5h46.5v93.1h93.1z"/></svg>                
                 </button>

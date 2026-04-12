@@ -11,7 +11,7 @@ export default function AppLayout(): React.ReactElement {
 
     useEffect(() => {
         if (path === "/") {
-            navigate("/popular");
+            navigate("/memes");
         }
     }, [navigate, path]);
     
