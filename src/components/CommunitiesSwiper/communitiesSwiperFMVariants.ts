@@ -2,7 +2,7 @@
 
 
 
-export const swiperSubredditVar = {
+export const swiperCommunityVar = {
     visible: {
         marginLeft: "0px",
         scale: 1,

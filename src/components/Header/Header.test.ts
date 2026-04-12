@@ -6,7 +6,7 @@ import configureStore from 'redux-mock-store';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import Header from './Header';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import SubredditsSwiper from "../SubredditsSwiper/SubredditsSwiper";
+import CommunitiesSwiper from "../CommunitiesSwiper/CommunitiesSwiper";
 
 // Mock dependencies
 jest.mock('react-router-dom', () => ({
@@ -49,7 +49,7 @@ describe('Header component', () => {
     useNavigate.mockReturnValue(navigateMock);
 
     setSearchParamsMock = jest.fn();
-    useParams.mockReturnValue({ subredditName: null });
+    useParams.mockReturnValue({ communityName: null });
     useLocation.mockReturnValue({ pathname: '/' });
 
     useSelector.mockImplementation((selector) => selector(store.getState()));
@@ -67,13 +67,13 @@ describe('Header component', () => {
     );
 
     expect(screen.getByLabelText('App header')).toBeInTheDocument();
-    expect(screen.getByLabelText('Manage subreddits')).toBeInTheDocument();
+    expect(screen.getByLabelText('Manage communities')).toBeInTheDocument();
     expect(screen.getByLabelText('Saved reddits')).toBeInTheDocument();
   });
 
-  test('displays the search button conditionally based on saved reddits and subredditName', () => {
-    // Test with savedReddits and subredditName
-    useParams.mockReturnValue({ subredditName: 'reactjs' });
+  test('displays the search button conditionally based on saved reddits and communityName', () => {
+    // Test with savedReddits and communityName
+    useParams.mockReturnValue({ communityName: 'reactjs' });
     useSelector.mockImplementation(() => [{ id: 1, title: 'Sample Reddit' }]);
 
     render(

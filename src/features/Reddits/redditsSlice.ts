@@ -9,7 +9,7 @@ import type { ApiPostItem, ApiPostListResponse, LemmySeePost } from '../../types
     id: string;
     user: string;
     created: number;
-    subreddit: string;
+    community: string;
     title: string;
     text: string;
     imgSrc: string | null;
@@ -39,7 +39,7 @@ interface RootState {
         id: string;
         author: string;
         created: number;
-        subreddit: string;
+        community: string;
         title: string;
         selftext: string;
         thumbnail: string;
@@ -79,9 +79,9 @@ export const loadReddits = createAsyncThunk<
     { rejectValue: string }
 >(
     "reddits/loadReddits",
-    async (subreddit: string = "memes", thunkAPI) => {
+    async (community: string = "memes", thunkAPI) => {
         try {
-            const searchEndpoint = `/post/list?community_name=${subreddit}&sort=Hot&limit=5`;
+            const searchEndpoint = `/post/list?community_name=${community}&sort=Hot&limit=5`;
             const response = await fetch(baseUrl + searchEndpoint);
             
             if (!response.ok) {

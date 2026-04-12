@@ -15,7 +15,7 @@ export const windowBarrierVar = {
     },
     }
 
-export const subredditDetailWindowVar = {
+export const communityDetailWindowVar = {
     visible: {
         marginTop: "0px",
         transition: {
@@ -31,7 +31,7 @@ export const subredditDetailWindowVar = {
     }
 
 
-export const subredditAddedMessageVar = {
+export const communityAddedMessageVar = {
         visible: {
             opacity: 1,
             marginTop: "0px",

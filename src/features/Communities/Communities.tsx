@@ -1,22 +1,22 @@
 import React, { useState, useRef, useEffect } from "react";
-import styles from "./Subreddits.module.css";
+import styles from "./Communities.module.css";
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
-import { submitBtnVar, mySubredditVar, searchedSubredditVar } from "./subredditsFMVariants";
-import Subreddit from "../../components/Subreddit/Subreddit";
+import { submitBtnVar, myCommunityVar, searchedCommunityVar } from "./communitiesFMVariants";
+import Community from "../../components/Community/Community";
 import Loading from "../../components/Loading/Loading";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import { Outlet } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from "../../app/reduxHooks";
-import { selectSwiperSubreddits, selectSearchedSubreddits, searchSubreddits, selectIsSearchSubredditsLoading, selectHasSearchSubredditsError } from "./subredditsSlice";
+import { selectSwiperCommunities, selectSearchedCommunities, searchCommunities, selectIsSearchCommunitiesLoading, selectHasSearchCommunitiesError } from "./communitiesSlice";
 
-export default function Subreddits(): React.ReactElement {
+export default function Communities(): React.ReactElement {
 
     const dispatch = useAppDispatch();
 
-    const swiperSubreddits = useAppSelector(selectSwiperSubreddits);
-    const searchedSubreddits = useAppSelector(selectSearchedSubreddits);
-    const isSearchSubredditsLoading = useAppSelector(selectIsSearchSubredditsLoading);
-    const hasSearchSubredditsError = useAppSelector(selectHasSearchSubredditsError);
+    const swiperCommunities = useAppSelector(selectSwiperCommunities);
+    const searchedCommunities = useAppSelector(selectSearchedCommunities);
+    const isSearchCommunitiesLoading = useAppSelector(selectIsSearchCommunitiesLoading);
+    const hasSearchCommunitiesError = useAppSelector(selectHasSearchCommunitiesError);
 
     const [searchInput, setSearchInput] = useState<string>("");
     const searchInputRef = useRef<HTMLInputElement | null>(null);
@@ -40,10 +40,10 @@ export default function Subreddits(): React.ReactElement {
         }
     };
 
-    const handleSubmitSearchSubredditsBtnClick = (): void => {
+    const handleSubmitSearchCommunitiesBtnClick = (): void => {
         const sanitizedInput = sanitizeInput(searchInput);
         const encodedInput = encodeURIComponent(sanitizedInput);
-        dispatch(searchSubreddits(encodedInput));
+        dispatch(searchCommunities(encodedInput));
     };
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLElement>): void => {
@@ -51,66 +51,66 @@ export default function Subreddits(): React.ReactElement {
             event.preventDefault();
             const sanitizedInput = sanitizeInput(searchInput);
             const encodedInput = encodeURIComponent(sanitizedInput);
-            dispatch(searchSubreddits(encodedInput));
+            dispatch(searchCommunities(encodedInput));
         }
     };
 
     const handleErrorSearchSubmitReloadClick = (): void => {
         const sanitizedInput = sanitizeInput(searchInput);
         const encodedInput = encodeURIComponent(sanitizedInput);
-        dispatch(searchSubreddits(encodedInput));
+        dispatch(searchCommunities(encodedInput));
     };
 
     return (
         <>
             <div className={styles.srManagerCon}
                 role="presentation">
-                <section className={styles.mySubredditsCon}
-                        aria-label="My subreddits selection section">
-                    <h2 className={styles.mySubredditsH2}>My Subreddits selection</h2>
-                    <div className={styles.mySubreddits}
+                <section className={styles.myCommunitiesCon}
+                        aria-label="My communities selection section">
+                    <h2 className={styles.myCommunitiesH2}>My Communities selection</h2>
+                    <div className={styles.myCommunities}
                         role="presentation">
                         <AnimatePresence> 
-                            {swiperSubreddits.length > 0 ?
-                                swiperSubreddits.map((subreddit) => {
+                            {swiperCommunities.length > 0 ?
+                                swiperCommunities.map((community) => {
                                     return (
-                                        <LayoutGroup key={subreddit.id}>
+                                        <LayoutGroup key={community.id}>
                                             <motion.div 
-                                                variants={mySubredditVar}
+                                                variants={myCommunityVar}
                                                 layout
                                                 initial="hidden"
                                                 animate="visible"
                                                 exit="exit"
                                                 transition={{ duration: 0.2 }}
                                                 role="presentation">
-                                                <Subreddit content={subreddit} 
-                                                            key={subreddit.id}
-                                                            isSwiperSubreddit={true}/>
+                                                <Community content={community} 
+                                                            key={community.id}
+                                                            isSwiperCommunity={true}/>
                                             </motion.div>
                                         </LayoutGroup>
                                     );
                                 })
                                 :
-                                <ErrorMessage message="You have no subreddits in your selection." />
+                                <ErrorMessage message="You have no communities in your selection." />
                             }
                         </AnimatePresence>
                     </div>
                 </section>
-                <section className={styles.searchSubredditsCon}
-                        aria-label="Explore subreddits section">
-                    <h2 className={styles.searchSubredditsH2}>Explore subreddits</h2>
-                    <search className={styles.searchSubredditsSection}
+                <section className={styles.searchCommunitiesCon}
+                        aria-label="Explore communities section">
+                    <h2 className={styles.searchCommunitiesH2}>Explore communities</h2>
+                    <search className={styles.searchCommunitiesSection}
                             onKeyDown={handleKeyDown}
                             role="search"
-                            aria-label="Search subreddits in Reddit database based on keywords">
+                            aria-label="Search communities in Reddit database based on keywords">
                         <input className={styles.searchField} 
                                 aria-label="search field for your query"
                                 aria-required="true"
                                 onChange={handleSearchFieldChange}
-                                id="searchSubredditsField"
+                                id="searchCommunitiesField"
                                 value={searchInput}
                                 ref={searchInputRef}
-                                placeholder="Search subreddits here"
+                                placeholder="Search communities here"
                                 maxLength={60}
                                 pattern="[A-Za-z0-9\s]+"
                                 title="Alphanumeric characters only"/>
@@ -118,9 +118,9 @@ export default function Subreddits(): React.ReactElement {
                     <AnimatePresence>
                         {searchInput &&
                             <motion.button 
-                                className={styles.submitSearchSubredditsBtn}
-                                onClick={handleSubmitSearchSubredditsBtnClick}
-                                aria-label="Submit subreddit search"
+                                className={styles.submitSearchCommunitiesBtn}
+                                onClick={handleSubmitSearchCommunitiesBtnClick}
+                                aria-label="Submit community search"
                                 variants={submitBtnVar}
                                 initial="hidden"
                                 animate="visible"
@@ -130,33 +130,33 @@ export default function Subreddits(): React.ReactElement {
                             </motion.button>
                         }
                     </AnimatePresence>
-                    <div className={styles.searchedSubreddits}
+                    <div className={styles.searchedCommunities}
                         aria-label="Search results"
                         role="region" 
                         aria-live="polite">
                         <AnimatePresence> 
-                            {isSearchSubredditsLoading ?
-                                <Loading loadingText="Loading subreddits..."/>
-                                : hasSearchSubredditsError ?
+                            {isSearchCommunitiesLoading ?
+                                <Loading loadingText="Loading communities..."/>
+                                : hasSearchCommunitiesError ?
                                 <ErrorMessage message="Request failed."
                                                 onClick={handleErrorSearchSubmitReloadClick} />
-                                : searchedSubreddits.length === 0 ?
-                                <p>No subreddits found</p>
+                                : searchedCommunities.length === 0 ?
+                                <p>No communities found</p>
                                 :
-                                searchedSubreddits.map((subreddit) => {
+                                searchedCommunities.map((community) => {
                                     return (
-                                        <LayoutGroup key={subreddit.id}>
+                                        <LayoutGroup key={community.id}>
                                             <motion.div 
-                                                variants={searchedSubredditVar}
+                                                variants={searchedCommunityVar}
                                                 layout
                                                 initial="hidden"
                                                 animate="visible"
                                                 exit="exit"
                                                 transition={{ duration: 0.2 }}
                                                 role="presentation">
-                                                <Subreddit content={subreddit} 
-                                                            key={subreddit.id}
-                                                            isSwiperSubreddit={false}/>
+                                                <Community content={community} 
+                                                            key={community.id}
+                                                            isSwiperCommunity={false}/>
                                             </motion.div>
                                         </LayoutGroup>
                                     );

@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Subreddit component matches the snapshot for the component 1`] = `
+exports[`Community component matches the snapshot for the component 1`] = `
 <DocumentFragment>
   <section
-    aria-label="Test Subreddit"
+    aria-label="Test Community"
     class="srCon"
   >
     <figure
@@ -11,7 +11,7 @@ exports[`Subreddit component matches the snapshot for the component 1`] = `
       role="presentation"
     >
       <img
-        alt="Test Subreddit banner"
+        alt="Test Community banner"
         src="test-banner.png"
       />
     </figure>
@@ -24,7 +24,7 @@ exports[`Subreddit component matches the snapshot for the component 1`] = `
         role="presentation"
       >
         <img
-          alt="Test Subreddit icon"
+          alt="Test Community icon"
           src="test-icon.png"
         />
       </figure>
@@ -35,7 +35,7 @@ exports[`Subreddit component matches the snapshot for the component 1`] = `
         <h3
           class="srName"
         >
-          Test Subreddit
+          Test Community
         </h3>
       </div>
     </div>
@@ -44,9 +44,9 @@ exports[`Subreddit component matches the snapshot for the component 1`] = `
       role="presentation"
     >
       <a
-        aria-label="Open information window for this subreddit"
+        aria-label="Open information window for this community"
         class="srDetail"
-        href="/test-subreddit"
+        href="/test-community"
       >
         <svg
           aria-hidden="true"
@@ -62,7 +62,7 @@ exports[`Subreddit component matches the snapshot for the component 1`] = `
         </svg>
       </a>
       <button
-        aria-label="Add subreddit to your selection"
+        aria-label="Add community to your selection"
         class="srDeleteOrAdd"
       >
         <svg

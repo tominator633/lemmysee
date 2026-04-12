@@ -4,12 +4,12 @@ import { Navigation, A11y, Mousewheel, FreeMode } from 'swiper/modules';
 // If the CSS error persists despite the d.ts file, you can uncomment the line below
 //@ts-ignore
 import "swiper/css/bundle";
-import styles from "./SubredditsSwiper.module.css";
+import styles from "./CommunitiesSwiper.module.css";
 import { useAppSelector } from "../../app/reduxHooks";
 import { NavLink } from 'react-router-dom';
-import { selectSwiperSubreddits } from "../../features/Subreddits/subredditsSlice";
+import { selectSwiperCommunities } from "../../features/Communities/communitiesSlice";
 
-interface SubredditsSwiperProps {
+interface CommunitiesSwiperProps {
     setSearchBtn: (value: boolean) => void;
     setSearchInput: (value: string) => void;
 }
@@ -19,17 +19,17 @@ interface LinkClassNameProps {
     isPending: boolean;
 }
 
-export default function SubredditsSwiper({ setSearchBtn, setSearchInput }: SubredditsSwiperProps): React.ReactElement {
+export default function CommunitiesSwiper({ setSearchBtn, setSearchInput }: CommunitiesSwiperProps): React.ReactElement {
 
-    const swiperSubreddits = useAppSelector(selectSwiperSubreddits);
+    const swiperCommunities = useAppSelector(selectSwiperCommunities);
 
-    const handleSwiperSubredditClick = (): void => {
+    const handleSwiperCommunityClick = (): void => {
         setSearchBtn(false);
         setSearchInput("");
     };
 
     const getLinkClassName = ({ isActive }: LinkClassNameProps): string => {
-        return isActive ? styles.activeSubreddit : styles.inactiveSubreddit;
+        return isActive ? styles.activeCommunity : styles.inactiveCommunity;
     };
 
     // Note: getAriaCurrentValue was removed. 
@@ -79,7 +79,7 @@ export default function SubredditsSwiper({ setSearchBtn, setSearchInput }: Subre
                     <NavLink 
                         to="/popular" 
                         className={getLinkClassName}
-                        onClick={handleSwiperSubredditClick}
+                        onClick={handleSwiperCommunityClick}
                         // aria-current is handled automatically by NavLink
                     >
                         <figure 
@@ -96,33 +96,33 @@ export default function SubredditsSwiper({ setSearchBtn, setSearchInput }: Subre
                 </div>
             </SwiperSlide>
 
-            {swiperSubreddits.map((subreddit) => (
+            {swiperCommunities.map((community) => (
                 <SwiperSlide 
-                    key={subreddit.id}
-                    id={subreddit.id}
+                    key={community.id}
+                    id={community.id}
                     className={styles.swiperSlide}
                     role="group"
-                    aria-label={`Subreddit: ${subreddit.name}`}
+                    aria-label={`Community: ${community.name}`}
                 >
                     <NavLink 
-                        to={`${subreddit.name}`} 
+                        to={`${community.name}`} 
                         className={getLinkClassName}
-                        onClick={handleSwiperSubredditClick}
+                        onClick={handleSwiperCommunityClick}
                         // aria-current is handled automatically by NavLink
                     >
                         <figure 
                             id={styles.icon} 
                             aria-hidden="true"
                         >
-                            {subreddit.iconImg ? 
+                            {community.iconImg ? 
                                 <img 
-                                    src={subreddit.iconImg} 
-                                    alt={subreddit.name}
+                                    src={community.iconImg} 
+                                    alt={community.name}
                                 />
-                            : subreddit.headerImg ?
+                            : community.headerImg ?
                                 <img 
-                                    src={subreddit.headerImg} 
-                                    alt={subreddit.name}
+                                    src={community.headerImg} 
+                                    alt={community.name}
                                 />
                             :
                                 <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
@@ -131,7 +131,7 @@ export default function SubredditsSwiper({ setSearchBtn, setSearchInput }: Subre
                                 </svg>
                             }
                         </figure>
-                        <h3>{subreddit.name}</h3>
+                        <h3>{community.name}</h3>
                     </NavLink>
                 </SwiperSlide>
             ))}

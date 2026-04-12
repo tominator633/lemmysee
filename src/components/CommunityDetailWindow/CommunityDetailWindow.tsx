@@ -1,44 +1,44 @@
 import React, { useState, useEffect } from "react";
-import styles from "./SubredditDetailWindow.module.css";
+import styles from "./CommunityDetailWindow.module.css";
 import { motion, AnimatePresence } from 'framer-motion';
 import { useParams, useNavigate } from "react-router-dom";
-import { addSubreddit, selectSwiperSubreddits, selectCurrentSubreddit, type Subreddit } from "../../features/Subreddits/subredditsSlice";
+import { addCommunity, selectSwiperCommunities, selectCurrentCommunity, type Community } from "../../features/Communities/communitiesSlice";
 import { useAppSelector, useAppDispatch } from "../../app/reduxHooks";
-import { windowBarrierVar, subredditDetailWindowVar, subredditAddedMessageVar } from "./subredditDetailWindowFMVariants";
+import { windowBarrierVar, communityDetailWindowVar, communityAddedMessageVar } from "./communityDetailWindowFMVariants";
 import { formatNumberWithSpaces } from "../../utils/utils";
 
 
 /* this interface must be specific for each call of useParams hook. 
-in this file the situation orders subredditId to be string for sure, 
+in this file the situation orders communityId to be string for sure, 
 so it is safe to get types of the entire object with params specified with
-the Record utility type and put additional constraint that subredditId is string,
+the Record utility type and put additional constraint that communityId is string,
 not string | undefined.*/
 interface RouteParams extends Record<string, string | undefined> {
-    subredditId: string;
+    communityId: string;
 }
 
-export default function SubredditDetailWindow(): React.ReactElement {
+export default function CommunityDetailWindow(): React.ReactElement {
     const [isVisible, setIsVisible] = useState<boolean>(true);
     const [isAddToSelectionBtnClicked, setIsAddToSelectionBtnClicked] = useState<boolean>(false);
 
-    const { subredditId } = useParams<RouteParams>();
+    const { communityId } = useParams<RouteParams>();
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
-    const currentSubreddit = useAppSelector(selectCurrentSubreddit);
-    const swiperSubreddits = useAppSelector(selectSwiperSubreddits);
+    const currentCommunity = useAppSelector(selectCurrentCommunity);
+    const swiperCommunities = useAppSelector(selectSwiperCommunities);
 
-    const isSwiperSubreddit = typeof currentSubreddit === "object" && "id" in currentSubreddit
-        ? swiperSubreddits.some(subreddit => subreddit.id === (currentSubreddit as Subreddit).id)
+    const isSwiperCommunity = typeof currentCommunity === "object" && "id" in currentCommunity
+        ? swiperCommunities.some(community => community.id === (currentCommunity as Community).id)
         : false;
 
     const handleCloseButtonClick = (): void => {
         setIsVisible(false);
     };
 
-    const handleAddSubredditClick = (): void => {
-        if (typeof currentSubreddit === "object" && "id" in currentSubreddit) {
-            dispatch(addSubreddit(currentSubreddit as Subreddit));
+    const handleAddCommunityClick = (): void => {
+        if (typeof currentCommunity === "object" && "id" in currentCommunity) {
+            dispatch(addCommunity(currentCommunity as Community));
             setIsAddToSelectionBtnClicked(true);
         }
     };
@@ -53,13 +53,13 @@ export default function SubredditDetailWindow(): React.ReactElement {
         return () => document.removeEventListener("keydown", handleKeyDown);
     }, [isVisible]);
 
-    const subreddit = currentSubreddit as Subreddit | undefined;
+    const community = currentCommunity as Community | undefined;
 
     return (
         <AnimatePresence onExitComplete={() => { navigate(-1); }}>
             {isVisible && (
                 <motion.div
-                    id={subredditId}
+                    id={communityId}
                     className={styles.windowBarrier}
                     role="presentation"
                     variants={windowBarrierVar}
@@ -68,12 +68,12 @@ export default function SubredditDetailWindow(): React.ReactElement {
                     exit="hidden"
                 >
                     <motion.section
-                        className={styles.subredditDetailWindow}
+                        className={styles.communityDetailWindow}
                         role="dialog"
                         tabIndex={-1}
-                        aria-label={`${subreddit?.name ?? "subreddit"} subreddit information window`}
+                        aria-label={`${community?.name ?? "community"} community information window`}
                         aria-modal="true"
-                        variants={subredditDetailWindowVar}
+                        variants={communityDetailWindowVar}
                         initial="hidden"
                         animate="visible"
                         exit="hidden"
@@ -87,16 +87,16 @@ export default function SubredditDetailWindow(): React.ReactElement {
                             <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 1024 1024"><path fill="currentColor" d="M195.2 195.2a64 64 0 0 1 90.496 0L512 421.504L738.304 195.2a64 64 0 0 1 90.496 90.496L602.496 512L828.8 738.304a64 64 0 0 1-90.496 90.496L512 602.496L285.696 828.8a64 64 0 0 1-90.496-90.496L421.504 512L195.2 285.696a64 64 0 0 1 0-90.496"/></svg>
                         </button>
 
-                        <div className={styles.subredditDetail} role="presentation">
-                            <figure className={styles.subredditBanner} role="presentation">
-                                {subreddit?.bannerImg && <img src={subreddit.bannerImg} alt="banner image" />}
+                        <div className={styles.communityDetail} role="presentation">
+                            <figure className={styles.communityBanner} role="presentation">
+                                {community?.bannerImg && <img src={community.bannerImg} alt="banner image" />}
                             </figure>
 
-                            <figure className={styles.subredditIcon}>
-                                {subreddit?.iconImg ? (
-                                    <img src={subreddit.iconImg} alt="subreddit icon" />
-                                ) : subreddit?.headerImg ? (
-                                    <img src={subreddit.headerImg} alt="subreddit icon" />
+                            <figure className={styles.communityIcon}>
+                                {community?.iconImg ? (
+                                    <img src={community.iconImg} alt="community icon" />
+                                ) : community?.headerImg ? (
+                                    <img src={community.headerImg} alt="community icon" />
                                 ) : (
                                     <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
                                         <path fill="currentColor" d="M10.75 13.04c0-.57-.47-1.04-1.04-1.04c-.57 0-1.04.47-1.04 1.04a1.04 1.04 0 1 0 2.08 0m3.34 2.37c-.45.45-1.41.61-2.09.61s-1.64-.16-2.09-.61a.26.26 0 0 0-.38 0a.26.26 0 0 0 0 .38c.71.71 2.07.77 2.47.77c.4 0 1.76-.06 2.47-.77a.26.26 0 0 0 0-.38c-.1-.1-.27-.1-.38 0m.2-3.41c-.57 0-1.04.47-1.04 1.04c0 .57.47 1.04 1.04 1.04s1.04-.47 1.04-1.04c0-.57-.46-1.04-1.04-1.04"/>
@@ -105,17 +105,17 @@ export default function SubredditDetailWindow(): React.ReactElement {
                                 )}
                             </figure>
 
-                            <h3 className={styles.subredditName}>{subreddit?.name}</h3>
-                            {subreddit?.headerTitle && <p className={styles.subredditHeaderTitle}>{subreddit.headerTitle}</p>}
-                            <p className={styles.subredditPublicDescription}>{subreddit?.publicDescription}</p>
-                            <p className={styles.subredditSubscribers}>{`Subscribers: ${formatNumberWithSpaces(subreddit?.subscribers ?? 0)}`}</p>
+                            <h3 className={styles.communityName}>{community?.name}</h3>
+                            {community?.headerTitle && <p className={styles.communityHeaderTitle}>{community.headerTitle}</p>}
+                            <p className={styles.communityPublicDescription}>{community?.publicDescription}</p>
+                            <p className={styles.communitySubscribers}>{`Subscribers: ${formatNumberWithSpaces(community?.subscribers ?? 0)}`}</p>
 
-                            {!isSwiperSubreddit && !isAddToSelectionBtnClicked ? (
+                            {!isSwiperCommunity && !isAddToSelectionBtnClicked ? (
                                 <button
-                                    className={styles.addThisSubredditToYourSelectionBtn}
-                                    id="SubredditDetailPlusBtn"
-                                    onClick={handleAddSubredditClick}
-                                    aria-label="Add this subreddit to your selection"
+                                    className={styles.addThisCommunityToYourSelectionBtn}
+                                    id="CommunityDetailPlusBtn"
+                                    onClick={handleAddCommunityClick}
+                                    aria-label="Add this community to your selection"
                                 >
                                     <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48">
                                         <defs>
@@ -131,14 +131,14 @@ export default function SubredditDetailWindow(): React.ReactElement {
                                 </button>
                             ) : (
                                 <motion.p
-                                    className={styles.subredditAddedMessage}
-                                    id="subredditAddedMessage"
+                                    className={styles.communityAddedMessage}
+                                    id="communityAddedMessage"
                                     aria-live="polite"
-                                    variants={subredditAddedMessageVar}
+                                    variants={communityAddedMessageVar}
                                     initial="hidden"
                                     animate="visible"
                                 >
-                                    Subreddit added to your selection
+                                    Community added to your selection
                                 </motion.p>
                             )}
                         </div>

@@ -4,25 +4,25 @@ import '@testing-library/jest-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import configureStore from 'redux-mock-store';
-import SubredditsSwiper from './SubredditsSwiper';
+import CommunitiesSwiper from './CommunitiesSwiper';
 
 // Mocks
 const mockStore = configureStore([]);
-const mockSubreddits = [
-  { id: '1', name: 'subreddit1', iconImg: 'icon1.png', headerImg: 'header1.png' },
-  { id: '2', name: 'subreddit2', iconImg: 'icon2.png', headerImg: 'header2.png' },
+const mockCommunities = [
+  { id: '1', name: 'community1', iconImg: 'icon1.png', headerImg: 'header1.png' },
+  { id: '2', name: 'community2', iconImg: 'icon2.png', headerImg: 'header2.png' },
 ];
 
 // Props
 const mockSetSearchBtn = jest.fn();
 const mockSetSearchInput = jest.fn();
 
-describe('SubredditsSwiper Component', () => {
+describe('CommunitiesSwiper Component', () => {
   let store;
 
   beforeEach(() => {
     store = mockStore({
-      subreddits: { swiperSubreddits: mockSubreddits },
+      communities: { swiperCommunities: mockCommunities },
     });
   });
 
@@ -30,7 +30,7 @@ describe('SubredditsSwiper Component', () => {
     render(
       <Provider store={store}>
         <Router>
-          <SubredditsSwiper setSearchBtn={mockSetSearchBtn} setSearchInput={mockSetSearchInput} />
+          <CommunitiesSwiper setSearchBtn={mockSetSearchBtn} setSearchInput={mockSetSearchInput} />
         </Router>
       </Provider>
     );
@@ -49,7 +49,7 @@ describe('SubredditsSwiper Component', () => {
     expect(prevButton).toBeInTheDocument();
   });
 
-  it('renders popular subreddit slide correctly', () => {
+  it('renders popular community slide correctly', () => {
     renderComponent();
 
     const popularSlide = screen.getByRole('group', { name: /popular reddits/i });
@@ -59,22 +59,22 @@ describe('SubredditsSwiper Component', () => {
     expect(popularLink).toHaveAttribute('href', '/popular');
   });
 
-  it('renders dynamic subreddit slides from Redux state', () => {
+  it('renders dynamic community slides from Redux state', () => {
     renderComponent();
 
-    mockSubreddits.forEach((subreddit) => {
-      const subredditSlide = screen.getByRole('group', { name: `Subreddit: ${subreddit.name}` });
-      expect(subredditSlide).toBeInTheDocument();
+    mockCommunities.forEach((community) => {
+      const communitySlide = screen.getByRole('group', { name: `Community: ${community.name}` });
+      expect(communitySlide).toBeInTheDocument();
 
-      const subredditLink = screen.getByRole('link', { name: subreddit.name });
-      expect(subredditLink).toHaveAttribute('href', `/${subreddit.name}`);
+      const communityLink = screen.getByRole('link', { name: community.name });
+      expect(communityLink).toHaveAttribute('href', `/${community.name}`);
       
-      const subredditImg = screen.getByAltText(subreddit.name);
-      expect(subredditImg).toHaveAttribute('src', subreddit.iconImg || subreddit.headerImg);
+      const communityImg = screen.getByAltText(community.name);
+      expect(communityImg).toHaveAttribute('src', community.iconImg || community.headerImg);
     });
   });
 
-  it('calls setSearchBtn and setSearchInput on subreddit click', () => {
+  it('calls setSearchBtn and setSearchInput on community click', () => {
     renderComponent();
 
     const popularLink = screen.getByRole('link', { name: /popular/i });
@@ -84,18 +84,18 @@ describe('SubredditsSwiper Component', () => {
     expect(mockSetSearchInput).toHaveBeenCalledWith('');
   });
 
-  it('handles conditional rendering of subreddit icons', () => {
-    const noIconSubreddits = [
-      { id: '3', name: 'noIconSubreddit', iconImg: null, headerImg: null },
+  it('handles conditional rendering of community icons', () => {
+    const noIconCommunities = [
+      { id: '3', name: 'noIconCommunity', iconImg: null, headerImg: null },
     ];
     store = mockStore({
-      subreddits: { swiperSubreddits: noIconSubreddits },
+      communities: { swiperCommunities: noIconCommunities },
     });
 
     renderComponent();
 
-    const noIconSubreddit = screen.getByRole('group', { name: 'Subreddit: noIconSubreddit' });
-    expect(noIconSubreddit).toBeInTheDocument();
+    const noIconCommunity = screen.getByRole('group', { name: 'Community: noIconCommunity' });
+    expect(noIconCommunity).toBeInTheDocument();
 
     const fallbackIcon = screen.getByRole('img', { name: /default icon/i });
     expect(fallbackIcon).toBeInTheDocument();

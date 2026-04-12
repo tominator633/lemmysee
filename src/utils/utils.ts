@@ -1,4 +1,4 @@
-import type { Subreddit } from "../features/Subreddits/subredditsSlice";
+import type { Community } from "../features/Communities/communitiesSlice";
 
 
 export const epochToAgo = (epochTime: number): string => {
@@ -40,7 +40,7 @@ export const formatNumberWithSpaces = (num: number): string => {
 
 
 
-export const initialSubredditsSelection: Subreddit[] = [
+export const initialCommunitiesSelection: Community[] = [
     {
         name: "pics",
         id: "2qh0u",

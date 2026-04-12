@@ -1,4 +1,4 @@
-// SubredditDetailWindow.test.js
+// CommunityDetailWindow.test.js
 
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
@@ -6,30 +6,30 @@ import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import configureStore from 'redux-mock-store';
-import SubredditDetailWindow from './SubredditDetailWindow';
-import { addSubreddit } from '../../features/Subreddits/subredditsSlice';
+import CommunityDetailWindow from './CommunityDetailWindow';
+import { addCommunity } from '../../features/Communities/communitiesSlice';
 import { act } from 'react-dom/test-utils';
 
 const mockStore = configureStore([]);
-const currentSubreddit = {
+const currentCommunity = {
   id: '1',
-  name: 'TestSubreddit',
+  name: 'TestCommunity',
   bannerImg: 'test-banner.jpg',
   iconImg: 'test-icon.jpg',
   headerTitle: 'Test Header Title',
-  publicDescription: 'Test description of the subreddit',
+  publicDescription: 'Test description of the community',
   subscribers: 1234,
 };
 
-describe('SubredditDetailWindow Component', () => {
+describe('CommunityDetailWindow Component', () => {
   let store;
   let initialState;
 
   beforeEach(() => {
     initialState = {
-      subreddits: {
-        currentSubreddit,
-        swiperSubreddits: [],
+      communities: {
+        currentCommunity,
+        swiperCommunities: [],
       },
     };
     store = mockStore(initialState);
@@ -38,25 +38,25 @@ describe('SubredditDetailWindow Component', () => {
   const renderComponent = () => {
     return render(
       <Provider store={store}>
-        <MemoryRouter initialEntries={['/subreddit/1']}>
+        <MemoryRouter initialEntries={['/community/1']}>
           <Routes>
-            <Route path="/subreddit/:subredditId" element={<SubredditDetailWindow />} />
+            <Route path="/community/:communityId" element={<CommunityDetailWindow />} />
           </Routes>
         </MemoryRouter>
       </Provider>
     );
   };
 
-  test('renders the subreddit details correctly', () => {
+  test('renders the community details correctly', () => {
     renderComponent();
 
     expect(screen.getByRole('dialog')).toBeInTheDocument();
-    expect(screen.getByText('TestSubreddit')).toBeInTheDocument();
+    expect(screen.getByText('TestCommunity')).toBeInTheDocument();
     expect(screen.getByText('Test Header Title')).toBeInTheDocument();
-    expect(screen.getByText('Test description of the subreddit')).toBeInTheDocument();
+    expect(screen.getByText('Test description of the community')).toBeInTheDocument();
     expect(screen.getByText('Subscribers: 1 234')).toBeInTheDocument();
     expect(screen.getByAltText('banner image')).toBeInTheDocument();
-    expect(screen.getByAltText('subreddit icon')).toBeInTheDocument();
+    expect(screen.getByAltText('community icon')).toBeInTheDocument();
   });
 
   test('closes when the close button is clicked', () => {
@@ -78,28 +78,28 @@ describe('SubredditDetailWindow Component', () => {
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
-  test('dispatches addSubreddit action when "Add to selection" button is clicked', () => {
+  test('dispatches addCommunity action when "Add to selection" button is clicked', () => {
     renderComponent();
 
     const addToSelectionButton = screen.getByRole('button', {
-      name: 'Add this subreddit to your selection',
+      name: 'Add this community to your selection',
     });
 
     fireEvent.click(addToSelectionButton);
 
     const actions = store.getActions();
-    expect(actions).toContainEqual(addSubreddit(currentSubreddit));
+    expect(actions).toContainEqual(addCommunity(currentCommunity));
   });
 
   test('hides "Add to selection" button and shows confirmation message when clicked', () => {
     renderComponent();
 
     const addToSelectionButton = screen.getByRole('button', {
-      name: 'Add this subreddit to your selection',
+      name: 'Add this community to your selection',
     });
     fireEvent.click(addToSelectionButton);
 
     expect(addToSelectionButton).not.toBeInTheDocument();
-    expect(screen.getByText('Subreddit added to your selection')).toBeInTheDocument();
+    expect(screen.getByText('Community added to your selection')).toBeInTheDocument();
   });
 });

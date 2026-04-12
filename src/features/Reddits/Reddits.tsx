@@ -12,25 +12,25 @@ export default function Reddits(): React.ReactElement {
     const resultReddits = useAppSelector(selectResultReddits);
     const isLoading = useAppSelector(selectIsLoading);
     const hasError = useAppSelector(selectHasError);
-    const { subredditName } = useParams<{ subredditName?: string }>();
+    const { communityName } = useParams<{ communityName?: string }>();
     const [searchParams] = useSearchParams();
     const title = searchParams.get("title");
 
     const redditsToRender = title ? filterReddits(title, resultReddits) : resultReddits;
 
     useEffect(() => {
-        if (subredditName) {
-            dispatch(loadReddits(subredditName));
+        if (communityName) {
+            dispatch(loadReddits(communityName));
         }
-    }, [dispatch, subredditName]);
+    }, [dispatch, communityName]);
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: "smooth" });
-    }, [subredditName]);
+    }, [communityName]);
 
     const handleErrorBtnClick = (): void => {
-        if (subredditName) {
-            dispatch(loadReddits(subredditName));
+        if (communityName) {
+            dispatch(loadReddits(communityName));
         }
     };
     
@@ -41,7 +41,7 @@ export default function Reddits(): React.ReactElement {
     } else if (hasError) {
         return (
             <section role="presentation">
-                <h2 className={styles.redditsH2}>{subredditName}</h2>
+                <h2 className={styles.redditsH2}>{communityName}</h2>
                 <ErrorMessage 
                     message="Request failed" 
                     onClick={handleErrorBtnClick}
@@ -51,10 +51,10 @@ export default function Reddits(): React.ReactElement {
     } else {
         return (
             <section role="presentation">
-                <h2 className={styles.redditsH2}>{subredditName}</h2>
+                <h2 className={styles.redditsH2}>{communityName}</h2>
                 <section className={styles.reddits}
                         role="region"
-                        aria-label={`Reddits from ${subredditName}`}>
+                        aria-label={`Reddits from ${communityName}`}>
                     {
                         redditsToRender.length > 0 ?
                             redditsToRender.map((content) => (

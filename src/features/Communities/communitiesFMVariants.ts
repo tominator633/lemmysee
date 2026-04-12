@@ -20,7 +20,7 @@ export const submitBtnVar = {
     }
 
     
-export const mySubredditVar = {
+export const myCommunityVar = {
     hidden: { 
         opacity: 0,
         y: 50 
@@ -35,7 +35,7 @@ export const mySubredditVar = {
     } 
     };
 
-export const searchedSubredditVar = {
+export const searchedCommunityVar = {
     hidden: { 
         opacity: 0,
         y: -50 
