@@ -12,7 +12,7 @@ export const searchBtnVar = {
   }
 
 
-export const searchPostsFormVar = (isBelow900px) => ({
+export const searchPostsFormVar = (isBelow900px: boolean) => ({
     visible: {
       marginTop: "0px",
       transition: {

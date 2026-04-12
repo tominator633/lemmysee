@@ -28,14 +28,7 @@
 transformation of LemmyPost */
 
 
-/* TEMPORARY FORMAT WITHOUT ALL DATA) */
-export interface LemmySeePost {
-    id: string;
-    creator: string;
-    timePublished: string;
-    community: string;
-    title: string;
-} 
+
 
 
 

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { ApiPostItem, ApiPostListResponse, LemmySeePost } from '../../types';
+import type { ApiPostItem, ApiPostListResponse } from '../../types';
 
 
 
@@ -23,15 +23,24 @@ import type { ApiPostItem, ApiPostListResponse, LemmySeePost } from '../../types
     permalink: string;
 } */
 
-export interface LemmyPostsState {
-    resultPosts: LemmySeePost[];
+export interface Post {
+    id: string;
+    creator: string;
+    timePublished: string;
+    community: string;
+    title: string;
+} 
+
+
+export interface PostsState {
+    resultPosts: Post[];
     isLoading: boolean;
     hasError: boolean;
-    savedPosts: LemmySeePost[];
+    savedPosts: Post[];
 }
 
 interface RootState {
-    posts: LemmyPostsState;
+    posts: PostsState;
 }
 
 /* interface PostPost {
@@ -74,7 +83,7 @@ const baseUrl = "https://lemmy.ml/api/v3";
 
 /* Thunk */
 export const loadPosts = createAsyncThunk<
-    LemmySeePost[],
+    Post[],
     string,
     { rejectValue: string }
 >(
@@ -90,7 +99,7 @@ export const loadPosts = createAsyncThunk<
 
             const jsonResponse: ApiPostListResponse = await response.json();
             
-            const postsArr: LemmySeePost[] = jsonResponse.posts.map((apiPostItem: ApiPostItem) => {
+            const postsArr: Post[] = jsonResponse.posts.map((apiPostItem: ApiPostItem) => {
 
                 return {
                     id: String(apiPostItem.post.id),
@@ -98,7 +107,7 @@ export const loadPosts = createAsyncThunk<
                     timePublished: apiPostItem.post.published,
                     community: apiPostItem.community.name,
                     title: apiPostItem.post.name,
-                } as LemmySeePost;
+                } as Post;
             });
             
             console.log(jsonResponse);
@@ -111,7 +120,7 @@ export const loadPosts = createAsyncThunk<
 
 /* Slice */
 
-const initialState: LemmyPostsState = {
+const initialState: PostsState = {
     resultPosts: [],
     isLoading: false,
     hasError: false,
@@ -122,7 +131,7 @@ export const postsSlice = createSlice({
     name: "posts",
     initialState,
     reducers: {
-        savePost: (state, action: PayloadAction<LemmySeePost>) => {
+        savePost: (state, action: PayloadAction<Post>) => {
             if (!state.savedPosts.some(post => post.id === action.payload.id)) {
                 state.savedPosts.push(action.payload);
             }
@@ -143,7 +152,7 @@ export const postsSlice = createSlice({
                 state.hasError = true;
                 state.resultPosts = [];
             })
-            .addCase(loadPosts.fulfilled, (state, action: PayloadAction<LemmySeePost[]>) => {
+            .addCase(loadPosts.fulfilled, (state, action: PayloadAction<Post[]>) => {
                 state.resultPosts = action.payload;
                 state.isLoading = false;
                 state.hasError = false;
@@ -153,12 +162,12 @@ export const postsSlice = createSlice({
 
 /* Selectors */
 
-export const selectResultPosts = (state: RootState): LemmySeePost[] => state.posts.resultPosts;
+export const selectResultPosts = (state: RootState): Post[] => state.posts.resultPosts;
 export const selectIsLoading = (state: RootState): boolean => state.posts.isLoading;
 export const selectHasError = (state: RootState): boolean => state.posts.hasError;
-export const selectSavedPosts = (state: RootState): LemmySeePost[] => state.posts.savedPosts;
+export const selectSavedPosts = (state: RootState): Post[] => state.posts.savedPosts;
 
-export const filterPosts = (query: string, posts: LemmySeePost[]): LemmySeePost[] => {
+export const filterPosts = (query: string, posts: Post[]): Post[] => {
     return posts.filter(post => post.title.toLowerCase().includes(query.toLowerCase()));
 };
 
