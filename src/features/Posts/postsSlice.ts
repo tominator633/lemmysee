@@ -5,20 +5,20 @@ import type { ApiPostItem, ApiPostListResponse } from '../../types';
 
 /* Types */
 
-/* export interface Post {
-    id: string;
-    user: string;
-    created: number;
-    community: string;
-    title: string;
-    text: string;
-    imgSrc: string | null;
-    isVideo: boolean;
-    videoSrc: string | null;
-    videoDashUrl: string | null;
-    score: number;
-    thumbnail: string | null;
-    url: string;
+/* export interface REDDIT {
+        id: string;
+        user: string;
+        created: number;
+        community: string;
+        title: string;
+        text: string;
+        imgSrc: string | null;
+        isVideo: boolean;
+        videoSrc: string | null;
+        videoDashUrl: string | null;
+        score: number;
+        thumbnail: string | null;
+        url: string;
     isSelfpost: boolean;
     permalink: string;
 } */
@@ -29,6 +29,12 @@ export interface Post {
     timePublished: string;
     community: string;
     title: string;
+    text: string | null;
+    postUrl: string;
+    imgUrl: string | null;
+    score: number;
+    videoUrl: string | null;
+    externalUrl: string | null;
 } 
 
 
@@ -101,12 +107,25 @@ export const loadPosts = createAsyncThunk<
             
             const postsArr: Post[] = jsonResponse.posts.map((apiPostItem: ApiPostItem) => {
 
+
                 return {
                     id: String(apiPostItem.post.id),
                     creator: apiPostItem.creator.name,
                     timePublished: apiPostItem.post.published,
                     community: apiPostItem.community.name,
                     title: apiPostItem.post.name,
+                    text: apiPostItem.post.body ?? null,
+                    postUrl: apiPostItem.post.ap_id,
+                    imgUrl: apiPostItem.image_details?.link 
+                        ?? apiPostItem.post.thumbnail_url 
+                        ?? null,
+                    score: apiPostItem.counts.score,
+                    videoUrl: apiPostItem.post.url_content_type?.startsWith("video/")
+                        ? apiPostItem.post.url
+                        : null,
+                    externalUrl: apiPostItem.post.url_content_type?.startsWith("text/html")
+                        ? apiPostItem.post.url
+                        : null,
                 } as Post;
             });
             

@@ -64,7 +64,7 @@ export const initialCommunitiesSelection: Community[] = [
         publicDescription: "Post's largest humor depository"
     },
     {
-        name: "AskPost",
+        name: "asklemmy",
         id: "2qh1i",
         subscribers: 48812700,
         url: "/r/AskPost/",
@@ -108,7 +108,18 @@ export const initialCommunitiesSelection: Community[] = [
         publicDescription: "Things that make you go AWW! -- like puppies, bunnies, babies, and so on...\n\nFeel free to post original pictures and videos of cute things."
     },
     {
-        name: "Music",
+        name: "videos",
+        id: "2qh1u",
+        subscribers: 35036080,
+        url: "/r/Music/",
+        headerTitle: "/r/Music - Post's largest/best music community!",
+        iconImg: "https://b.thumbs.postmedia.com/PEWyzBXzK1xSBEI_dbUx9yijATp_G1lyUrn1TSMPwCY.png",
+        headerImg: null,
+        bannerImg: "https://b.thumbs.postmedia.com/XWgGN39mWf12u3_Mv0NO2Jhps8OjGlQ9Xv9jxeKqV-k.png",
+        publicDescription: "Post’s #1 Music Community"
+    },
+    {
+        name: "technology",
         id: "2qh1u",
         subscribers: 35036080,
         url: "/r/Music/",

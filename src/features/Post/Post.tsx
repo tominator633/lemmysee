@@ -1,28 +1,27 @@
-import React/* , { useEffect, useRef }  */from "react";
+import React , { useEffect, useRef } from "react";
 import styles from "./Post.module.css";
 import { Link } from "react-router-dom";
-/* import { setCurrentPost, loadComments } from "./postSlice"; */
-import { /* savePost, unsavePost, */ selectSavedPosts } from "../Posts/postsSlice";
-import { /* useAppDispatch, */ useAppSelector } from "../../app/reduxHooks";
-import { /* epochToAgo, */ formatNumberWithSpaces } from "../../utils/utils";
-/* import { MediaPlayer } from 'dashjs';
+import { setCurrentPost, loadComments } from "./postSlice";
+import { savePost, unsavePost, selectSavedPosts } from "../Posts/postsSlice";
+import { useAppDispatch,  useAppSelector } from "../../app/reduxHooks";
+import {  epochToAgo, formatNumberWithSpaces } from "../../utils/utils";
+import { MediaPlayer } from 'dashjs';
 import MarkdownIt from 'markdown-it';
-import DOMPurify from 'dompurify'; */
+import DOMPurify from 'dompurify'; 
 import { type Post } from "../Posts/postsSlice";
-/* const md = new MarkdownIt(); */
+const md = new MarkdownIt(); 
 
 interface PostProps {
     content: Post;
 }
 
 export default function PostComponent({ content }: PostProps): React.ReactElement {
-   /*  const dispatch = useAppDispatch(); */
+    const dispatch = useAppDispatch();
     const savedPosts = useAppSelector(selectSavedPosts);
-/*     const videoRef = useRef<HTMLVideoElement | null>(null); */
-
-/*     const handleDetailsClick = (): void => {
+    const videoRef = useRef<HTMLVideoElement | null>(null);
+    const handleDetailsClick = (): void => {
         dispatch(setCurrentPost(content));
-        dispatch(loadComments(content.permalink));
+        //dispatch(loadComments(content.permalink));
     };
 
     const handleSavePostBtnClick = (): void => {
@@ -34,9 +33,9 @@ export default function PostComponent({ content }: PostProps): React.ReactElemen
     };
 
     useEffect(() => {
-        if (content.videoDashUrl && videoRef.current) {
+        if (content.videoUrl && videoRef.current) {
             const player = MediaPlayer().create();
-            player.initialize(videoRef.current, content.videoDashUrl, false);
+            player.initialize(videoRef.current, content.videoUrl, false);
         }
 
         return () => {
@@ -45,7 +44,7 @@ export default function PostComponent({ content }: PostProps): React.ReactElemen
                 player.reset();
             }
         };
-    }, [content.videoDashUrl]);
+    }, [content.videoUrl]);
 
     const renderSelfText = (): { __html: string } | null => {
         if (content.text) {
@@ -53,7 +52,7 @@ export default function PostComponent({ content }: PostProps): React.ReactElemen
             return { __html: sanitizedHtml };
         }
         return null;
-    }; */
+    };
 
     return (
         <article className={styles.post} 
@@ -84,41 +83,44 @@ export default function PostComponent({ content }: PostProps): React.ReactElemen
                 <div className={styles.postContent}
                         role="presentation">
                     <h4 className={styles.postTitle}>{content.title}</h4>
-
-              {/*       {content.text && (
+                    
+                    {/* content has selftext */}
+                    {content.text && (
                         <p  className={styles.selftextContent}
-                            dangerouslySetInnerHTML={renderSelfText() ?? undefined}
-                            aria-label="Post self text content"
+                            dangerouslySetInnerHTML={renderSelfText()}  // Use the renderSelfText method
+                            aria-label={renderSelfText()}
                         />
                     )}
 
-                    {(!content.isSelfpost && !content.isVideo && !content.imgSrc) && 
+                    
+
+                    {(content.externalUrl) && 
                     <a className={styles.externalContent} 
-                        href={content.url} 
+                        href={content.externalUrl} 
                         target="_blank" 
                         rel="noreferrer noopener"
                         aria-label={`External link included in this post of title: ${content.title}`}>
                         
-                        {content.thumbnail &&
+                        {content.imgUrl &&
                         <figure aria-hidden="true">
-                            <img src={content.thumbnail} 
+                            <img src={content.imgUrl} 
                                 alt={content.title}/>
                         </figure>}
-                        <p>{content.url}</p>
+                        <p>{content.imgUrl}</p>
                     </a>}
 
-                    {content.imgSrc && 
+                    {content.imgUrl && 
                         <a className={`${styles.imgContent} ${styles.gb}`}
-                            href={content.imgSrc}
+                            href={content.imgUrl}
                             target="_blank"
                             rel="noreferrer noopener" 
                             aria-label="External link of this post">
-                            <img src={content.imgSrc}
+                            <img src={content.imgUrl}
                                 alt={`The image content of ${content.title}`}/>
                         </a>
                     }
 
-                    {content.videoSrc && 
+                    {content.videoUrl && 
                         <video
                             ref={videoRef}
                             className={styles.videoContent} 
@@ -126,14 +128,14 @@ export default function PostComponent({ content }: PostProps): React.ReactElemen
                             preload="metadata" 
                             aria-label="Video content"
                         />
-                    } */}
+                    } 
                 </div>
             </div>
 
             <div className={styles.rightColumn} 
                     role="presentation">
                 <Link to={`${content.id}`}  
-                    /*   onClick={handleDetailsClick}   */
+                      onClick={handleDetailsClick}
                       className={`${styles.commentsButton} ${styles.postRightColumnBtn}`}
                       aria-label="go to post detail window with comments section">
                     <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16">
@@ -142,7 +144,7 @@ export default function PostComponent({ content }: PostProps): React.ReactElemen
                     </svg>
                 </Link>
                 <a className={`${styles.postLink} ${styles.postRightColumnBtn}`}
-                  /*  href={content.url} */
+                    href={content.postUrl}
                    target="_blank"
                    rel="noreferrer noopener"
                    aria-label="view this post on the official Post platform (link)">
@@ -152,13 +154,13 @@ export default function PostComponent({ content }: PostProps): React.ReactElemen
                 </a>
                 {savedPosts.some(post => post.id === content.id) ?
                 <button className={`${styles.unsavePostBtn} ${styles.postRightColumnBtn}`}
-                      /*   onClick={handleUnsavePostBtnClick} */
+                        onClick={handleUnsavePostBtnClick}
                         aria-label="unsave this post">
                     <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512"><path fill="currentColor" d="M418.9 0H93.1C80.2 0 69.8 10.4 69.8 23.3V512L256 325.8L442.2 512V23.3c0-12.9-10.4-23.3-23.3-23.3m-46.5 186.2H139.6v-46.5h232.7v46.5z"/></svg>
                 </button>
                 :
                 <button className={`${styles.savePostBtn} ${styles.postRightColumnBtn}`}
-                      /*   onClick={handleSavePostBtnClick} */
+                        onClick={handleSavePostBtnClick}
                         aria-label="save this post">
                     <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512"><path fill="currentColor" d="M432.9 0H107.1C94.3 0 83.8 10.4 83.8 23.3V512L270 325.8L456.2 512V23.3c0-12.9-10.4-23.3-23.3-23.3m-46.5 186.2h-93.1v93.1h-46.5v-93.1h-93.1v-46.5h93.1V46.5h46.5v93.1h93.1z"/></svg>                
                 </button>
