@@ -96,7 +96,7 @@ export const loadPosts = createAsyncThunk<
     "posts/loadPosts",
     async (community: string = "memes", thunkAPI) => {
         try {
-            const searchEndpoint = `/post/list?community_name=${community}&sort=Hot&limit=5`;
+            const searchEndpoint = `/post/list?community_name=${community}&sort=Hot&limit=15`;
             const response = await fetch(baseUrl + searchEndpoint);
             
             if (!response.ok) {

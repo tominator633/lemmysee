@@ -178,19 +178,30 @@
     margin-top: 10px;
 }
 
-
+.selftextContent img {
+    display: inline-block;
+    width: 40%;
+    border-radius: 10px;
+}
 
 .externalContent {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
+    display: inline-block;
+ 
     margin-top: 10px;
-    padding: 10px;
+    padding: 0px;
     background-color: #FEE;
     border-radius: 20px;
     color: #005792;
     word-break: break-word;
     transition: scale 0.3s linear;
+    overflow: hidden;
+}
+.externalContent svg {
+    display: block;
+    margin: 10px;
+    width: 40px;
+    height: 40px;
+    color: #FF6B6B;
 }
 @media (hover: hover) {
     .externalContent:hover {
@@ -201,15 +212,15 @@
 .externalContent:active {
     opacity: 50%;
 }
-.externalContent p {
-    font-size: 14px;
-    padding-left: 10px;
-    
+.externalContent figure {
+    width: 200px;
+    height: auto;
+    display: flex;
+    overflow: hidden;
 }
-
 .externalContent img {
-    border-radius: 20px;
     display: block;
+    width: 100%;
 }
 
 
