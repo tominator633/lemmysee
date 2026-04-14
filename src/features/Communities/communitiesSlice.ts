@@ -1,24 +1,21 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { initialCommunitiesSelection } from "../../utils/utils";
-
-const proxyUrl = "https://corsproxy.io/?";
-const baseUrl = "https://www.post.com";
+import type { ApiSearchResponse, ApiCommunityView, LemmyApiCommunity } from "./communitiesApiTypes";
 
 
-/* const proxyUrl = "https://post-proxy-ftie.onrender.com"; */
 
 /* Types */
 
 export interface Community {
-    name: string;
-    id: string;
-    subscribers: number;
-    url: string;
-    headerTitle: string | null;
-    iconImg: string | null;
-    headerImg: string | null;
-    bannerImg: string | null;
-    publicDescription: string;
+  id: number;
+  name: string;
+  subscribers: number;
+  headerTitle: string;
+  iconImg: string | null;
+  bannerImg: string | null;
+  description: string | null;
+  isHidden: boolean;
+  isBlocked: boolean;
 }
 
 export interface CommunitiesState {
@@ -33,6 +30,17 @@ interface RootState {
     communities: CommunitiesState;
 }
 
+
+
+
+
+
+
+//const baseUrl = "https://lemmy.ml/api/v3";
+const baseUrl = "https://lemmy.world/api/v3";
+
+
+
 /* Thunk */
 
 export const searchCommunities = createAsyncThunk<
@@ -43,26 +51,25 @@ export const searchCommunities = createAsyncThunk<
     "communities/searchCommunities",
     async (searchInput: string, thunkAPI) => {
         try {
-            const searchEndpoint = `/communities/search.json?q=${searchInput}&limit=20`;
-            const response = await fetch(proxyUrl + baseUrl + searchEndpoint);
-            /* const response = await fetch(`${proxyUrl}/search?q=${searchInput}`); */
+            const searchEndpoint = `/search?q=${encodeURIComponent(searchInput)}&type_=Communities&limit=20`;
+            const response = await fetch(baseUrl + searchEndpoint);
             
             if (!response.ok) {
                 return thunkAPI.rejectWithValue(`Network error: ${response.status}`);
             }
 
-            const jsonResponse = await response.json();
-            const searchedCommunitiesArr: Community[] = jsonResponse.data.children.map((community: any) => {
+            const jsonResponse: ApiSearchResponse = await response.json();
+            const searchedCommunitiesArr: Community[] = jsonResponse.communities.map((apiCommunityView: ApiCommunityView) => {
                 return {
-                    name: community.data.display_name,
-                    id: community.data.id,
-                    subscribers: community.data.subscribers,
-                    url: community.data.url,
-                    headerTitle: community.data.header_title ?? null,
-                    iconImg: community.data.icon_img ?? null,
-                    headerImg: community.data.header_img ?? null,
-                    bannerImg: community.data.banner_img ?? null,
-                    publicDescription: community.data.public_description,
+                    name: apiCommunityView.community.name,
+                    id: apiCommunityView.community.id,
+                    subscribers: apiCommunityView.counts.subscribers,
+                    headerTitle: apiCommunityView.community.title,
+                    iconImg: apiCommunityView.community.icon ?? null,
+                    bannerImg: apiCommunityView.community.banner ?? null,
+                    description: apiCommunityView.community.description ?? null,
+                    isHidden: apiCommunityView.community.hidden,
+                    isBlocked: apiCommunityView.blocked
                 } as Community;
             });
             
@@ -95,7 +102,7 @@ export const communitiesSlice = createSlice({
                 state.searchedCommunities = updatedSearchedCommunities;
             }
         },
-        deleteCommunity: (state, action: PayloadAction<{ id: string }>) => {
+        deleteCommunity: (state, action: PayloadAction<{ id: number }>) => {
             const deletedCommunity = state.swiperCommunities.find(item => item.id === action.payload.id);
             const newArr = state.swiperCommunities.filter(item => item.id !== action.payload.id);
             state.swiperCommunities = newArr;

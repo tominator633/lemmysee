@@ -1,27 +1,9 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { ApiPostItem, ApiPostListResponse } from '../../types';
+import type { ApiPostItem, ApiPostListResponse } from './postsApiTypes';
 
 
 
 /* Types */
-
-/* export interface REDDIT {
-        id: string;
-        user: string;
-        created: number;
-        community: string;
-        title: string;
-        text: string;
-        imgSrc: string | null;
-        isVideo: boolean;
-        videoSrc: string | null;
-        videoDashUrl: string | null;
-        score: number;
-        thumbnail: string | null;
-        url: string;
-    isSelfpost: boolean;
-    permalink: string;
-} */
 
 export interface Post {
     id: string;
@@ -49,43 +31,11 @@ interface RootState {
     posts: PostsState;
 }
 
-/* interface PostPost {
-    data: {
-        id: string;
-        author: string;
-        created: number;
-        community: string;
-        title: string;
-        selftext: string;
-        thumbnail: string;
-        url: string;
-        is_video: boolean;
-        media?: {
-            post_video: {
-                fallback_url: string;
-                dash_url: string;
-            };
-        };
-        score: number;
-        is_self: boolean;
-        permalink: string;
-    };
-} */
-
-/* interface ApiResponse {
-    data: {
-        children: PostPost[];
-    };
-} */
 
 
-/* "https://lemmy.ml/api/v3/community?name=memes" */
-/* const proxyUrl = "https://corsproxy.io/?";
-const baseUrl = "https://www.post.com"; */
 
-
-const baseUrl = "https://lemmy.ml/api/v3";
-
+//const baseUrl = "https://lemmy.ml/api/v3";
+const baseUrl = "https://lemmy.world/api/v3";
 
 /* Thunk */
 export const loadPosts = createAsyncThunk<
@@ -96,7 +46,7 @@ export const loadPosts = createAsyncThunk<
     "posts/loadPosts",
     async (community: string = "memes", thunkAPI) => {
         try {
-            const searchEndpoint = `/post/list?community_name=${community}&sort=Hot&limit=15`;
+            const searchEndpoint = `/post/list?community_name=${encodeURIComponent(community)}&sort=Hot&limit=15`;
             const response = await fetch(baseUrl + searchEndpoint);
             
             if (!response.ok) {

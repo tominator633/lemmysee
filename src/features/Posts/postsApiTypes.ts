@@ -1,47 +1,4 @@
 
-/* export interface LemmySeePost {
-    id: number;
-    name: string;
-    timePublished: string;
-    url: string;
-
-
-    creatorId: number;
-    creatorName: string;
-    creatorAvatar: string;
-
-    communityId: number;
-    communityName: string;
-  
-    title: string;
-    text: string;
-    imgSrc: string | null;
-    isVideo: boolean;
-    videoSrc: string | null;
-    videoDashUrl: string | null;
-    score: number;
-    thumbnail: string | null;
-    isSelfpost: boolean;
-    permalink: string;
-} */
-/* thats the FULL format i will achieve after
-transformation of LemmyPost */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 export interface ApiPostListResponse {
   posts: ApiPostItem[];
   next_page?: string;
