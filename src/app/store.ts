@@ -1,13 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import postsReducer from '../features/Posts/postsSlice';
 import communitiesReducer from '../features/Communities/communitiesSlice';
-import postReducer from '../features/Comments/commentsSlice';
+import commentsReducer from '../features/Comments/commentsSlice';
 
 export const store = configureStore({
     reducer: {
         posts: postsReducer,
         communities: communitiesReducer,
-        post: postReducer,
+        comments: commentsReducer,
     }
 });
 

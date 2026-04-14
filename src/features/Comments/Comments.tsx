@@ -21,7 +21,7 @@ interface RouteParams extends Record<string, string | undefined> {
     postId: string
 }
 
-export default function PostDetailWindow (): React.ReactElement {
+export default function Comments (): React.ReactElement {
 
     const [isVisible, setIsVisible] = useState<boolean>(true);
     const {postId} = useParams<RouteParams>();
@@ -55,8 +55,12 @@ export default function PostDetailWindow (): React.ReactElement {
     if (!currentPost) {
         return (
             <AnimatePresence>
-                <motion.div className={styles.windowBarrier} role="presentation">
-                    <motion.section className={styles.postDetailWindow} role="dialog" aria-label="post window with comments" aria-modal="true" tabIndex={-1}>
+                <motion.div className={styles.windowBarrier} 
+                            role="presentation">
+                    <motion.section className={styles.postDetailWindow} 
+                                    role="dialog" aria-label="post window with comments" 
+                                    aria-modal="true" 
+                                    tabIndex={-1}>
                         <Loading loadingText="Loading post details..." />
                     </motion.section>
                 </motion.div>

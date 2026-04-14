@@ -30,7 +30,7 @@ export interface CurrentPost {
     title: string;
 }
 
-export interface PostState {
+export interface CommentsState {
     currentPost: CurrentPost | null;
     comments: Comment[];
     isCommentsLoading: boolean;
@@ -44,7 +44,7 @@ export const loadComments = createAsyncThunk<
     string,                  // arg type (permalink)
     { rejectValue: string }  // thunkAPI config
 >(
-    "post/loadComments",
+    "comments/loadComments",
     async (permalink, thunkAPI) => {
         try {
             const searchEndpoint = `/${permalink}.json`;
@@ -92,15 +92,15 @@ export const loadComments = createAsyncThunk<
 
 /* Slice */
 
-const initialState: PostState = {
+const initialState: CommentsState = {
     currentPost: null,
     comments: [],
     isCommentsLoading: false,
     hasCommentsError: false,
 };
 
-export const postSlice = createSlice({
-    name: "post",
+export const commentsSlice = createSlice({
+    name: "comments",
     initialState,
     reducers: {
         setCurrentPost: (state, action: PayloadAction<CurrentPost | null>) => {
@@ -134,12 +134,12 @@ export const postSlice = createSlice({
  * If you have a RootState type in your store, replace the inline type below with it:
  *   import type { RootState } from '../../app/store';
  */
-export type RootState = { post: PostState };
+export type RootState = { comments: CommentsState };
 
-export const selectCurrentPost = (state: RootState): CurrentPost | null => state.post.currentPost;
-export const selectComments = (state: RootState): Comment[] => state.post.comments;
-export const selectIsCommentsLoading = (state: RootState): boolean => state.post.isCommentsLoading;
-export const selectHasCommentsError = (state: RootState): boolean => state.post.hasCommentsError;
+export const selectCurrentPost = (state: RootState): CurrentPost | null => state.comments.currentPost;
+export const selectComments = (state: RootState): Comment[] => state.comments.comments;
+export const selectIsCommentsLoading = (state: RootState): boolean => state.comments.isCommentsLoading;
+export const selectHasCommentsError = (state: RootState): boolean => state.comments.hasCommentsError;
 
-export const { setCurrentPost, emptyComments } = postSlice.actions;
-export default postSlice.reducer;
+export const { setCurrentPost, emptyComments } = commentsSlice.actions;
+export default commentsSlice.reducer;
