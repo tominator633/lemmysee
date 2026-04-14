@@ -6,12 +6,15 @@ import Post from "../Post/Post";
 import { loadPosts, selectResultPosts, selectIsLoading, selectHasError, filterPosts } from "./postsSlice";
 import Loading from "../../components/Loading/Loading";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
+import { selectSwiperCommunities, type Community } from "../Communities/communitiesSlice";
+
 
 export default function Posts(): React.ReactElement {
     const dispatch = useAppDispatch();
     const resultPosts = useAppSelector(selectResultPosts);
     const isLoading = useAppSelector(selectIsLoading);
     const hasError = useAppSelector(selectHasError);
+    const swiperCommunities = useAppSelector(selectSwiperCommunities);
     const { communityName } = useParams<{ communityName?: string }>();
     const [searchParams] = useSearchParams();
     const title = searchParams.get("title");
@@ -20,7 +23,10 @@ export default function Posts(): React.ReactElement {
 
     useEffect(() => {
         if (communityName) {
-            dispatch(loadPosts(communityName));
+            const targetCommunity: Community | undefined = swiperCommunities.find(community => community.name === communityName);
+            if (targetCommunity) {
+                dispatch(loadPosts(targetCommunity.id));
+            }
         }
     }, [dispatch, communityName]);
 

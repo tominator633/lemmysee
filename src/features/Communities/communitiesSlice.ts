@@ -7,7 +7,7 @@ import type { ApiSearchResponse, ApiCommunityView, LemmyApiCommunity } from "./c
 /* Types */
 
 export interface Community {
-  id: number;
+  id: string;
   name: string;
   subscribers: number;
   headerTitle: string;
@@ -62,7 +62,7 @@ export const searchCommunities = createAsyncThunk<
             const searchedCommunitiesArr: Community[] = jsonResponse.communities.map((apiCommunityView: ApiCommunityView) => {
                 return {
                     name: apiCommunityView.community.name,
-                    id: apiCommunityView.community.id,
+                    id: String(apiCommunityView.community.id),
                     subscribers: apiCommunityView.counts.subscribers,
                     headerTitle: apiCommunityView.community.title,
                     iconImg: apiCommunityView.community.icon ?? null,
