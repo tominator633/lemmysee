@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { initialCommunitiesSelection } from "../../utils/utils";
-import type { ApiSearchResponse, ApiCommunityView, LemmyApiCommunity } from "./communitiesApiTypes";
+import type { ApiSearchResponse, ApiCommunityView } from "./communitiesApiTypes";
 
 
 
@@ -51,7 +51,7 @@ export const searchCommunities = createAsyncThunk<
     "communities/searchCommunities",
     async (searchInput: string, thunkAPI) => {
         try {
-            const searchEndpoint = `/search?q=${encodeURIComponent(searchInput)}&type_=Communities&limit=20`;
+            const searchEndpoint = `/search?q=${encodeURIComponent(searchInput)}&type_=Communities&limit=40`;
             const response = await fetch(baseUrl + searchEndpoint);
             
             if (!response.ok) {

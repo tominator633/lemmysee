@@ -1,14 +1,14 @@
 import React , { useEffect, useRef } from "react";
 import styles from "./Post.module.css";
 import { Link } from "react-router-dom";
-import { setCurrentPost, loadComments } from "./postSlice";
-import { savePost, unsavePost, selectSavedPosts } from "../Posts/postsSlice";
+import { setCurrentPost, loadComments } from "../../features/Comments/commentsSlice";
+import { savePost, unsavePost, selectSavedPosts } from "../../features/Posts/postsSlice";
 import { useAppDispatch,  useAppSelector } from "../../app/reduxHooks";
 import {  epochToAgo, formatNumberWithSpaces } from "../../utils/utils";
 import { MediaPlayer } from 'dashjs';
 import MarkdownIt from 'markdown-it';
 import DOMPurify from 'dompurify'; 
-import { type Post } from "../Posts/postsSlice";
+import { type Post } from "../../features/Posts/postsSlice";
 const md = new MarkdownIt(); 
 
 interface PostProps {

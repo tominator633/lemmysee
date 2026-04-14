@@ -1,14 +1,14 @@
 import React, {useState, useEffect} from "react";
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from "./PostDetailWindow.module.css";
-import Comment from "../Comment/Comment";
+import Comment from "../../components/Comment/Comment";
 import { useParams, useNavigate } from "react-router-dom";
-import { selectCurrentPost,loadComments, selectComments, emptyComments, selectIsCommentsLoading, selectHasCommentsError } from "../../features/Post/postSlice";
+import { selectCurrentPost,loadComments, selectComments, emptyComments, selectIsCommentsLoading, selectHasCommentsError } from "./commentsSlice";
 import { useAppDispatch, useAppSelector } from "../../app/reduxHooks";
-import Loading from "../Loading/Loading";
-import ErrorMessage from "../ErrorMessage/ErrorMessage";
+import Loading from "../../components/Loading/Loading";
+import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import { epochToAgo, formatNumberWithSpaces} from "../../utils/utils";
-import {windowBarrierVar, postDetailWindowVar, commentVar} from "./postDetailWindowFMVariants";
+import {windowBarrierVar, postDetailWindowVar, commentVar} from "./commentsFMVariants";
 
 
 

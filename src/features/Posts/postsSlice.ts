@@ -46,7 +46,7 @@ export const loadPosts = createAsyncThunk<
     "posts/loadPosts",
     async (communityId: string, thunkAPI) => {
         try {
-            const searchEndpoint = `/post/list?community_id=${encodeURIComponent(communityId)}&sort=Hot&limit=15`;
+            const searchEndpoint = `/post/list?community_id=${encodeURIComponent(communityId)}&sort=Hot&limit=40`;
             const response = await fetch(baseUrl + searchEndpoint);
             
             if (!response.ok) {

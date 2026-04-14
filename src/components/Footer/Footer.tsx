@@ -9,7 +9,7 @@ export default function Footer(): React.ReactElement {
                     <img src="img/TR-logo-pink.png" alt="logo of the author" />
                 </figure>
                 <small className={styles.copyright}>
-                    <time dateTime="2025">2025 </time>
+                    <time dateTime="2026">2026 </time>
                     <span>&copy;</span> Tomas Ruzicka. <br />
                     All rights reserved.
                 </small>
@@ -35,7 +35,7 @@ export default function Footer(): React.ReactElement {
                 </address>
             </section>
             <small id={styles.mobileCopyright}>
-                <time dateTime="2025">2025 </time>
+                <time dateTime="2026">2026 </time>
                 <span>&copy;</span> Tomas Ruzicka. All rights reserved.
             </small>
         </footer>

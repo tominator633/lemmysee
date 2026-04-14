@@ -3,7 +3,7 @@ import styles from "./ReplyComment.module.css";
 import { epochToAgo, formatNumberWithSpaces } from "../../utils/utils";
 import MarkdownIt from "markdown-it";
 import DOMPurify from "dompurify";
-import type { Reply } from "../../features/Post/postSlice";
+import type { Reply } from "../../features/Comments/commentsSlice";
 
 const md = new MarkdownIt();
 

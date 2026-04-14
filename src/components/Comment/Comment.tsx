@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {replyCommentVar} from "./commentFMVariants";
 import MarkdownIt from 'markdown-it';
 import DOMPurify from 'dompurify';
-import type { Comment, Reply } from "../../features/Post/postSlice";
+import type { Comment, Reply } from "../../features/Comments/commentsSlice";
 
 const md = new MarkdownIt();
 

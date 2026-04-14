@@ -71,7 +71,7 @@ export default function CommunitiesSwiper({ setSearchBtn, setSearchInput }: Comm
                 aria-label="go left on the swiper"
             />
 
-            <SwiperSlide 
+         {/*    <SwiperSlide 
                 className={styles.swiperSlide}
                 aria-label="popular posts"
             >
@@ -91,7 +91,7 @@ export default function CommunitiesSwiper({ setSearchBtn, setSearchInput }: Comm
                         <h3>memes</h3>
                     </NavLink>
                 </div>
-            </SwiperSlide>
+            </SwiperSlide> */}
 
             {swiperCommunities.map((community) => (
                 <SwiperSlide 
