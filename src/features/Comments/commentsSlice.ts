@@ -1,26 +1,24 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import type{  ApiCommentListResponse, ApiCommentView } from "./commentsApiTypes";
 
-const proxyUrl = "https://corsproxy.io/?";
-const baseUrl = "https://api.post.com";
+//const proxyUrl = "https://corsproxy.io/?";
+
 
 /* Types */
 
-export interface Reply {
-    rAuthor: string | null;
-    rBody: string | null;
-    rCreated: number | null;
-    rScore: number | null;
-    rKind: string | null;
-}
-
 export interface Comment {
+    id: string;
+    parentId: number | null;
     author: string | null;
-    body: string | null;
+    content: string | null;
     created: number | null;
     score: number | null;
     kind: string | null;
-    replies: Reply[];
+    path: number;
+    postId: string;
+    replies: Comment[];
 }
+
 
 export interface CurrentPost {
     permalink: string;
@@ -37,50 +35,65 @@ export interface CommentsState {
     hasCommentsError: boolean;
 }
 
-/* Thunk */
+function extractParentId(path: string): number | null {
+  const parts = path.split(".");
+  if (parts.length <= 2) return null;
+  return Number(parts[parts.length - 2]);
+}
 
+export function mapComments(api: ApiCommentView[]): Comment[] {
+  return api.map((item) => ({
+    id: item.comment.id,
+    parentId: extractParentId(item.comment.path),
+
+    content: item.comment.content,
+
+    author: item.creator.display_name ?? item.creator.name,
+    authorAvatar: item.creator.avatar ?? null,
+
+    score: item.counts.score,
+    createdAt: item.comment.published,
+
+    children: [], // filled later
+  }));
+}
+
+
+
+/* Thunk */
+const baseUrl = "https://lemmy.world/api/v3";
 export const loadComments = createAsyncThunk<
     Comment[],           // return type
     string,                  // arg type (permalink)
     { rejectValue: string }  // thunkAPI config
 >(
     "comments/loadComments",
-    async (permalink, thunkAPI) => {
+    async (postId, thunkAPI) => {
         try {
-            const searchEndpoint = `/${permalink}.json`;
-            const response = await fetch(proxyUrl + baseUrl + searchEndpoint);
+            const searchEndpoint = `/comment/list?post_id=${postId}&sort=Hot&limit=3`;
+            
+            const response = await fetch(baseUrl + searchEndpoint);
 
             if (!response.ok) {
                 return thunkAPI.rejectWithValue(`Network error: ${response.status}`);
             }
 
-            const jsonResponse = await response.json();
+            const jsonResponse: ApiCommentListResponse = await response.json();
 
-            const commentsArr: Comment[] = (jsonResponse?.[1]?.data?.children || [])
-                .map((post: any) => {
-                    const repliesRaw = post?.data?.replies;
-                    const replies: Reply[] = Array.isArray(repliesRaw?.data?.children)
-                        ? repliesRaw.data.children
-                            .map((reply: any) => ({
-                                rAuthor: reply?.data?.author ?? null,
-                                rBody: reply?.data?.body ?? null,
-                                rCreated: reply?.data?.created ?? null,
-                                rScore: reply?.data?.score ?? null,
-                                rKind: reply?.kind ?? null,
-                            }))
-                            .filter((r: Reply) => r.rKind === "t1")
-                        : [];
+            const commentsArr: Comment[] = jsonResponse.comments.map((apiCommentView: ApiCommentView) => {
+                return {
+                    id: String(apiCommentView.comment.id),
+                    parentId: extractParentId(apiCommentView.comment.path),
+                    author: apiCommentView.creator.name,
+                    content: apiCommentView.comment.content,
+                    created: apiCommentView.comment.published,
+                    score: apiCommentView.counts.score,
+                    path: apiCommentView.comment.path,
+                    postId: String(apiCommentView.comment.post_id),
+                    replies: [],
+                } as Comment
 
-                    return {
-                        author: post?.data?.author ?? null,
-                        body: post?.data?.body ?? null,
-                        created: post?.data?.created ?? null,
-                        score: post?.data?.score ?? null,
-                        kind: post?.kind ?? null,
-                        replies,
-                    } as Comment;
-                })
-                .filter((post: Comment) => post.kind === "t1");
+            });
 
             // console.log(commentsArr);
             return commentsArr;

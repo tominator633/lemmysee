@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import { motion, AnimatePresence } from 'framer-motion';
-import styles from "./PostDetailWindow.module.css";
+import styles from "./Comments.module.css";
 import Comment from "../../components/Comment/Comment";
 import { useParams, useNavigate } from "react-router-dom";
 import { selectCurrentPost,loadComments, selectComments, emptyComments, selectIsCommentsLoading, selectHasCommentsError } from "./commentsSlice";
