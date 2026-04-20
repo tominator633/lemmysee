@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./ReplyComment.module.css";
-import { epochToAgo, formatNumberWithSpaces } from "../../utils/utils";
+import { isoToAgo, formatNumberWithSpaces } from "../../utils/utils";
 import MarkdownIt from "markdown-it";
 import DOMPurify from "dompurify";
 import type { Reply } from "../../features/Comments/commentsSlice";
@@ -34,9 +34,9 @@ export default function ReplyComment({ replyContent }: ReplyCommentProps): React
                 </a>
                 <time
                     className={styles.replyTimePosted}
-                    aria-label={`Posted ${epochToAgo(replyContent.rCreated ?? 0)}`}
+                    aria-label={`Posted ${isoToAgo(replyContent.rCreated ?? 0)}`}
                 >
-                    {epochToAgo(replyContent.rCreated ?? 0)}
+                    {isoToAgo(replyContent.rCreated ?? 0)}
                 </time>
             </header>
             <section className={styles.commentContent} aria-live="polite" aria-atomic="true">

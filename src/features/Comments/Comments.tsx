@@ -7,7 +7,7 @@ import { selectCurrentPost,loadComments, selectComments, emptyComments, selectIs
 import { useAppDispatch, useAppSelector } from "../../app/reduxHooks";
 import Loading from "../../components/Loading/Loading";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
-import { epochToAgo, formatNumberWithSpaces} from "../../utils/utils";
+import { isoToAgo, formatNumberWithSpaces} from "../../utils/utils";
 import {windowBarrierVar, postDetailWindowVar, commentVar} from "./commentsFMVariants";
 
 
@@ -115,10 +115,10 @@ export default function Comments (): React.ReactElement {
                         <a className={styles.postUser}
                             target="_blank"
                             rel="noreferrer noopener" 
-                            href={`https://www.post.com/user/${currentPost.user}/`}
-                            aria-label={`View ${currentPost.user}'s profile on Post in a new tab`}>{currentPost.user}</a>
+                            href={`https://www.post.com/user/${currentPost.creator}/`}
+                            aria-label={`View ${currentPost.creator}'s profile on Post in a new tab`}>{currentPost.creator}</a>
                         <p className={styles.postTimePosted}
-                            aria-label={`Posted ${epochToAgo(currentPost.created)}`}>{epochToAgo(currentPost.created)}</p>
+                            aria-label={`Posted ${isoToAgo(currentPost.timePublished)}`}>{isoToAgo(currentPost.timePublished)}</p>
 
                     </div>
                     <div className={styles.postTitle} 

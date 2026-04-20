@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./Comment.module.css";
 import ReplyComment from "../ReplyComment/ReplyComment";
-import { formatNumberWithSpaces} from "../../utils/utils";
+import { isoToAgo, formatNumberWithSpaces} from "../../utils/utils";
 import { motion, AnimatePresence } from 'framer-motion';
 import {replyCommentVar} from "./commentFMVariants";
 import MarkdownIt from 'markdown-it';
@@ -42,7 +42,7 @@ export default function Comment ({ content }: CommentProps): React.ReactElement 
                     href={`https://www.post.com/user/${content.author}/`}
                     aria-label={`Visit profile of ${content.author}`} >{content.author}</a>
                 <time className={styles.commentTimePosted}
-                    aria-label={`Posted ${content.created}`}>{content.created}</time>
+                    aria-label={`Posted ${isoToAgo(content.timePublished)}`}>{isoToAgo(content.timePublished)}</time>
             </header>
             <section className={styles.commentContent}
                     aria-live="polite" 

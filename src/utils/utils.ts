@@ -1,10 +1,15 @@
 import type { Community } from "../features/Communities/communitiesSlice";
 
 
-export const epochToAgo = (epochTime: number): string => {
+export const isoToAgo = (isoString: string): string => {
     const currentTimeMs = Date.now();
-    const epochTimeMs = epochTime * 1000;
-    const timeDifferenceMs = currentTimeMs - epochTimeMs;
+    const isoTimeMs = new Date(isoString).getTime();
+
+    if (isNaN(isoTimeMs)) {
+        throw new Error("Invalid ISO date string");
+    }
+
+    const timeDifferenceMs = currentTimeMs - isoTimeMs;
     const timeDifferenceS = Math.floor(timeDifferenceMs / 1000);
 
     const YEAR_IN_SECONDS = 31556926;

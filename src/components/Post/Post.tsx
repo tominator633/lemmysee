@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { setCurrentPost, loadComments } from "../../features/Comments/commentsSlice";
 import { savePost, unsavePost, selectSavedPosts } from "../../features/Posts/postsSlice";
 import { useAppDispatch,  useAppSelector } from "../../app/reduxHooks";
-import {  epochToAgo, formatNumberWithSpaces } from "../../utils/utils";
+import {  isoToAgo, formatNumberWithSpaces } from "../../utils/utils";
 import { MediaPlayer } from 'dashjs';
 import MarkdownIt from 'markdown-it';
 import DOMPurify from 'dompurify'; 
@@ -78,7 +78,7 @@ export default function Post ({ content }: PostProps): React.ReactElement {
                         rel="noreferrer noopener"
                         href={`https://www.post.com/user/${content.creator}/`}
                         aria-label={`The link to user profile of ${content.creator}`}>{content.creator}</a>
-                    <time className={styles.postTimePosted}>{/* epochToAgo */content.id}</time>
+                    <time className={styles.postTimePosted}>{isoToAgo(content.timePublished)}</time>
                 </div>
 
                 <div className={styles.postContent}
