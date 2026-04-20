@@ -38,7 +38,7 @@ export default function Comments (): React.ReactElement {
 
     const handleErrorCommentsReloadBtn = (): void => {
         if (currentPost) {
-            dispatch(loadComments(currentPost.permalink));
+            dispatch(loadComments(currentPost.id));
         }
     }
 

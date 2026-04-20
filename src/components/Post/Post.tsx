@@ -15,19 +15,20 @@ interface PostProps {
     content: Post;
 }
 
-export default function PostComponent({ content }: PostProps): React.ReactElement {
+export default function Post ({ content }: PostProps): React.ReactElement {
+
     const dispatch = useAppDispatch();
     const savedPosts = useAppSelector(selectSavedPosts);
     const videoRef = useRef<HTMLVideoElement | null>(null);
+
+
     const handleDetailsClick = (): void => {
         dispatch(setCurrentPost(content));
-        //dispatch(loadComments(content.permalink));
+        dispatch(loadComments(content.id));
     };
-
     const handleSavePostBtnClick = (): void => {
         dispatch(savePost(content));
     };
-
     const handleUnsavePostBtnClick = (): void => {
         dispatch(unsavePost({ id: content.id }));
     };

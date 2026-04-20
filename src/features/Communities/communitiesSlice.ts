@@ -102,7 +102,7 @@ export const communitiesSlice = createSlice({
                 state.searchedCommunities = updatedSearchedCommunities;
             }
         },
-        deleteCommunity: (state, action: PayloadAction<{ id: number }>) => {
+        deleteCommunity: (state, action: PayloadAction<{ id: string }>) => {
             const deletedCommunity = state.swiperCommunities.find(item => item.id === action.payload.id);
             const newArr = state.swiperCommunities.filter(item => item.id !== action.payload.id);
             state.swiperCommunities = newArr;

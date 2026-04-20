@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type{  ApiCommentListResponse, ApiCommentView } from "./commentsApiTypes";
-
+import { type Post } from "../Posts/postsSlice";
 //const proxyUrl = "https://corsproxy.io/?";
 
 
@@ -11,25 +11,16 @@ export interface Comment {
     parentId: number | null;
     author: string | null;
     content: string | null;
-    created: number | null;
+    created: string | null;
     score: number | null;
-    kind: string | null;
-    path: number;
+    path: string;
     postId: string;
     replies: Comment[];
 }
 
 
-export interface CurrentPost {
-    permalink: string;
-    score: number;
-    user: string;
-    created: number;
-    title: string;
-}
-
 export interface CommentsState {
-    currentPost: CurrentPost | null;
+    currentPost: Post | null;
     comments: Comment[];
     isCommentsLoading: boolean;
     hasCommentsError: boolean;
@@ -41,22 +32,7 @@ function extractParentId(path: string): number | null {
   return Number(parts[parts.length - 2]);
 }
 
-export function mapComments(api: ApiCommentView[]): Comment[] {
-  return api.map((item) => ({
-    id: item.comment.id,
-    parentId: extractParentId(item.comment.path),
 
-    content: item.comment.content,
-
-    author: item.creator.display_name ?? item.creator.name,
-    authorAvatar: item.creator.avatar ?? null,
-
-    score: item.counts.score,
-    createdAt: item.comment.published,
-
-    children: [], // filled later
-  }));
-}
 
 
 
@@ -70,16 +46,12 @@ export const loadComments = createAsyncThunk<
     "comments/loadComments",
     async (postId, thunkAPI) => {
         try {
-            const searchEndpoint = `/comment/list?post_id=${postId}&sort=Hot&limit=3`;
-            
+            const searchEndpoint = `/comment/list?post_id=${postId}&sort=Hot&limit=50`;
             const response = await fetch(baseUrl + searchEndpoint);
-
             if (!response.ok) {
                 return thunkAPI.rejectWithValue(`Network error: ${response.status}`);
             }
-
             const jsonResponse: ApiCommentListResponse = await response.json();
-
             const commentsArr: Comment[] = jsonResponse.comments.map((apiCommentView: ApiCommentView) => {
                 return {
                     id: String(apiCommentView.comment.id),
@@ -95,7 +67,7 @@ export const loadComments = createAsyncThunk<
 
             });
 
-            // console.log(commentsArr);
+             console.log(commentsArr);
             return commentsArr;
         } catch (error: any) {
             return thunkAPI.rejectWithValue(error?.message ?? "Unknown error");
@@ -116,7 +88,7 @@ export const commentsSlice = createSlice({
     name: "comments",
     initialState,
     reducers: {
-        setCurrentPost: (state, action: PayloadAction<CurrentPost | null>) => {
+        setCurrentPost: (state, action: PayloadAction<Post | null>) => {
             state.currentPost = action.payload;
         },
         emptyComments: (state) => {
@@ -149,7 +121,7 @@ export const commentsSlice = createSlice({
  */
 export type RootState = { comments: CommentsState };
 
-export const selectCurrentPost = (state: RootState): CurrentPost | null => state.comments.currentPost;
+export const selectCurrentPost = (state: RootState): Post | null => state.comments.currentPost;
 export const selectComments = (state: RootState): Comment[] => state.comments.comments;
 export const selectIsCommentsLoading = (state: RootState): boolean => state.comments.isCommentsLoading;
 export const selectHasCommentsError = (state: RootState): boolean => state.comments.hasCommentsError;

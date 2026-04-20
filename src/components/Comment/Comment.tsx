@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import styles from "./Comment.module.css";
 import ReplyComment from "../ReplyComment/ReplyComment";
-import { epochToAgo, formatNumberWithSpaces} from "../../utils/utils";
+import { formatNumberWithSpaces} from "../../utils/utils";
 import { motion, AnimatePresence } from 'framer-motion';
 import {replyCommentVar} from "./commentFMVariants";
 import MarkdownIt from 'markdown-it';
 import DOMPurify from 'dompurify';
-import type { Comment, Reply } from "../../features/Comments/commentsSlice";
+import type { Comment } from "../../features/Comments/commentsSlice";
 
 const md = new MarkdownIt();
 
@@ -24,8 +24,8 @@ export default function Comment ({ content }: CommentProps): React.ReactElement 
 
     // Sanitize and convert selftext markdown to HTML
     const renderSelfText = (): { __html: string } | undefined => {
-        if (content.body) {
-            const sanitizedHtml = DOMPurify.sanitize(md.render(content.body));
+        if (content.content) {
+            const sanitizedHtml = DOMPurify.sanitize(md.render(content.content));
             return { __html: sanitizedHtml };
         }
         return undefined;
@@ -42,7 +42,7 @@ export default function Comment ({ content }: CommentProps): React.ReactElement 
                     href={`https://www.post.com/user/${content.author}/`}
                     aria-label={`Visit profile of ${content.author}`} >{content.author}</a>
                 <time className={styles.commentTimePosted}
-                    aria-label={`Posted ${epochToAgo(content.created || 0)}`}>{epochToAgo(content.created || 0)}</time>
+                    aria-label={`Posted ${content.created}`}>{content.created}</time>
             </header>
             <section className={styles.commentContent}
                     aria-live="polite" 
@@ -76,7 +76,7 @@ export default function Comment ({ content }: CommentProps): React.ReactElement 
                 {repliesButton && (
                     <section id="replies-section" 
                             aria-label="Replies">
-                        {content.replies.map((reply: Reply, index: number) => (
+                        {content.replies.map((reply: Comment, index: number) => (
                             <motion.div
                                 key={index}
                                 variants={replyCommentVar}

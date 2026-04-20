@@ -7,12 +7,9 @@ export type SubscriptionStatus =
 
 
 
-
-
 export interface ApiCommentListResponse {
   comments: ApiCommentView[];
 }
-
 export interface ApiCommentView {
   comment: ApiComment;
   creator: ApiPerson;
@@ -29,7 +26,6 @@ export interface ApiCommentView {
   saved: boolean;
   creator_blocked: boolean;
 }
-
 export interface ApiComment {
   id: number;
   creator_id: number;
@@ -44,7 +40,7 @@ export interface ApiComment {
   ap_id: string;
 
   local: boolean;
-  path: string; // used for threading
+  path: string;
 
   distinguished: boolean;
   language_id: number;
