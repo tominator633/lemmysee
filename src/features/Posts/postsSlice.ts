@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { ApiPostItem, ApiPostListResponse } from './postsApiTypes';
-
+import type { RootState } from '../../app/store';
 
 
 /* Types */
@@ -25,10 +25,6 @@ export interface PostsState {
     isLoading: boolean;
     hasError: boolean;
     savedPosts: Post[];
-}
-
-interface RootState {
-    posts: PostsState;
 }
 
 

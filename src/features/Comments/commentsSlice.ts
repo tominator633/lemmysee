@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type{  ApiCommentListResponse, ApiCommentView } from "./commentsApiTypes";
 import { type Post } from "../Posts/postsSlice";
+import type { RootState } from '../../app/store';
 //const proxyUrl = "https://corsproxy.io/?";
 
 
@@ -115,11 +116,8 @@ export const commentsSlice = createSlice({
 
 /* Selectors */
 
-/**
- * If you have a RootState type in your store, replace the inline type below with it:
- *   import type { RootState } from '../../app/store';
- */
-export type RootState = { comments: CommentsState };
+
+
 
 export const selectCurrentPost = (state: RootState): Post | null => state.comments.currentPost;
 export const selectComments = (state: RootState): Comment[] => state.comments.comments;

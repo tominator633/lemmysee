@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { initialCommunitiesSelection } from "../../utils/utils";
 import type { ApiSearchResponse, ApiCommunityView } from "./communitiesApiTypes";
-
+import type { RootState } from '../../app/store';
 
 
 /* Types */
@@ -26,19 +26,11 @@ export interface CommunitiesState {
     currentCommunity: Community | Record<string, never>;
 }
 
-interface RootState {
-    communities: CommunitiesState;
-}
-
-
-
-
 
 
 
 //const baseUrl = "https://lemmy.ml/api/v3";
 const baseUrl = "https://lemmy.world/api/v3";
-
 
 
 /* Thunk */
