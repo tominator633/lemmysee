@@ -86,10 +86,10 @@ export default function Post ({ content }: PostProps): React.ReactElement {
                     <h4 className={styles.postTitle}>{content.title}</h4>
                     
                     {/* content has selftext */}
-                    {content.text && (
+                    {content.text && renderSelfText() && (
                         <p  className={styles.selftextContent}
-                            dangerouslySetInnerHTML={renderSelfText()}  // Use the renderSelfText method
-                            aria-label={renderSelfText()}
+                            dangerouslySetInnerHTML={renderSelfText() as { __html: string }}  // Use the renderSelfText method
+                            aria-label={content.text}
                         />
                     )}
 
