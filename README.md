@@ -21,7 +21,6 @@ The app is structured as follows:
 Communities displayed in the **SWIPER** can be changed depending on the user's interests. Clicking the **_COMMUNITIES MANAGER BUTTON_** launches a page with 2 sections:
 
 #### 1. My Communities selection
-![My communities selection structure](./public/readme-img/my-communities-selection.png)
 
 * renders community boxes
 * each box includes a community name, an icon (if available), a banner (if available) and 2 buttons
@@ -31,7 +30,6 @@ Communities displayed in the **SWIPER** can be changed depending on the user's i
 * **_SWIPER communities buttons_** in the header of the app always correspond to the communities in the **My Communities selection**.
 
 #### 2. Explore communities
-![Explore communities structure](./public/readme-img/explore-communities.png)
 
 * This section has a **_search input field_** to search communities in the Lemmy network based on one or more given keywords
 * A rounded **_search submit button_** with a magnifier icon only appears when the **_search input field_** is not empty
@@ -44,8 +42,7 @@ Posts for various topics show up after clicking on different communities on the 
 
 #### Post
 
-Each Post is composed of 3 columns as follows:
-![post structure](./public/readme-img/post.png)
+Each Post is composed of 3 columns.
 
 * The left column shows the number of votes it received from registered users on the Lemmy network.
 * The middle column displays: 
