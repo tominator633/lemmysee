@@ -1,102 +1,93 @@
-# Reddit.to.read
+# Lemmysee
 
-[Reddit.to.read](https://reddittoread.netlify.app) is a web-based application allowing user to browse posts based on subreddits from Reddit social network without having to create a Reddit account.
+[Lemmysee](https://lemmysee.netlify.app) is a web-based application allowing users to browse posts based on communities from the Lemmy network.
 
->[Reddit](https://www.reddit.com/) is a social media platform where users can share, discuss, and vote on content in the form of posts, links, and comments. It’s organized into subreddits, which are individual communities focused on specific topics, such as news, hobbies, entertainment, or niche interests. Each subreddit has its own rules and moderators, allowing for diverse conversations and content tailored to its subject matter.
+>[Lemmy](https://join-lemmy.org/) is a federated, open-source social media platform where users can share, discuss, and vote on content in the form of posts, links, and comments. It’s organized into communities, which are individual hubs focused on specific topics, such as news, hobbies, entertainment, or niche interests. Each community has its own rules and moderators, allowing for diverse conversations and content tailored to its subject matter.
 
-I built this app as a required project at [Codecademy](https://www.codecademy.com/) learning platform. My goal was to create a cleaner version of Reddit, where the user can only READ the content based on their preferred subreddits.
-Therefore, [Reddit JSON API](https://github.com/reddit-archive/reddit/wiki/json)
-has been used to obtain data and only GET requests are executed when using Reddit.to.read app.
-
-
-
+I built this app as a required project at the [Codecademy](https://www.codecademy.com/) learning platform. My goal was to create a cleaner version of Lemmy, where the user can only READ the content based on their preferred communities.
+Therefore, the [Lemmy API](https://join-lemmy.org/api/interfaces/LemmyApi.html) has been used to obtain data, and only GET requests are executed when using the Lemmysee app.
 
 ## Initial setup
-Reddit.to.read can be found under this [LINK](https://reddittoread.netlify.app).
-After opening the link , the application is ready to be used. The feed of popular reddits is displayed initially.
+Lemmysee can be found under this [LINK](https://lemmysee.netlify.app).
+After opening the link, the application is ready to be used. The feed of popular posts is displayed initially.
 
 ## App layout
 The app is structured as follows:
-![Reddit.to.read app structure](./public/readme-img/reddit-app-structure.png)
+![Lemmysee app structure](./public/readme-img/app-structure.png)
 
 ## Features
 
-### Subreddits management
-Subreddits displayed in **SWIPER** can be changed depending on user`s interests. Clicking **_SUBREDDITS MANAGER BUTTON_** launches a page with 2 sections:
+### Communities management
+Communities displayed in the **SWIPER** can be changed depending on the user's interests. Clicking the **_COMMUNITIES MANAGER BUTTON_** launches a page with 2 sections:
 
-#### 1. My Subreddits selection
-![My subreddits selection structure](./public/readme-img/my-subreddits-selection.png)
+#### 1. My Communities selection
+![My communities selection structure](./public/readme-img/my-communities-selection.png)
 
-* renders subreddit boxes
-* each box includes a subreddit name, an icon (if available), a banner (if available) and 2 buttons
-* the left **_info button_** displays a window with more details about a subreddit, such as its description or the number of subscribers
-* the right **_delete button_** removes the subreddit from **My Subreddits selection**, subreddit is than displaced to **Explore subreddits** page section
-* 7 subreddits are initially preselected as default and can be removed: _pics_, _funny_, _AskReddit_, _gaming_, _worldnews_, _aww_, _Music_.
-* **_SWIPER subreddits buttons_** in the header of the app always correspond to the subreddits in **My Subreddits selection**.
+* renders community boxes
+* each box includes a community name, an icon (if available), a banner (if available) and 2 buttons
+* the left **_info button_** displays a window with more details about a community, such as its description or the number of subscribers
+* the right **_delete button_** removes the community from the **My Communities selection**, and the community is then displaced to the **Explore communities** page section
+* 7 communities are initially preselected as default and can be removed
+* **_SWIPER communities buttons_** in the header of the app always correspond to the communities in the **My Communities selection**.
 
-#### 2. Explore subreddits
-![Explore subreddits structure](./public/readme-img/explore-subreddits.png)
+#### 2. Explore communities
+![Explore communities structure](./public/readme-img/explore-communities.png)
 
-* This section has a **_search input field_** to search subreddits in Reddit database based on one or more given keywords
-* A rounded **_search submit button_** with magnifier icon only appears when the **_search input field_** is not empty
-* After inputting a search query and clicking the **_search submit button_**, a request for subreddits is sent and results appear below.
-* Subreddit boxes in search results can be added to **My Subreddits selection** by clicking their **_plus button_**, located on the same place as delete button of already added subreddits
+* This section has a **_search input field_** to search communities in the Lemmy network based on one or more given keywords
+* A rounded **_search submit button_** with a magnifier icon only appears when the **_search input field_** is not empty
+* After inputting a search query and clicking the **_search submit button_**, a request for communities is sent and results appear below.
+* Community boxes in the search results can be added to the **My Communities selection** by clicking their **_plus button_**, located in the same place as the delete button of already added communities.
 
-### Browsing reddit posts
+### Browsing posts
 
-Reddit posts (Reddits) for various topics show up after clicking on different subreddits on the swiper next to the app logo. 
-**_popular_** is the first navigation link on the swiper, serves to display the most popular current reddits worldwide and cannot be removed.
-The next links are subreddits from **My Subreddits selection** and serve to display reddits of various topics accordingly.
+Posts for various topics show up after clicking on different communities on the swiper next to the app logo. 
 
-#### Reddit
+#### Post
 
-Each Reddit is composed of 3 columns as follows:
-![reddit structure](./public/readme-img/reddit.png)
+Each Post is composed of 3 columns as follows:
+![post structure](./public/readme-img/post.png)
 
-* The left column shows the number of votes it received from registered users on Reddit social network.
-* The middle column displays 
-the author of the post with a **_hyperlink to their profile_** on Reddit.com.
-The relative timestamp of when the post was created.
-The title of the post
-The content of the post, such as text, a picture, a video or a link.
+* The left column shows the number of votes it received from registered users on the Lemmy network.
+* The middle column displays: 
+    * The author of the post with a **_hyperlink to their profile_** on their original Lemmy instance.
+    * The relative timestamp of when the post was created.
+    * The title of the post.
+    * The content of the post, such as text, a picture, a video, or a link.
 * The right column involves 3 buttons:
-    - **_Comments section button_**
-    - **_Hyperlink_** to the post on Reddit.com
-    - **_Save button_**
+    * **_Comments section button_**
+    * **_Hyperlink_** to the post on its original Lemmy instance
+    * **_Save button_**
 
-### Displaying comments for a particular reddit
+### Displaying comments for a particular post
 
-After clicking the **_comment section button_** in the right column of a Reddit post, a **Comments window** appears, with some basic information about the posts and the comments themselves. Each comments has its votes and can also have replies, which are rendered after clicking the replies button.
+After clicking the **_comment section button_** in the right column of a post, a **Comments window** appears, with some basic information about the post and the comments themselves. Each comment has its votes and can also have replies, which are rendered after clicking the replies button.
 
-### Saving reddits
+### Saving posts
 
-Each Reddit can be saved by clicking its **_save button_** located in the right column
-Those reddits are then added to **Saved Reddits section** of the app, accessed by the respective button on the right side of the app header.
-The number within the button's icon represents the amount of currently saved Reddits.
-Everytime a reddit is saved, its **_save button_** changes to a blue **_unsave button_**.
+Each post can be saved by clicking its **_save button_** located in the right column.
+Those posts are then added to the **Saved Posts section** of the app, accessed by the respective button on the right side of the app header.
+The number within the button's icon represents the amount of currently saved posts.
+Every time a post is saved, its **_save button_** changes to a blue **_unsave button_**.
 
-### Searching in current reddits
+### Searching in current posts
 
-Everytime some reddits are displayed in the app, the **_search button_** located on the right side of the app header can be used to search those reddits.
-The **_search bar_** appears after clicking the **_search button_** and accepts one or more keywords. Those keywords are analyzed only for the reddit **TITLES**, not for the selftext or authors.
-The **_search button_** disappears everytime the subreddits manager is accessed or when the Saved reddits section is accessed without any reddits saved.
+Every time some posts are displayed in the app, the **_search button_** located on the right side of the app header can be used to search those posts.
+The **_search bar_** appears after clicking the **_search button_** and accepts one or more keywords. Those keywords are analyzed only for the post **TITLES**, not for the selftext or authors.
+The **_search button_** disappears every time the communities manager is accessed or when the Saved Posts section is accessed without any posts saved.
 
 ## Utilized technologies
-* **React JS** - Reddit.to.read is a single-page react application with function components as the main building elements. React router manages the navigation and URL structures.
-* **CSS** - styles for components are written in css modules.
-* **JSX, HTML** - to mark up the content.
-* **Redux** - used as a state management tool, primarily to fetch and store arrays of requested content such as posts, comments, subreddits, etc.
+* **React with typescript** - Lemmysee is a single-page React application with function components as the main building elements. React Router manages the navigation and URL structures.
+* **CSS** - styles for components are written in CSS modules.
+* **TSX, HTML** - to mark up the content.
+* **Redux** - used as a state management tool, primarily to fetch and store arrays of requested content such as posts, comments, communities, etc.
 * **Framer motion** - for animations, such as entering and exiting items in the app, layout animations.
-* **Jest and Enzyme** - for unit and integration tests.
 * **MarkdownIt, DOMpurify** - to translate and sanitize markdown text of posts and comments to HTML.
-* **dash.js** - to establish a media player for videos of reddits posts based on their dash URL and thus enable video sound in this app.
-
 
 
 ## License
 ### MIT License
 
-Copyright (c) 2025 Tomas Ruzicka
+Copyright (c) 2026 Tomas Ruzicka
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
