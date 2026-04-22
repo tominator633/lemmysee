@@ -4,11 +4,10 @@
     box-sizing: border-box;
     font-family: "Urbanist", sans-serif;
     line-height: 1.4;
+     /* border: 1px solid red; */
 }
 
-/*   .gb {
-    border: 1px solid red;
-}    */
+
 
 @keyframes blendShift {
     0% {
@@ -42,7 +41,47 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
+    padding-right: 10px;
 }
+.arrowUp, .arrowDown {
+    margin-top: 10px;
+  
+    height: 30px;
+    background-color: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+.arrowUp svg, .arrowDown svg {
+    display: block;
+    width: 20px;
+    height: 20px;
+}
+.arrowUp {
+    color: green;
+}
+.arrowDown {
+    color: red;
+}
+
+
+.votes {
+    margin-top: 10px;
+    font-weight: 700;
+    color:#005792;
+}
+
+
+
+
+
+
+
+
+
 .postColumn {
     width: 80%;
     word-break: break-word;
@@ -55,24 +94,7 @@
     justify-content: flex-start;
 }
 
-.arrowUp {
-    margin-top: 10px;
-    width: 30px;
-    height: 30px;
-    background-color: white;
-    border: none;
-}
-.arrowUp svg {
-    width: 100%;
-    height: 100%;
-    color: #005792;
-}
 
-.votes {
-    margin-top: 10px;
-    font-weight: 700;
-    color:#005792;
-}
 
 
 .postTitle {

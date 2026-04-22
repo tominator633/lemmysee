@@ -15,6 +15,8 @@ export interface Post {
     postUrl: string;
     imgUrl: string | null;
     score: number;
+    upvotes: number;
+    downvotes: number;
     videoUrl: string | null;
     externalUrl: string | null;
 } 
@@ -66,6 +68,8 @@ export const loadPosts = createAsyncThunk<
                         ?? apiPostItem.post.thumbnail_url 
                         ?? null,
                     score: apiPostItem.counts.score,
+                    upvotes: apiPostItem.counts.upvotes,
+                    downvotes: apiPostItem.counts.downvotes,
                     videoUrl: apiPostItem.post.url_content_type?.startsWith("video/")
                         ? apiPostItem.post.url
                         : null,
