@@ -10,12 +10,12 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       manifest: {
-        name: 'Moje Appka',
-        short_name: 'Appka',
+        name: 'Lemmysee',
+        short_name: 'Lemmysee',
         start_url: '/',
         display: 'standalone',
         background_color: '#ffffff',
-        theme_color: '#000000',
+        theme_color: "#005792",
         icons: [
           {
             src: 'icon-192.png',
@@ -31,4 +31,4 @@ export default defineConfig({
       }
     })
   ]
-})
+});
