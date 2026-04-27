@@ -5,7 +5,7 @@
 >[Lemmy](https://join-lemmy.org/) is a federated, open-source social media platform where users can share, discuss, and vote on content in the form of posts, links, and comments. It’s organized into communities, which are individual hubs focused on specific topics, such as news, hobbies, entertainment, or niche interests. Each community has its own rules and moderators, allowing for diverse conversations and content tailored to its subject matter.
 
 I built this app as a required project at the [Codecademy](https://www.codecademy.com/) learning platform. My goal was to create a cleaner version of Lemmy, where the user can only READ the content based on their preferred communities.
-Therefore, the [Lemmy API](https://join-lemmy.org/api/interfaces/LemmyApi.html) has been used to obtain data, and only GET requests are executed when using the Lemmysee app.
+Therefore, the [Lemmy API](https://join-lemmy.org/docs/contributors/04-api.html) has been used to obtain data, and only GET requests are executed when using the Lemmysee app.
 
 ## Initial setup
 Lemmysee can be found under this [LINK](https://lemmysee.netlify.app).
