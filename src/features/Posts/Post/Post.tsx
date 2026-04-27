@@ -1,14 +1,15 @@
 import React , { useEffect, useRef } from "react";
 import styles from "./Post.module.css";
 import { Link } from "react-router-dom";
-import { setCurrentPost, loadComments } from "../../features/Comments/commentsSlice";
-import { savePost, unsavePost, selectSavedPosts } from "../../features/Posts/postsSlice";
-import { useAppDispatch,  useAppSelector } from "../../app/reduxHooks";
-import {  isoToAgo, formatNumberWithSpaces } from "../../utils/utils";
+import { setCurrentPost, loadComments } from "../../Comments/commentsSlice";
+import { savePost, unsavePost, selectSavedPosts } from "../postsSlice";
+import { useAppDispatch,  useAppSelector } from "../../../app/reduxHooks";
+import {  isoToAgo, formatNumberWithSpaces } from "../../../utils/utils";
 import { MediaPlayer } from 'dashjs';
 import MarkdownIt from 'markdown-it';
 import DOMPurify from 'dompurify'; 
-import { type Post } from "../../features/Posts/postsSlice";
+import { type Post } from "../postsSlice";
+import { setCurrentCreator } from "../../Creator/creatorSlice";
 const md = new MarkdownIt(); 
 
 interface PostProps {
@@ -21,7 +22,15 @@ export default function Post ({ content }: PostProps): React.ReactElement {
     const savedPosts = useAppSelector(selectSavedPosts);
     const videoRef = useRef<HTMLVideoElement | null>(null);
 
-
+    const handleCreatorClick = (): void => {
+        dispatch(setCurrentCreator({
+            id: content.creatorId,
+            name: content.creator,
+            avatarImg: content.creatorAvatar,
+            bannerImg: content.creatorBanner,
+            bio: content.creatorBio
+        }));
+    };
     const handleDetailsClick = (): void => {
         dispatch(setCurrentPost(content));
         dispatch(loadComments(content.id));
@@ -81,11 +90,12 @@ export default function Post ({ content }: PostProps): React.ReactElement {
                     role="presentation">
                 <div className={styles.postInfo} 
                     role="presentation">
-                    <a className={styles.postUser}
-                        target="_blank"
-                        rel="noreferrer noopener"
-                        href={`https://www.post.com/user/${content.creator}/`}
-                        aria-label={`The link to user profile of ${content.creator}`}>{content.creator}</a>
+                    <Link className={styles.postUser}
+                        to={`${content.creatorId}`}
+                        aria-label={`The link to user profile of ${content.creator}`}
+                        onClick={handleCreatorClick}>
+                            {content.creator}
+                    </Link>
                     <time className={styles.postTimePosted}>{isoToAgo(content.timePublished)}</time>
                 </div>
 

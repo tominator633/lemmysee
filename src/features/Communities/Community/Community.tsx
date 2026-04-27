@@ -1,8 +1,8 @@
 import React from "react";
 import styles from "./Community.module.css";
 import { Link } from "react-router-dom";
-import { useAppDispatch } from "../../app/reduxHooks";
-import { addCommunity, deleteCommunity, setCurrentCommunity, type Community } from "../../features/Communities/communitiesSlice";
+import { useAppDispatch } from "../../../app/reduxHooks";
+import { addCommunity, deleteCommunity, setCurrentCommunity, type Community } from "../communitiesSlice";
 import { useState } from "react";
 
 interface CommunityProps {

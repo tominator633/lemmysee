@@ -3,7 +3,7 @@ import { useAppSelector } from "../../app/reduxHooks";
 import { useMediaQuery } from "react-responsive";
 import { motion, AnimatePresence } from "framer-motion";
 import styles from "./Header.module.css";
-import CommunitiesSwiper from "../CommunitiesSwiper/CommunitiesSwiper";
+import CommunitiesSwiper from "../../features/Communities/CommunitiesSwiper/CommunitiesSwiper";
 import { useNavigate, createSearchParams, useParams, NavLink, useSearchParams, useLocation } from "react-router-dom";
 import { searchBtnVar, searchPostsFormVar, searchPostsFieldVar } from "./headerFMVariants";
 import { selectSavedPosts } from "../../features/Posts/postsSlice";

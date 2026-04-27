@@ -4,13 +4,15 @@ import Posts from '../features/Posts/Posts';
 import Comments from '../features/Comments/Comments';
 import Communities from '../features/Communities/Communities';
 import CommunityDetailWindow from '../components/CommunityDetailWindow/CommunityDetailWindow';
-import SavedPosts from '../components/SavedPosts/SavedPosts';
+import CreatorDetailWindow from "../components/CreatorDetailWindow/CreatorDetailWindow";
+import SavedPosts from '../features/Posts/SavedPosts/SavedPosts';
 import { RouterProvider, createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
 
 const appRouter = createBrowserRouter(createRoutesFromElements(
   <Route path='/' element={<AppLayout/>} >
       <Route path=':communityName' element={<Posts/>}>
         <Route path=':postId' element={<Comments/>}/>
+        <Route path=':creatorId' element={<CreatorDetailWindow/>}/>
       </Route>
       <Route path='communities' element={<Communities/>}>
         <Route path=':communityId' element={<CommunityDetailWindow/>} />

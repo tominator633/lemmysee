@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import styles from "./Comment.module.css";
-import ReplyComment from "../ReplyComment/ReplyComment";
-import { isoToAgo, formatNumberWithSpaces} from "../../utils/utils";
+import ReplyComment from "../../../components/ReplyComment/ReplyComment";
+import { isoToAgo, formatNumberWithSpaces} from "../../../utils/utils";
 import { motion, AnimatePresence } from 'framer-motion';
 import {replyCommentVar} from "./commentFMVariants";
+
 import MarkdownIt from 'markdown-it';
 import DOMPurify from 'dompurify';
-import type { Comment } from "../../features/Comments/commentsSlice";
+import type { Comment } from "../commentsSlice";
 
 const md = new MarkdownIt();
 

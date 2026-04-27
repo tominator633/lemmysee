@@ -3,7 +3,7 @@ import React, {useState} from "react";
 import styles from "./SwiperCommunity.module.css";
 import { NavLink } from 'react-router-dom';
 
-interface CommunitiesSwiperProps {
+interface SwiperCommunityProps {
     setSearchBtn: (value: boolean) => void;
     setSearchInput: (value: string) => void;
     id: string;
@@ -16,23 +16,16 @@ interface LinkClassNameProps {
     isPending: boolean;
 }
 
-export default function SwiperCommunity({ setSearchBtn, setSearchInput, id, name, iconImg }: CommunitiesSwiperProps): React.ReactElement {
+export default function SwiperCommunity({ setSearchBtn, setSearchInput, id, name, iconImg }: SwiperCommunityProps): React.ReactElement {
 
     const [iconImgError, setIconImgError] = useState<boolean>(false);
-
-
-
     const handleSwiperCommunityClick = (): void => {
         setSearchBtn(false);
         setSearchInput("");
     };
-
     const getLinkClassName = ({ isActive }: LinkClassNameProps): string => {
         return isActive ? styles.activeCommunity : styles.inactiveCommunity;
     };
-
-    // Note: getAriaCurrentValue was removed. 
-    // NavLink automatically applies aria-current="page" when active.
 
     return (
  

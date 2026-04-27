@@ -1,0 +1,20 @@
+/* SavedPosts styles */
+.savedPostsH2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 1rem 0;
+    padding: 0 1rem;
+}
+
+.savedPosts {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.savedPostWrapper {
+    width: 100%;
+}

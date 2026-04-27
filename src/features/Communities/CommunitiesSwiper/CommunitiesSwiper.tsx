@@ -5,9 +5,10 @@ import { Navigation, A11y, Mousewheel, FreeMode } from 'swiper/modules';
 //@ts-ignore
 import "swiper/css/bundle";
 import styles from "./CommunitiesSwiper.module.css";
-import { useAppSelector } from "../../app/reduxHooks";
-import { selectSwiperCommunities } from "../../features/Communities/communitiesSlice";
+import { useAppSelector } from "../../../app/reduxHooks";
+import { selectSwiperCommunities } from "../communitiesSlice";
 import SwiperCommunity from "../SwiperCommunity/SwiperCommunity";
+
 
 interface CommunitiesSwiperProps {
     setSearchBtn: (value: boolean) => void;

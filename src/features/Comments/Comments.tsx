@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from "./Comments.module.css";
-import Comment from "../../components/Comment/Comment";
+import Comment from "./Comment/Comment";
 import { useParams, useNavigate } from "react-router-dom";
 import { selectCurrentPost,loadComments, selectComments, emptyComments, selectIsCommentsLoading, selectHasCommentsError } from "./commentsSlice";
 import { useAppDispatch, useAppSelector } from "../../app/reduxHooks";

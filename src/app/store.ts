@@ -2,12 +2,14 @@ import { configureStore } from '@reduxjs/toolkit';
 import postsReducer from '../features/Posts/postsSlice';
 import communitiesReducer from '../features/Communities/communitiesSlice';
 import commentsReducer from '../features/Comments/commentsSlice';
+import  creatorReducer from "../features/Creator/creatorSlice";
 
 export const store = configureStore({
     reducer: {
         posts: postsReducer,
         communities: communitiesReducer,
         comments: commentsReducer,
+        creator: creatorReducer,
     }
 });
 

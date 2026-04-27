@@ -1,4 +1,6 @@
-export const replyCommentVar = {
+import { type Variants } from "framer-motion";
+
+export const replyCommentVar: Variants = {
     visible: {
         opacity: 1,
         marginBottom: "0px",
@@ -13,4 +15,4 @@ export const replyCommentVar = {
         duration: 0.3,
       },
       },
-    }
+    };

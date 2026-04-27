@@ -8,6 +8,10 @@ import type { RootState } from '../../app/store';
 export interface Post {
     id: string;
     creator: string;
+    creatorId: string;
+    creatorAvatar: string | null;
+    creatorBanner: string | null;
+    creatorBio: string | null;
     timePublished: string;
     community: string;
     title: string;
@@ -59,6 +63,10 @@ export const loadPosts = createAsyncThunk<
                 return {
                     id: String(apiPostItem.post.id),
                     creator: apiPostItem.creator.name,
+                    creatorId: String(apiPostItem.creator.id),
+                    creatorAvatar: apiPostItem.creator.avatar ?? null,
+                    creatorBanner: apiPostItem.creator.banner ?? null,
+                    creatorBio: apiPostItem.creator.bio ?? null,
                     timePublished: apiPostItem.post.published,
                     community: apiPostItem.community.name,
                     title: apiPostItem.post.name,

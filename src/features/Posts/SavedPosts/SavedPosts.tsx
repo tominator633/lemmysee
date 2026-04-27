@@ -1,9 +1,9 @@
 import React, {useEffect} from "react";
 import styles from "./SavedPosts.module.css";
-import { useAppSelector } from "../../app/reduxHooks";
-import { selectSavedPosts, filterPosts, type Post } from "../../features/Posts/postsSlice";
+import { useAppSelector } from "../../../app/reduxHooks";
+import { selectSavedPosts, filterPosts, type Post } from "../postsSlice";
 import { Outlet, useSearchParams } from 'react-router-dom';
-import ErrorMessage from "../ErrorMessage/ErrorMessage";
+import ErrorMessage from "../../../components/ErrorMessage/ErrorMessage";
 import PostComponent from "../Post/Post";
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
 import { savedPostVar } from "./savedPostsFMVariants";
@@ -55,5 +55,3 @@ export default function SavedPosts (): React.ReactElement {
         </>
     )
 }
-
-

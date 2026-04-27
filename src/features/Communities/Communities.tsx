@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import styles from "./Communities.module.css";
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
 import { submitBtnVar, myCommunityVar, searchedCommunityVar } from "./communitiesFMVariants";
-import Community from "../../components/Community/Community";
+import Community from "./Community/Community";
 import Loading from "../../components/Loading/Loading";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import { Outlet } from 'react-router-dom';

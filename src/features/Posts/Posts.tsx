@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import styles from "./Posts.module.css";
 import { useAppDispatch, useAppSelector } from "../../app/reduxHooks";
 import { useParams, Outlet, useSearchParams } from 'react-router-dom';
-import Post from "../../components/Post/Post";
+import Post from "./Post/Post";
 import { loadPosts, selectResultPosts, selectIsLoading, selectHasError, filterPosts } from "./postsSlice";
 import Loading from "../../components/Loading/Loading";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";

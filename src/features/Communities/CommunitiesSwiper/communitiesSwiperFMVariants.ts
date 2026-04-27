@@ -1,7 +1,3 @@
-
-
-
-
 export const swiperCommunityVar = {
     visible: {
         marginLeft: "0px",
@@ -19,4 +15,4 @@ export const swiperCommunityVar = {
             duration: 0.3
         }
     }
-    }
+    };
