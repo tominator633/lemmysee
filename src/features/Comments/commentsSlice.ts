@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type{  ApiCommentListResponse, ApiCommentView } from "./commentsApiTypes";
-import { type Post } from "../Posts/postsSlice";
+import { type PostType } from "../Posts/postsSlice";
 import type { RootState } from '../../app/store';
 //const proxyUrl = "https://corsproxy.io/?";
 
@@ -21,7 +21,7 @@ export interface Comment {
 
 
 export interface CommentsState {
-    currentPost: Post | null;
+    currentPost: PostType | null;
     comments: Comment[];
     isCommentsLoading: boolean;
     hasCommentsError: boolean;
@@ -89,7 +89,7 @@ export const commentsSlice = createSlice({
     name: "comments",
     initialState,
     reducers: {
-        setCurrentPost: (state, action: PayloadAction<Post | null>) => {
+        setCurrentPost: (state, action: PayloadAction<PostType | null>) => {
             state.currentPost = action.payload;
         },
         emptyComments: (state) => {
@@ -119,7 +119,7 @@ export const commentsSlice = createSlice({
 
 
 
-export const selectCurrentPost = (state: RootState): Post | null => state.comments.currentPost;
+export const selectCurrentPost = (state: RootState): PostType | null => state.comments.currentPost;
 export const selectComments = (state: RootState): Comment[] => state.comments.comments;
 export const selectIsCommentsLoading = (state: RootState): boolean => state.comments.isCommentsLoading;
 export const selectHasCommentsError = (state: RootState): boolean => state.comments.hasCommentsError;
