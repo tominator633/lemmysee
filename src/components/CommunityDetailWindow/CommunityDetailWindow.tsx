@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import styles from "./CommunityDetailWindow.module.css";
 import { motion, AnimatePresence } from 'framer-motion';
 import { useParams, useNavigate } from "react-router-dom";
-import { addCommunity, selectSwiperCommunities, selectCurrentCommunity, type Community } from "../../features/Communities/communitiesSlice";
+import { addCommunity, deleteCommunity, selectSwiperCommunities, selectCurrentCommunity, type Community } from "../../features/Communities/communitiesSlice";
 import { useAppSelector, useAppDispatch } from "../../app/reduxHooks";
-import { windowBarrierVar, communityDetailWindowVar, communityAddedMessageVar } from "./communityDetailWindowFMVariants";
+import { windowBarrierVar, communityDetailWindowVar } from "./communityDetailWindowFMVariants";
 import { formatNumberWithSpaces } from "../../utils/utils";
+import MarkdownIt from 'markdown-it';
+import DOMPurify from 'dompurify';
 
-
+const md = new MarkdownIt();
 
 /* this interface must be specific for each call of useParams hook. 
 in this file the situation orders communityId to be string for sure, 
@@ -22,7 +24,7 @@ export default function CommunityDetailWindow(): React.ReactElement {
     const [isVisible, setIsVisible] = useState<boolean>(true);
     const [iconImgError, setIconImgError] = useState<boolean>(false);
     const [bannerImgError, setBannerImgError] = useState<boolean>(false);
-    const [isAddToSelectionBtnClicked, setIsAddToSelectionBtnClicked] = useState<boolean>(false);
+
 
     const { communityId } = useParams<RouteParams>();
     const navigate = useNavigate();
@@ -35,6 +37,9 @@ export default function CommunityDetailWindow(): React.ReactElement {
         ? swiperCommunities.some(community => community.id === (currentCommunity as Community).id)
         : false;
 
+
+
+
     const handleCloseButtonClick = (): void => {
         setIsVisible(false);
     };
@@ -42,9 +47,14 @@ export default function CommunityDetailWindow(): React.ReactElement {
     const handleAddCommunityClick = (): void => {
         if (typeof currentCommunity === "object" && "id" in currentCommunity) {
             dispatch(addCommunity(currentCommunity as Community));
-            setIsAddToSelectionBtnClicked(true);
         }
     };
+    const handleDeleteCommunityClick = (): void => {
+            dispatch(deleteCommunity({ id: currentCommunity.id }));
+        };
+
+
+
 
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent): void => {
@@ -57,6 +67,17 @@ export default function CommunityDetailWindow(): React.ReactElement {
     }, [isVisible]);
 
     const community = currentCommunity as Community | undefined;
+
+ // Sanitize and convert selftext markdown to HTML
+    const renderSelfText = (): { __html: string } | undefined => {
+        if (community?.description) {
+            const sanitizedHtml = DOMPurify.sanitize(md.render(community?.description));
+            return { __html: sanitizedHtml };
+        }
+        return undefined;
+    };
+
+    
 
     return (
         <AnimatePresence onExitComplete={() => { navigate(-1); }}>
@@ -110,18 +131,45 @@ export default function CommunityDetailWindow(): React.ReactElement {
                                 )}
                             </figure>
 
-                            <h3 className={styles.communityName}>{community?.name}</h3>
-                            {community?.headerTitle && <p className={styles.communityHeaderTitle}>{community.headerTitle}</p>}
-                            <p className={styles.communityPublicDescription}>{community?.description}</p>
-                            <p className={styles.communitySubscribers}>{`Subscribers: ${formatNumberWithSpaces(community?.subscribers ?? 0)}`}</p>
+                            <h3 className={styles.communityName}>{community?.headerTitle || community?.name}</h3>
+                            <div className={styles.communityInfoBlock}>
+                                <aside className={styles.communityInfo}>
+                                    <p>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><path fill="currentColor" d="M14 3a4 4 0 1 0 0 8a4 4 0 0 0 0-8M2 9.5a3.5 3.5 0 1 1 7 0a3.5 3.5 0 0 1-7 0M22.5 6a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7m-11.75 7A1.75 1.75 0 0 0 9 14.75V20a5 5 0 0 0 10 0v-5.25A1.75 1.75 0 0 0 17.25 13zM8 14.752l-4.703 1.26a1.75 1.75 0 0 0-1.237 2.144l.841 3.139a5 5 0 0 0 7.088 3.168A6 6 0 0 1 8 20zm10.012 9.71q.455.23.966.369a5 5 0 0 0 6.124-3.536l.841-3.14a1.75 1.75 0 0 0-1.237-2.143L20 14.752V20a6 6 0 0 1-1.988 4.462"/></svg>
+                                        {community?.name}
+                                    </p>
 
-                            {!isSwiperCommunity && !isAddToSelectionBtnClicked ? (
+                                    <p>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0-4 0"/><path d="M11.102 17.957Q6.297 17.495 3 12q3.6-6 9-6t9 6a20 20 0 0 1-.663 1.032M15 19l2 2l4-4"/></g></svg>
+                                        {`${formatNumberWithSpaces(community?.subscribers ?? 0)} subscribers`}
+                                    </p>
+
+                                    {isSwiperCommunity &&
+                                    <p>
+                                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48">
+                                            <defs>
+                                                <mask id="ipSAddOne0">
+                                                    <g fill="none" strokeLinejoin="round" strokeWidth={4}>
+                                                        <path fill="#fff" stroke="#fff" d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20Z" />
+                                                        <path stroke="#000" strokeLinecap="round" d="M24 16v16m-8-8h16" />
+                                                    </g>
+                                                </mask>
+                                            </defs>
+                                            <path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipSAddOne0)" />
+                                        </svg>
+                                        Community added to your selection
+                                    </p>}
+                                </aside>
                                 <button
-                                    className={styles.addThisCommunityToYourSelectionBtn}
-                                    id="CommunityDetailPlusBtn"
-                                    onClick={handleAddCommunityClick}
-                                    aria-label="Add this community to your selection"
-                                >
+                                className={styles.addThisCommunityToYourSelectionBtn}
+                                onClick={isSwiperCommunity ? handleDeleteCommunityClick : handleAddCommunityClick}
+                                aria-label={isSwiperCommunity ? "Remove community from your selection" : "Add community to your selection"}
+                            >
+                                {isSwiperCommunity ? (
+                                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+                                        <path fill="currentColor" d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zm2-4h2V8H9zm4 0h2V8h-2z"/>
+                                    </svg>
+                                ) : (
                                     <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48">
                                         <defs>
                                             <mask id="ipSAddOne0">
@@ -133,19 +181,19 @@ export default function CommunityDetailWindow(): React.ReactElement {
                                         </defs>
                                         <path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipSAddOne0)" />
                                     </svg>
-                                </button>
-                            ) : (
-                                <motion.p
-                                    className={styles.communityAddedMessage}
-                                    id="communityAddedMessage"
-                                    aria-live="polite"
-                                    variants={communityAddedMessageVar}
-                                    initial="hidden"
-                                    animate="visible"
-                                >
-                                    Community added to your selection
-                                </motion.p>
-                            )}
+                                )}
+                            </button>
+                            </div>
+                            
+
+                            
+                   
+                            {community?.description &&
+                            <p className={styles.communityPublicDescription}
+                                dangerouslySetInnerHTML={renderSelfText()}/>}
+                            
+
+                            
                         </div>
                     </motion.section>
                 </motion.div>

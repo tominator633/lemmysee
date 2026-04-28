@@ -92,6 +92,19 @@
     word-break: break-all;
     text-align: center;
 }
+.srSubscribers {
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    color: #005792;
+
+}
+.srSubscribers svg {
+    display: block;
+    width: 0.8rem;
+    height: 0.8rem;
+    margin-right: 2px;
+}
 
 
 .srButtons {

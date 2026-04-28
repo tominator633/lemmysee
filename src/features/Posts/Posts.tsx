@@ -57,7 +57,9 @@ export default function Posts(): React.ReactElement {
     } else {
         return (
             <section role="presentation">
-                <h2 className={styles.postsH2}>{targetCommunity?.name}</h2>
+                <h2 className={styles.postsH2}>
+                    {targetCommunity?.headerTitle || targetCommunity?.name}
+                </h2>
                 <section className={styles.posts}
                         role="region"
                         aria-label={`Posts from ${targetCommunity?.name}`}>
