@@ -44,6 +44,8 @@
     padding-right: 10px;
 }
 .arrowUp, .arrowDown {
+    margin-top: 10px;
+  
     height: 30px;
     background-color: white;
     border: none;
@@ -60,16 +62,14 @@
 }
 .arrowUp {
     color: green;
-    margin-top: 10px;
 }
 .arrowDown {
     color: red;
-    margin-top: 5px;
 }
 
 
 .votes {
-    margin-top: 5px;
+    margin-top: 10px;
     font-weight: 700;
     color:#005792;
 }
@@ -198,73 +198,207 @@
 
 .selftextContent {
     margin-top: 10px;
-    font-size: 0.95rem;
-    line-height: 1.5;
-    color: #333;
-    font-weight: 400;
 }
-.imgContent {
-    display: block;
-    margin-top: 10px;
-    width: 100%;
-    max-height: 500px;
-    overflow: hidden;
+
+.selftextContent img {
+    display: inline-block;
+    width: 40%;
     border-radius: 10px;
-    border: 1px solid #e0e0e0;
 }
-.imgContent img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-}
-.externalContentNoImg {
-    display: flex;
-    align-items: center;
-    margin-top: 10px;
-    padding: 10px;
-    background-color: #f5f5f5;
-    border-radius: 10px;
-    text-decoration: none;
+
+.externalContent {
+    display: inline-block;
+ 
+    
+    
+    
     color: #005792;
-    font-weight: 500;
-    width: fit-content;
-}
-.externalContentNoImg svg {
-    margin-right: 8px;
+    word-break: break-word;
+   
 }
 .externalContentImg {
     display: block;
-    margin-top: 10px;
     position: relative;
-    width: 100%;
-    max-height: 500px;
+    margin-top: 10px;
+    border-radius: 20px;
+    transition: scale 0.3s linear;
     overflow: hidden;
-    border-radius: 10px;
-    border: 1px solid #e0e0e0;
+    border: 4px solid #FF6B6B;
 }
 .externalContentImg img {
+    display: block;
     width: 100%;
     height: auto;
-    object-fit: cover;
 }
 .externalContentImg figure {
     position: absolute;
     top: 10px;
-    right: 10px;
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 50%;
-    padding: 5px;
+    left: 10px;
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    z-index: 100;
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: #FF6B6B;
+   
 }
 .externalContentImg figure svg {
-    color: #005792;
+    display: block;
+    color: #FEE;
+    width: 80%;
+    height: 80%;
+    transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.externalContentNoImg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    transition: scale 0.3s linear;
+    background-color: #FF6B6B;
+}
+
+.externalContentNoImg svg {
+  display: block;
+    color: #FEE;
+    width: 80%;
+    height: 80%;
+    transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+
+@media (hover: hover) {
+    .externalContentImg:hover {
+        scale: 0.95;
+        transition: scale 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .externalContentImg:hover figure svg {
+        transform: rotate(180deg);
+    }
+    .externalContentNoImg:hover {
+        scale: 0.8;
+        transition: scale 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .externalContentNoImg:hover svg {
+        transform: rotate(180deg);
+    }
+}
+.externalContentImg:active, .externalContentNoImg:active {
+    opacity: 50%;
+}
+
+
+.imgContent {
+    width: 100%;
+    padding-top: 10px;
+    display: block;
+}
+.imgContent:active {
+    opacity: 50%;
+}
+.imgContent img {
+    max-width: 100%;
+    max-height: 70svh;
+    border-radius: 10px;
 }
 .videoContent {
+    max-width: 100%;
+    max-height: 80svh;
     margin-top: 10px;
-    width: 100%;
-    max-height: 500px;
     border-radius: 10px;
-    background-color: black;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+@media only screen and (max-width: 840px) {
+    .post {
+        width: 95%;
+        margin-bottom: 13px;
+    }
+}
+@media only screen and (max-width: 640px) {
+    .arrowUp {
+        margin-top: 10px;
+        width: 20px;
+        height: 20px;
+    }
+    .votes {
+        margin-top: 5px;
+        font-size: 12px;
+    }
+    .commentsButton {
+        width: 35px;
+        height: 35px;
+    }
+    .postLink {
+        margin-top: 10px;
+        width: 30px;
+        height: 30px;
+    }
+    .savePostBtn,.unsavePostBtn {
+        margin-top: 10px;
+        width: 30px;
+        height: 30px;
+    }
+    .postTimePosted {
+        font-size: 9px;
+    }
+    .externalContentImg {
+    border: 2px solid #FF6B6B;
+}
+    .externalContentImg figure {
+    top: 6px;
+    left: 6px;
+    width: 30px;
+    height: 30px;
+
+}
+.externalContentNoImg {
+
+    width: 40px;
+    height: 40px;
+
+}
+}
+
+@media only screen and (max-width: 560px) {
+    .votesColumn {
+        width: 12%;
+    }   
+    .postColumn {
+        width: 76%;
+    }
+    .rightColumn {
+        width: 12%;
+    }
+    .postInfo {
+        height: 30px;
+    }
+    .postUser {
+        font-size: 14px;
+    }
+    .postContent {
+        font-size: 14px;
+    }
+    .externalContentNoImg, .externalContentImg {
+        margin-top: 5px;
+    }
+
+
+}
+
+

@@ -5,7 +5,7 @@ import type { RootState } from '../../app/store';
 
 /* Types */
 
-export interface Post {
+export interface PostType {
     id: string;
     creator: string;
     creatorId: string;
@@ -27,10 +27,10 @@ export interface Post {
 
 
 export interface PostsState {
-    resultPosts: Post[];
+    resultPosts: PostType[];
     isLoading: boolean;
     hasError: boolean;
-    savedPosts: Post[];
+    savedPosts: PostType[];
 }
 
 
@@ -41,7 +41,7 @@ const baseUrl = "https://lemmy.world/api/v3";
 
 /* Thunk */
 export const loadPosts = createAsyncThunk<
-    Post[],
+    PostType[],
     string,
     { rejectValue: string }
 >(
@@ -57,7 +57,7 @@ export const loadPosts = createAsyncThunk<
 
             const jsonResponse: ApiPostListResponse = await response.json();
             
-            const postsArr: Post[] = jsonResponse.posts.map((apiPostItem: ApiPostItem) => {
+            const postsArr: PostType[] = jsonResponse.posts.map((apiPostItem: ApiPostItem) => {
 
 
                 return {
@@ -84,7 +84,7 @@ export const loadPosts = createAsyncThunk<
                     externalUrl: apiPostItem.post.url_content_type?.startsWith("text/html")
                         ? apiPostItem.post.url
                         : null,
-                } as Post;
+                } as PostType;
             });
             
             console.log(jsonResponse);
@@ -108,7 +108,7 @@ export const postsSlice = createSlice({
     name: "posts",
     initialState,
     reducers: {
-        savePost: (state, action: PayloadAction<Post>) => {
+        savePost: (state, action: PayloadAction<PostType>) => {
             if (!state.savedPosts.some(post => post.id === action.payload.id)) {
                 state.savedPosts.push(action.payload);
             }
@@ -129,7 +129,7 @@ export const postsSlice = createSlice({
                 state.hasError = true;
                 state.resultPosts = [];
             })
-            .addCase(loadPosts.fulfilled, (state, action: PayloadAction<Post[]>) => {
+            .addCase(loadPosts.fulfilled, (state, action: PayloadAction<PostType[]>) => {
                 state.resultPosts = action.payload;
                 state.isLoading = false;
                 state.hasError = false;
@@ -139,12 +139,12 @@ export const postsSlice = createSlice({
 
 /* Selectors */
 
-export const selectResultPosts = (state: RootState): Post[] => state.posts.resultPosts;
+export const selectResultPosts = (state: RootState): PostType[] => state.posts.resultPosts;
 export const selectIsLoading = (state: RootState): boolean => state.posts.isLoading;
 export const selectHasError = (state: RootState): boolean => state.posts.hasError;
-export const selectSavedPosts = (state: RootState): Post[] => state.posts.savedPosts;
+export const selectSavedPosts = (state: RootState): PostType[] => state.posts.savedPosts;
 
-export const filterPosts = (query: string, posts: Post[]): Post[] => {
+export const filterPosts = (query: string, posts: PostType[]): PostType[] => {
     return posts.filter(post => post.title.toLowerCase().includes(query.toLowerCase()));
 };
 

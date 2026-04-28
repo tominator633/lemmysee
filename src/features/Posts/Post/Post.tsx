@@ -8,12 +8,12 @@ import {  isoToAgo, formatNumberWithSpaces } from "../../../utils/utils";
 import { MediaPlayer } from 'dashjs';
 import MarkdownIt from 'markdown-it';
 import DOMPurify from 'dompurify'; 
-import { type Post } from "../postsSlice";
+import { type PostType } from "../postsSlice";
 import { setCurrentCreator } from "../../Creator/creatorSlice";
 const md = new MarkdownIt(); 
 
 interface PostProps {
-    content: Post;
+    content: PostType;
 }
 
 export default function Post ({ content }: PostProps): React.ReactElement {
@@ -91,7 +91,7 @@ export default function Post ({ content }: PostProps): React.ReactElement {
                 <div className={styles.postInfo} 
                     role="presentation">
                     <Link className={styles.postUser}
-                        to={`${content.creatorId}`}
+                        to={`creator/${content.creatorId}`}
                         aria-label={`The link to user profile of ${content.creator}`}
                         onClick={handleCreatorClick}>
                             {content.creator}

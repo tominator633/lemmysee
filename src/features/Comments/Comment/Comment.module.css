@@ -98,7 +98,7 @@
 }
 @media (hover: hover) {
     .repliesButton:hover {
-        scale: 1.05;
+        scale: 0.9;
         transition: scale 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 }
@@ -107,17 +107,42 @@
 }
 .closeCross {
     display: flex;
-    align-items: center;
-    margin-left: 5px;
 }
-.closeCross svg {
-    width: 12px;
-    height: 12px;
+
+
+.commentText img {
+    display: block;
+    width: 40%;
+    border-radius: 10px;
 }
-.commentText {
-    margin-top: 10px;
-    font-size: 0.95rem;
-    line-height: 1.5;
-    color: #333;
-    font-weight: 400;
+
+
+
+
+
+
+
+
+
+
+
+@media only screen and (max-width: 560px) {
+    .commentInfo {
+        height: 20px;
+    }
+    .commentUser {
+        font-size: 14px;
+    }
+    .commentTimePosted {
+        font-size: 12px;
+    }
+    .score {
+        font-size: 14px;
+    }
+    .repliesButton {
+        font-size: 12px;
+    }
+    .commentContent p {
+        font-size: 14px;
+    }
 }

@@ -18,23 +18,9 @@ interface CommunitiesSwiperProps {
 
 
 export default function CommunitiesSwiper({ setSearchBtn, setSearchInput }: CommunitiesSwiperProps): React.ReactElement {
-
-
-
+    
     const swiperCommunities = useAppSelector(selectSwiperCommunities);
-
-/*     const handleSwiperCommunityClick = (): void => {
-        setSearchBtn(false);
-        setSearchInput("");
-    };
-
-    const getLinkClassName = ({ isActive }: LinkClassNameProps): string => {
-        return isActive ? styles.activeCommunity : styles.inactiveCommunity;
-    };
- */
-    // Note: getAriaCurrentValue was removed. 
-    // NavLink automatically applies aria-current="page" when active.
-
+    
     return (
         <Swiper 
             className={styles.swiper}

@@ -15,28 +15,28 @@ export default function Posts(): React.ReactElement {
     const isLoading = useAppSelector(selectIsLoading);
     const hasError = useAppSelector(selectHasError);
     const swiperCommunities = useAppSelector(selectSwiperCommunities);
-    const { communityName } = useParams<{ communityName?: string }>();
+
+    const { communityId } = useParams<{ communityId?: string }>();
+    const targetCommunity: Community | undefined = swiperCommunities.find(community => community.id === communityId);
+    
     const [searchParams] = useSearchParams();
     const title = searchParams.get("title");
 
     const postsToRender = title ? filterPosts(title, resultPosts) : resultPosts;
 
     useEffect(() => {
-        if (communityName) {
-            const targetCommunity: Community | undefined = swiperCommunities.find(community => community.name === communityName);
-            if (targetCommunity) {
-                dispatch(loadPosts(targetCommunity.id));
-            }
+        if (targetCommunity) {
+            dispatch(loadPosts(targetCommunity.id));
         }
-    }, [dispatch, communityName]);
+    }, [dispatch, targetCommunity]);
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: "smooth" });
-    }, [communityName]);
+    }, [communityId]);
 
     const handleErrorBtnClick = (): void => {
-        if (communityName) {
-            dispatch(loadPosts(communityName));
+        if (communityId) {
+            dispatch(loadPosts(communityId));
         }
     };
     
@@ -47,7 +47,7 @@ export default function Posts(): React.ReactElement {
     } else if (hasError) {
         return (
             <section role="presentation">
-                <h2 className={styles.postsH2}>{communityName}</h2>
+                <h2 className={styles.postsH2}>{targetCommunity?.name}</h2>
                 <ErrorMessage 
                     message="Request failed" 
                     onClick={handleErrorBtnClick}
@@ -57,10 +57,10 @@ export default function Posts(): React.ReactElement {
     } else {
         return (
             <section role="presentation">
-                <h2 className={styles.postsH2}>{communityName}</h2>
+                <h2 className={styles.postsH2}>{targetCommunity?.name}</h2>
                 <section className={styles.posts}
                         role="region"
-                        aria-label={`Posts from ${communityName}`}>
+                        aria-label={`Posts from ${targetCommunity?.name}`}>
                     {
                         postsToRender.length > 0 ?
                             postsToRender.map((content) => (

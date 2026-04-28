@@ -10,15 +10,16 @@ import { RouterProvider, createBrowserRouter, createRoutesFromElements, Route } 
 
 const appRouter = createBrowserRouter(createRoutesFromElements(
   <Route path='/' element={<AppLayout/>} >
-      <Route path=':communityName' element={<Posts/>}>
+      <Route path=':communityId' element={<Posts/>}>
         <Route path=':postId' element={<Comments/>}/>
-        <Route path=':creatorId' element={<CreatorDetailWindow/>}/>
+        <Route path='creator/:creatorId' element={<CreatorDetailWindow/>}/>
       </Route>
       <Route path='communities' element={<Communities/>}>
         <Route path=':communityId' element={<CommunityDetailWindow/>} />
       </Route>
       <Route path='saved' element={<SavedPosts/>}>
         <Route path=':postId' element={<Comments/>}/>
+        <Route path='creator/:creatorId' element={<CreatorDetailWindow/>}/>
       </Route>
   </Route>
 ));

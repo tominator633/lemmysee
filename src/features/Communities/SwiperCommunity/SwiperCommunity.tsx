@@ -19,6 +19,7 @@ interface LinkClassNameProps {
 export default function SwiperCommunity({ setSearchBtn, setSearchInput, id, name, iconImg }: SwiperCommunityProps): React.ReactElement {
 
     const [iconImgError, setIconImgError] = useState<boolean>(false);
+
     const handleSwiperCommunityClick = (): void => {
         setSearchBtn(false);
         setSearchInput("");
@@ -37,7 +38,7 @@ export default function SwiperCommunity({ setSearchBtn, setSearchInput, id, name
                     aria-label={`Community: ${name}`}
                 >
                     <NavLink 
-                        to={`${name}`} 
+                        to={`${id}`} 
                         className={getLinkClassName}
                         onClick={handleSwiperCommunityClick}
                     >

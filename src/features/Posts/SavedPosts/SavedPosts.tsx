@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import styles from "./SavedPosts.module.css";
 import { useAppSelector } from "../../../app/reduxHooks";
-import { selectSavedPosts, filterPosts, type Post } from "../postsSlice";
+import { selectSavedPosts, filterPosts, type PostType } from "../postsSlice";
 import { Outlet, useSearchParams } from 'react-router-dom';
 import ErrorMessage from "../../../components/ErrorMessage/ErrorMessage";
 import PostComponent from "../Post/Post";
@@ -30,7 +30,7 @@ export default function SavedPosts (): React.ReactElement {
             <AnimatePresence> 
             {
             postsToRender.length > 0 ?
-            postsToRender.map((content: Post) => {
+            postsToRender.map((content: PostType) => {
                 return (
                     <LayoutGroup key={content.id}>
                         <motion.article className={styles.savedPostWrapper}
@@ -55,3 +55,4 @@ export default function SavedPosts (): React.ReactElement {
         </>
     )
 }
+
