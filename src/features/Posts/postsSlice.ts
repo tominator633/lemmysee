@@ -87,7 +87,7 @@ export const loadPosts = createAsyncThunk<
                 } as PostType;
             });
             
-            console.log(jsonResponse);
+            console.log(postsArr);
             return postsArr;
         } catch (error: any) {
             return thunkAPI.rejectWithValue(error?.message ?? "Unknown error");
