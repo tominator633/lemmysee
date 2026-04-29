@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { ApiPostItem, ApiPostListResponse } from './postsApiTypes';
-import type { RootState } from '../../app/store';
+import type { RootState } from '../../main';
 
 
 /* Types */

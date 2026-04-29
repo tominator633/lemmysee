@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import { initialCommunitiesSelection } from "../../utils/utils";
 import type { ApiSearchResponse, ApiCommunityView } from "./communitiesApiTypes";
-import type { RootState } from '../../app/store';
+import type { RootState } from '../../main';
 
 
 /* Types */
@@ -9,13 +8,20 @@ import type { RootState } from '../../app/store';
 export interface Community {
   id: string;
   name: string;
-  subscribers: number;
   headerTitle: string;
   iconImg: string | null;
   bannerImg: string | null;
   description: string | null;
   isHidden: boolean;
   isBlocked: boolean;
+  timePublished: string;
+  counts: {
+    posts: number;
+    comments: number;
+    subscribers: number;
+    usersActivePerWeek: number;
+    usersActivePerMonth: number;
+    }
 }
 
 export interface CommunitiesState {
@@ -55,13 +61,20 @@ export const searchCommunities = createAsyncThunk<
                 return {
                     name: apiCommunityView.community.name,
                     id: String(apiCommunityView.community.id),
-                    subscribers: apiCommunityView.counts.subscribers,
                     headerTitle: apiCommunityView.community.title,
                     iconImg: apiCommunityView.community.icon ?? null,
                     bannerImg: apiCommunityView.community.banner ?? null,
                     description: apiCommunityView.community.description ?? null,
                     isHidden: apiCommunityView.community.hidden,
-                    isBlocked: apiCommunityView.blocked
+                    isBlocked: apiCommunityView.blocked,
+                    timePublished: apiCommunityView.community.published,
+                    counts: {
+                        posts: apiCommunityView.counts.posts,
+                        comments: apiCommunityView.counts.comments,
+                        subscribers: apiCommunityView.counts.subscribers,
+                        usersActivePerWeek: apiCommunityView.counts.users_active_week,
+                        usersActivePerMonth: apiCommunityView.counts.users_active_month
+                    },
                 } as Community;
             });
             
@@ -76,7 +89,7 @@ export const searchCommunities = createAsyncThunk<
 /* Slice */
 
 const initialState: CommunitiesState = {
-    swiperCommunities: initialCommunitiesSelection,
+    swiperCommunities: [],
     searchedCommunities: [],
     isSearchCommunitiesLoading: false,
     hasSearchCommunitiesError: false,
