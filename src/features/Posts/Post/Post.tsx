@@ -1,11 +1,11 @@
-import React , { useEffect, useRef, useState } from "react";
+import React , { useRef, useState } from "react";
 import styles from "./Post.module.css";
 import { Link } from "react-router-dom";
 import { setCurrentPost, loadComments } from "../../Comments/commentsSlice";
 import { savePost, unsavePost, selectSavedPosts } from "../postsSlice";
 import { useAppDispatch,  useAppSelector } from "../../../app/reduxHooks";
 import {  isoToAgo, formatNumberWithSpaces } from "../../../utils/utils";
-import { MediaPlayer } from 'dashjs';
+/* import { MediaPlayer } from 'dashjs'; */
 import MarkdownIt from 'markdown-it';
 import DOMPurify from 'dompurify'; 
 import { type PostType } from "../postsSlice";
