@@ -2,12 +2,14 @@ import React, {useState, useEffect} from "react";
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from "./Comments.module.css";
 import Comment from "./Comment/Comment";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Outlet } from "react-router-dom";
 import { selectCurrentPost,loadComments, selectComments, emptyComments, selectIsCommentsLoading, selectHasCommentsError } from "./commentsSlice";
 import { useAppDispatch, useAppSelector } from "../../app/reduxHooks";
 import Loading from "../../components/Loading/Loading";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import { isoToAgo, formatNumberWithSpaces} from "../../utils/utils";
+import { getCreator } from "../Creator/creatorSlice";
+import { Link } from "react-router-dom";
 import {windowBarrierVar, postDetailWindowVar, commentVar} from "./commentsFMVariants";
 
 
@@ -33,7 +35,8 @@ export default function Comments (): React.ReactElement {
     const hasCommentsError = useAppSelector(selectHasCommentsError);
 
     const handleCloseButtonClick = (): void => {
-        setIsVisible(false);
+        dispatch(emptyComments());
+        navigate('..', { relative: 'path' });
     };
 
     const handleErrorCommentsReloadBtn = (): void => {
@@ -41,6 +44,11 @@ export default function Comments (): React.ReactElement {
             dispatch(loadComments(currentPost.id));
         }
     }
+    const handleCreatorClick = (): void => {
+        if (currentPost) {
+          dispatch(getCreator(currentPost?.creatorId));
+        }
+        };
 
     useEffect((): (() => void) => {
         const handleKeyDown = (event: KeyboardEvent): void => {
@@ -69,10 +77,7 @@ export default function Comments (): React.ReactElement {
     }
 
     return (
-        <AnimatePresence onExitComplete={(): void => {
-            dispatch(emptyComments());
-            navigate(-1);
-        }}>
+        <AnimatePresence>
             {
             isVisible &&
             <motion.div id={postId} 
@@ -108,11 +113,12 @@ export default function Comments (): React.ReactElement {
                             <p className={styles.votes} 
                                 aria-label={`The score of this post is ${currentPost.score}`}>{`score: ${formatNumberWithSpaces(currentPost.score)}`}</p>
                         </div>
-                        <a className={styles.postUser}
-                            target="_blank"
-                            rel="noreferrer noopener" 
-                            href={`https://www.post.com/user/${currentPost.creator}/`}
-                            aria-label={`View ${currentPost.creator}'s profile on Post in a new tab`}>{currentPost.creator}</a>
+                        <Link to={`comment_creator/${currentPost.creatorId}`}
+                                onClick={handleCreatorClick}
+                                className={styles.postUser}
+                                aria-label={`Visit profile of ${currentPost.creator}`}>
+                            {currentPost.creator}
+                        </Link>
                         <p className={styles.postTimePosted}
                             aria-label={`Posted ${isoToAgo(currentPost.timePublished)}`}>{isoToAgo(currentPost.timePublished)}</p>
 
@@ -155,6 +161,7 @@ export default function Comments (): React.ReactElement {
             </motion.section>
         </motion.div>
             }
+        <Outlet/>
         </AnimatePresence>
     )
 }

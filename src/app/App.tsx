@@ -11,14 +11,18 @@ import { RouterProvider, createBrowserRouter, createRoutesFromElements, Route } 
 const appRouter = createBrowserRouter(createRoutesFromElements(
   <Route path='/' element={<AppLayout/>} >
       <Route path=':communityId' element={<Posts/>}>
-        <Route path=':postId' element={<Comments/>}/>
-        <Route path='creator/:creatorId' element={<CreatorDetailWindow/>}/>
+        <Route path=':postId' element={<Comments/>}>
+          <Route path='comment_creator/:creatorId' element={<CreatorDetailWindow/>}/>
+        </Route>
+        <Route path='post_creator/:creatorId' element={<CreatorDetailWindow/>}/>
       </Route>
       <Route path='communities' element={<Communities/>}>
         <Route path=':communityId' element={<CommunityDetailWindow/>} />
       </Route>
       <Route path='saved' element={<SavedPosts/>}>
-        <Route path=':postId' element={<Comments/>}/>
+        <Route path=':postId' element={<Comments/>}>
+          <Route path='comment_creator/:creatorId' element={<CreatorDetailWindow/>}/>
+        </Route>
         <Route path='creator/:creatorId' element={<CreatorDetailWindow/>}/>
       </Route>
   </Route>

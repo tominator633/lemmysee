@@ -11,6 +11,7 @@ export interface Comment {
     id: string;
     parentId: number | null;
     author: string | null;
+    authorId: string;
     content: string | null;
     timePublished: string;
     score: number | null;
@@ -58,6 +59,7 @@ export const loadComments = createAsyncThunk<
                     id: String(apiCommentView.comment.id),
                     parentId: extractParentId(apiCommentView.comment.path),
                     author: apiCommentView.creator.name,
+                    authorId: String(apiCommentView.creator.id),
                     content: apiCommentView.comment.content,
                     timePublished: apiCommentView.comment.published,
                     score: apiCommentView.counts.score,

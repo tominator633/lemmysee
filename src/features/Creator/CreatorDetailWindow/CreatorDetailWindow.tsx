@@ -24,7 +24,7 @@ type RouteParams = {
 };
 
 export default function CreatorDetailWindow(): React.ReactElement {
-    const [isVisible, setIsVisible] = useState<boolean>(true);
+    const [isCreatorWindowVisible, setIsCreatorWindowVisible] = useState<boolean>(true);
     const [iconImgError, setIconImgError] = useState<boolean>(false);
     const [bannerImgError, setBannerImgError] = useState<boolean>(false);
 
@@ -40,8 +40,8 @@ export default function CreatorDetailWindow(): React.ReactElement {
 
 
 
-    const handleCloseButtonClick = (): void => {
-        setIsVisible(false);
+    const handleCloseCreatorButtonClick = (): void => {
+        setIsCreatorWindowVisible(false);
     };
     
     const handleErrorGetUserReloadBtn = (): void => {
@@ -52,13 +52,13 @@ export default function CreatorDetailWindow(): React.ReactElement {
 
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent): void => {
-            if (event.key === "Escape") handleCloseButtonClick();
+            if (event.key === "Escape") handleCloseCreatorButtonClick();
         };
-        if (isVisible) {
+        if (isCreatorWindowVisible) {
             document.addEventListener("keydown", handleKeyDown);
         }
         return () => document.removeEventListener("keydown", handleKeyDown);
-    }, [isVisible]);
+    }, [isCreatorWindowVisible]);
 
 
  // Sanitize and convert selftext markdown to HTML
@@ -74,7 +74,7 @@ export default function CreatorDetailWindow(): React.ReactElement {
 
     return (
         <AnimatePresence onExitComplete={() => { navigate(-1); }}>
-            {isVisible && (
+            {isCreatorWindowVisible && (
                 <motion.div
                     id={creatorId}
                     className={styles.windowBarrier}
@@ -96,7 +96,7 @@ export default function CreatorDetailWindow(): React.ReactElement {
                         exit="hidden"
                     >
                         <button
-                            onClick={handleCloseButtonClick}
+                            onClick={handleCloseCreatorButtonClick}
                             className={`${styles.closeBtn} ${styles.clearfix}`}
                             aria-label="close this window"
                             tabIndex={0}

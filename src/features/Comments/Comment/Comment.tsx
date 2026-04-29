@@ -4,6 +4,9 @@ import ReplyComment from "../../../components/ReplyComment/ReplyComment";
 import { isoToAgo, formatNumberWithSpaces} from "../../../utils/utils";
 import { motion, AnimatePresence } from 'framer-motion';
 import {replyCommentVar} from "./commentFMVariants";
+import { Link } from "react-router-dom";
+import { useAppDispatch } from "../../../app/reduxHooks";
+import { getCreator } from "../../Creator/creatorSlice";
 
 import MarkdownIt from 'markdown-it';
 import DOMPurify from 'dompurify';
@@ -18,9 +21,13 @@ interface CommentProps {
 export default function Comment ({ content }: CommentProps): React.ReactElement {
 
     const [repliesButton, setRepliesButton] = useState<boolean>(false);
+    const dispatch = useAppDispatch();
     
     const handleRepliesButtonClick = (): void => {
         setRepliesButton(!repliesButton);
+    };
+    const handleCreatorClick = (): void => {
+        dispatch(getCreator(content.authorId));
     };
 
     // Sanitize and convert selftext markdown to HTML
@@ -37,11 +44,13 @@ export default function Comment ({ content }: CommentProps): React.ReactElement 
                 aria-label={`Comment by ${content.author}`}
                 style={repliesButton ? {backgroundColor: "#FEE"} : {backgroundColor: "white"}}>
             <header className={styles.commentInfo}>
-                <a className={styles.commentUser}
-                    target="_blank"
-                    rel="noreferrer noopener" 
-                    href={`https://www.post.com/user/${content.author}/`}
-                    aria-label={`Visit profile of ${content.author}`} >{content.author}</a>
+                <Link to={`comment_creator/${content.authorId}`}
+                        onClick={handleCreatorClick}
+                        className={styles.commentUser}
+                        aria-label={`Visit profile of ${content.author}`}>
+                    {content.author}
+                </Link>
+            
                 <time className={styles.commentTimePosted}
                     aria-label={`Posted ${isoToAgo(content.timePublished)}`}>{isoToAgo(content.timePublished)}</time>
             </header>

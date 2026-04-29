@@ -87,7 +87,7 @@ export default function Post ({ content }: PostProps): React.ReactElement {
                 <div className={styles.postInfo} 
                     role="presentation">
                     <Link className={styles.postUser}
-                        to={`creator/${content.creatorId}`}
+                        to={`post_creator/${content.creatorId}`}
                         aria-label={`The link to user profile of ${content.creator}`}
                         onClick={handleCreatorClick}>
                             {content.creator}
