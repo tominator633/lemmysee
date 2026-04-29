@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { ApiSearchResponse, ApiCommunityView } from "./communitiesApiTypes";
-import type { RootState } from '../../main';
+import type { RootState } from '../../app/store';
 
 
 /* Types */

@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type{  ApiCommentListResponse, ApiCommentView } from "./commentsApiTypes";
 import { type PostType } from "../Posts/postsSlice";
-import type { RootState } from '../../main';
+import type { RootState } from '../../app/store';
 //const proxyUrl = "https://corsproxy.io/?";
 
 

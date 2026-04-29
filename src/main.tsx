@@ -14,7 +14,7 @@ const root = createRoot(container);
 store is not ready until its all promises have been resolved,
 so i have to 
  */
-const store = await createAppStore();
+export const store = await createAppStore();
 
 
 
@@ -24,9 +24,3 @@ root.render(
     </Provider>  
 );
 
-// Get the type of our store variable
-export type AppStore = typeof store
-// Infer the `RootState` and `AppDispatch` types from the store itself
-export type RootState = ReturnType<AppStore['getState']>
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
-export type AppDispatch = AppStore['dispatch']

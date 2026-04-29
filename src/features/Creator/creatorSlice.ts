@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { ApiPersonResponse, Person, PersonAggregates } from "./creatorApiTypes";
-import type { RootState } from '../../main';
+import type { RootState } from '../../app/store';
 
 
 /* Types */
