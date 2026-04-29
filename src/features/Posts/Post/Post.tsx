@@ -9,7 +9,7 @@ import { MediaPlayer } from 'dashjs';
 import MarkdownIt from 'markdown-it';
 import DOMPurify from 'dompurify'; 
 import { type PostType } from "../postsSlice";
-import { setCurrentCreator } from "../../Creator/creatorSlice";
+import { getCreator } from "../../Creator/creatorSlice";
 const md = new MarkdownIt(); 
 
 interface PostProps {
@@ -25,13 +25,7 @@ export default function Post ({ content }: PostProps): React.ReactElement {
     const [urlImgError, setUrlImgError] = useState<boolean>(false)
 
     const handleCreatorClick = (): void => {
-        dispatch(setCurrentCreator({
-            id: content.creatorId,
-            name: content.creator,
-            avatarImg: content.creatorAvatar,
-            bannerImg: content.creatorBanner,
-            bio: content.creatorBio
-        }));
+        dispatch(getCreator(content.creatorId));
     };
     const handleDetailsClick = (): void => {
         dispatch(setCurrentPost(content));

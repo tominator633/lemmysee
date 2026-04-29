@@ -2,35 +2,53 @@ import React, { useState, useEffect } from "react";
 import styles from "./CreatorDetailWindow.module.css";
 import { motion, AnimatePresence } from 'framer-motion';
 import { useParams, useNavigate } from "react-router-dom";
-import { selectCurrentCreator, type Creator } from "../creatorSlice";
-import { useAppSelector } from "../../../app/reduxHooks";
+import { selectCurrentCreator, selectIsGetCreatorLoading, selectHasGetCreatorError, getCreator, type Creator } from "../creatorSlice";
+import { useAppSelector, useAppDispatch } from "../../../app/reduxHooks";
 import { windowBarrierVar, communityDetailWindowVar } from "./CreatorDetailWindowFMVariants";
+import { formatNumberWithSpaces, isoToAgo } from "../../../utils/utils";
+import Loading from "../../../components/Loading/Loading";
+import ErrorMessage from "../../../components/ErrorMessage/ErrorMessage";
+import MarkdownIt from 'markdown-it';
+import DOMPurify from 'dompurify';
 
-
+const md = new MarkdownIt();
 
 /* this interface must be specific for each call of useParams hook. 
 in this file the situation orders communityId to be string for sure, 
 so it is safe to get types of the entire object with params specified with
 the Record utility type and put additional constraint that communityId is string,
 not string | undefined.*/
-interface RouteParams extends Record<string, string | undefined> {
-    creatorId: string;
-}
+type RouteParams = {
+  creatorId: string;
+  [key: string]: string | undefined;
+};
 
 export default function CreatorDetailWindow(): React.ReactElement {
     const [isVisible, setIsVisible] = useState<boolean>(true);
     const [iconImgError, setIconImgError] = useState<boolean>(false);
     const [bannerImgError, setBannerImgError] = useState<boolean>(false);
-    
+
+
     const { creatorId } = useParams<RouteParams>();
     const navigate = useNavigate();
-    const currentCreator: Creator | null = useAppSelector(selectCurrentCreator);
+    const dispatch = useAppDispatch();
+  
+
+    const creator: Creator | null = useAppSelector(selectCurrentCreator);
+    const hasGetCreatorError = useAppSelector(selectHasGetCreatorError);
+    const isGetCreatorLoading = useAppSelector(selectIsGetCreatorLoading);
+
 
 
     const handleCloseButtonClick = (): void => {
         setIsVisible(false);
     };
-
+    
+    const handleErrorGetUserReloadBtn = (): void => {
+        if (creatorId) {
+            dispatch(getCreator(creatorId))
+        }
+    }
 
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent): void => {
@@ -43,6 +61,16 @@ export default function CreatorDetailWindow(): React.ReactElement {
     }, [isVisible]);
 
 
+ // Sanitize and convert selftext markdown to HTML
+    const renderSelfText = (): { __html: string } | undefined => {
+        if (creator?.description) {
+            const sanitizedHtml = DOMPurify.sanitize(md.render(creator?.description));
+            return { __html: sanitizedHtml };
+        }
+        return undefined;
+    };
+
+    
 
     return (
         <AnimatePresence onExitComplete={() => { navigate(-1); }}>
@@ -60,7 +88,7 @@ export default function CreatorDetailWindow(): React.ReactElement {
                         className={styles.communityDetailWindow}
                         role="dialog"
                         tabIndex={-1}
-                        aria-label={`${currentCreator?.name ?? "user"} creator information window`}
+                        aria-label={`${creator?.name ?? "creator"} creator information window`}
                         aria-modal="true"
                         variants={communityDetailWindowVar}
                         initial="hidden"
@@ -76,32 +104,80 @@ export default function CreatorDetailWindow(): React.ReactElement {
                             <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 1024 1024"><path fill="currentColor" d="M195.2 195.2a64 64 0 0 1 90.496 0L512 421.504L738.304 195.2a64 64 0 0 1 90.496 90.496L602.496 512L828.8 738.304a64 64 0 0 1-90.496 90.496L512 602.496L285.696 828.8a64 64 0 0 1-90.496-90.496L421.504 512L195.2 285.696a64 64 0 0 1 0-90.496"/></svg>
                         </button>
 
+
+                        {isGetCreatorLoading ?
+                        <Loading loadingText="Loading comments..."/> 
+                        :
+                        hasGetCreatorError ?
+                        <ErrorMessage message="Request failed."
+                                    onClick={handleErrorGetUserReloadBtn}/>
+                        :
                         <div className={styles.communityDetail} 
                                 role="presentation">
                             <figure className={styles.communityBanner} 
                                     role="presentation">
-                                {currentCreator?.bannerImg && !bannerImgError && 
-                                <img src={currentCreator.bannerImg} 
-                                    alt="banner image"
+                                {creator?.bannerImg && !bannerImgError &&
+                                <img src={creator.bannerImg} 
+                                    alt="banner image" 
                                     onError={() => {setBannerImgError(true)}}/>}
                             </figure>
+                            <div className={styles.communityIconWrapper}>
+                                <figure className={styles.communityIcon}>
+                                    {creator?.iconImg && !iconImgError ? (
+                                        <img src={creator.iconImg} 
+                                            alt="community icon"
+                                            onError={() => {setIconImgError(true)}}/>
+                                    ) : (
+                                        <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24"><path fill="currentColor" d="M2.96 4.223a4 4 0 0 0-.333.019A2.84 2.84 0 0 0 .474 5.628c-.475.8-.593 1.68-.35 2.497c.242.816.83 1.558 1.698 2.145l.016.011c.746.45 1.492.743 2.288.9c-.02.332-.028.669-.006 1.018c.063 1.043.436 2 .996 2.85l-2.006.818a.42.42 0 0 0-.228.224a.42.42 0 0 0 .088.455a.42.42 0 0 0 .294.123a.4.4 0 0 0 .16-.031l2.209-.904c.408.486.87.932 1.372 1.318q.03.02.06.043l-1.291 1.71a.416.416 0 0 0 .664.5l1.314-1.738a9.3 9.3 0 0 0 2.229 1.025c.383.72 1.138 1.187 2.02 1.187c.89 0 1.644-.501 2.024-1.207a9.4 9.4 0 0 0 2.208-1.027l1.332 1.76a.416.416 0 0 0 .744-.193a.42.42 0 0 0-.08-.307l-1.31-1.735c.008-.007.018-.01.026-.018c.497-.38.955-.818 1.362-1.294l2.155.88a.416.416 0 0 0 .541-.228a.415.415 0 0 0-.227-.544l-1.944-.792c.577-.854.97-1.819 1.05-2.87c.027-.35.025-.691.009-1.026a7 7 0 0 0 2.273-.897l.017-.012c.868-.587 1.456-1.328 1.698-2.145c.242-.816.125-1.697-.35-2.497a2.84 2.84 0 0 0-2.155-1.386a3 3 0 0 0-.332-.019c-.786-.015-1.623.23-2.429.694c-.593.342-1.125.867-1.543 1.439c-1.17-.67-2.693-1.048-4.564-1.078a16 16 0 0 0-.51 0c-2.086.034-3.755.43-5.015 1.144c-.003-.003-.005-.011-.008-.015C6.55 5.815 6 5.27 5.389 4.917c-.805-.465-1.643-.708-2.428-.694Zm.285.736c.557.042 1.17.236 1.779.588c.485.28.976.755 1.346 1.27a6 6 0 0 0-.497.408c-.92.852-1.461 1.96-1.668 3.233a6.2 6.2 0 0 1-1.984-.794C1.466 9.15 1.005 8.54.821 7.919C.636 7.295.713 6.648 1.098 6c.375-.63.928-.953 1.612-1.032a3 3 0 0 1 .535-.007Zm17.51 0a3 3 0 0 1 .535.008c.684.078 1.237.402 1.612 1.032c.385.648.462 1.296.277 1.92c-.184.622-.645 1.231-1.4 1.744a6.2 6.2 0 0 1-1.96.789c-.194-1.297-.737-2.434-1.666-3.302a6 6 0 0 0-.47-.392c.364-.49.828-.943 1.293-1.212c.61-.351 1.222-.545 1.779-.587m-8.749 1.045a15 15 0 0 1 .487 0c2.39.039 4.085.67 5.163 1.678c1.15 1.075 1.642 2.6 1.5 4.467c-.132 1.707-1.221 3.228-2.653 4.324a9 9 0 0 1-2.225 1.229c.003-.045.014-.089.014-.135c.003-1.196-.932-2.213-2.292-2.213s-2.322 1.015-2.292 2.221c.001.05.014.097.018.147a8.9 8.9 0 0 1-2.278-1.245c-1.423-1.095-2.5-2.613-2.603-4.322c-.113-1.857.378-3.339 1.521-4.397s2.986-1.711 5.64-1.754m-3.642 6.829a1.096 1.096 0 1 0 0 2.192a1.096 1.096 0 0 0 0-2.192m7.282.011a1.086 1.086 0 1 0 0 2.173a1.086 1.086 0 0 0 0-2.173M12 16.084c1.024 0 1.565.638 1.563 1.482c-.001.785-.672 1.485-1.563 1.485c-.917 0-1.54-.562-1.563-1.493c-.022-.834.54-1.474 1.563-1.474"></path></svg>
+                                    )}
+                                </figure>
+                            </div>             
+                            
 
-                            <figure className={styles.communityIcon}>
-                                {currentCreator?.avatarImg && !iconImgError ? (
-                                    <img src={currentCreator.avatarImg} 
-                                    alt="community icon" 
-                                    onError={() => {setIconImgError(true)}}/>
-                                ) : (
-                                    <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24"><path fill="currentColor" d="M2.96 4.223a4 4 0 0 0-.333.019A2.84 2.84 0 0 0 .474 5.628c-.475.8-.593 1.68-.35 2.497c.242.816.83 1.558 1.698 2.145l.016.011c.746.45 1.492.743 2.288.9c-.02.332-.028.669-.006 1.018c.063 1.043.436 2 .996 2.85l-2.006.818a.42.42 0 0 0-.228.224a.42.42 0 0 0 .088.455a.42.42 0 0 0 .294.123a.4.4 0 0 0 .16-.031l2.209-.904c.408.486.87.932 1.372 1.318q.03.02.06.043l-1.291 1.71a.416.416 0 0 0 .664.5l1.314-1.738a9.3 9.3 0 0 0 2.229 1.025c.383.72 1.138 1.187 2.02 1.187c.89 0 1.644-.501 2.024-1.207a9.4 9.4 0 0 0 2.208-1.027l1.332 1.76a.416.416 0 0 0 .744-.193a.42.42 0 0 0-.08-.307l-1.31-1.735c.008-.007.018-.01.026-.018c.497-.38.955-.818 1.362-1.294l2.155.88a.416.416 0 0 0 .541-.228a.415.415 0 0 0-.227-.544l-1.944-.792c.577-.854.97-1.819 1.05-2.87c.027-.35.025-.691.009-1.026a7 7 0 0 0 2.273-.897l.017-.012c.868-.587 1.456-1.328 1.698-2.145c.242-.816.125-1.697-.35-2.497a2.84 2.84 0 0 0-2.155-1.386a3 3 0 0 0-.332-.019c-.786-.015-1.623.23-2.429.694c-.593.342-1.125.867-1.543 1.439c-1.17-.67-2.693-1.048-4.564-1.078a16 16 0 0 0-.51 0c-2.086.034-3.755.43-5.015 1.144c-.003-.003-.005-.011-.008-.015C6.55 5.815 6 5.27 5.389 4.917c-.805-.465-1.643-.708-2.428-.694Zm.285.736c.557.042 1.17.236 1.779.588c.485.28.976.755 1.346 1.27a6 6 0 0 0-.497.408c-.92.852-1.461 1.96-1.668 3.233a6.2 6.2 0 0 1-1.984-.794C1.466 9.15 1.005 8.54.821 7.919C.636 7.295.713 6.648 1.098 6c.375-.63.928-.953 1.612-1.032a3 3 0 0 1 .535-.007Zm17.51 0a3 3 0 0 1 .535.008c.684.078 1.237.402 1.612 1.032c.385.648.462 1.296.277 1.92c-.184.622-.645 1.231-1.4 1.744a6.2 6.2 0 0 1-1.96.789c-.194-1.297-.737-2.434-1.666-3.302a6 6 0 0 0-.47-.392c.364-.49.828-.943 1.293-1.212c.61-.351 1.222-.545 1.779-.587m-8.749 1.045a15 15 0 0 1 .487 0c2.39.039 4.085.67 5.163 1.678c1.15 1.075 1.642 2.6 1.5 4.467c-.132 1.707-1.221 3.228-2.653 4.324a9 9 0 0 1-2.225 1.229c.003-.045.014-.089.014-.135c.003-1.196-.932-2.213-2.292-2.213s-2.322 1.015-2.292 2.221c.001.05.014.097.018.147a8.9 8.9 0 0 1-2.278-1.245c-1.423-1.095-2.5-2.613-2.603-4.322c-.113-1.857.378-3.339 1.521-4.397s2.986-1.711 5.64-1.754m-3.642 6.829a1.096 1.096 0 1 0 0 2.192a1.096 1.096 0 0 0 0-2.192m7.282.011a1.086 1.086 0 1 0 0 2.173a1.086 1.086 0 0 0 0-2.173M12 16.084c1.024 0 1.565.638 1.563 1.482c-.001.785-.672 1.485-1.563 1.485c-.917 0-1.54-.562-1.563-1.493c-.022-.834.54-1.474 1.563-1.474"></path></svg>
-                                )}
-                            </figure>
+                            <h3 className={styles.communityName}>{creator?.displayName || creator?.name}</h3>
+                            <p className={styles.communityNameTag}>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M2.96 4.223a4 4 0 0 0-.333.019A2.84 2.84 0 0 0 .474 5.628c-.475.8-.593 1.68-.35 2.497c.242.816.83 1.558 1.698 2.145l.016.011c.746.45 1.492.743 2.288.9c-.02.332-.028.669-.006 1.018c.063 1.043.436 2 .996 2.85l-2.006.818a.42.42 0 0 0-.228.224a.42.42 0 0 0 .088.455a.42.42 0 0 0 .294.123a.4.4 0 0 0 .16-.031l2.209-.904c.408.486.87.932 1.372 1.318q.03.02.06.043l-1.291 1.71a.416.416 0 0 0 .664.5l1.314-1.738a9.3 9.3 0 0 0 2.229 1.025c.383.72 1.138 1.187 2.02 1.187c.89 0 1.644-.501 2.024-1.207a9.4 9.4 0 0 0 2.208-1.027l1.332 1.76a.416.416 0 0 0 .744-.193a.42.42 0 0 0-.08-.307l-1.31-1.735c.008-.007.018-.01.026-.018c.497-.38.955-.818 1.362-1.294l2.155.88a.416.416 0 0 0 .541-.228a.415.415 0 0 0-.227-.544l-1.944-.792c.577-.854.97-1.819 1.05-2.87c.027-.35.025-.691.009-1.026a7 7 0 0 0 2.273-.897l.017-.012c.868-.587 1.456-1.328 1.698-2.145c.242-.816.125-1.697-.35-2.497a2.84 2.84 0 0 0-2.155-1.386a3 3 0 0 0-.332-.019c-.786-.015-1.623.23-2.429.694c-.593.342-1.125.867-1.543 1.439c-1.17-.67-2.693-1.048-4.564-1.078a16 16 0 0 0-.51 0c-2.086.034-3.755.43-5.015 1.144c-.003-.003-.005-.011-.008-.015C6.55 5.815 6 5.27 5.389 4.917c-.805-.465-1.643-.708-2.428-.694Zm.285.736c.557.042 1.17.236 1.779.588c.485.28.976.755 1.346 1.27a6 6 0 0 0-.497.408c-.92.852-1.461 1.96-1.668 3.233a6.2 6.2 0 0 1-1.984-.794C1.466 9.15 1.005 8.54.821 7.919C.636 7.295.713 6.648 1.098 6c.375-.63.928-.953 1.612-1.032a3 3 0 0 1 .535-.007Zm17.51 0a3 3 0 0 1 .535.008c.684.078 1.237.402 1.612 1.032c.385.648.462 1.296.277 1.92c-.184.622-.645 1.231-1.4 1.744a6.2 6.2 0 0 1-1.96.789c-.194-1.297-.737-2.434-1.666-3.302a6 6 0 0 0-.47-.392c.364-.49.828-.943 1.293-1.212c.61-.351 1.222-.545 1.779-.587m-8.749 1.045a15 15 0 0 1 .487 0c2.39.039 4.085.67 5.163 1.678c1.15 1.075 1.642 2.6 1.5 4.467c-.132 1.707-1.221 3.228-2.653 4.324a9 9 0 0 1-2.225 1.229c.003-.045.014-.089.014-.135c.003-1.196-.932-2.213-2.292-2.213s-2.322 1.015-2.292 2.221c.001.05.014.097.018.147a8.9 8.9 0 0 1-2.278-1.245c-1.423-1.095-2.5-2.613-2.603-4.322c-.113-1.857.378-3.339 1.521-4.397s2.986-1.711 5.64-1.754m-3.642 6.829a1.096 1.096 0 1 0 0 2.192a1.096 1.096 0 0 0 0-2.192m7.282.011a1.086 1.086 0 1 0 0 2.173a1.086 1.086 0 0 0 0-2.173M12 16.084c1.024 0 1.565.638 1.563 1.482c-.001.785-.672 1.485-1.563 1.485c-.917 0-1.54-.562-1.563-1.493c-.022-.834.54-1.474 1.563-1.474"/></svg>
+                                {creator?.name}
+                            </p>
+                            <div className={styles.communityInfoBlock}>
+                                <aside className={styles.communityInfo}>
 
-                            <h3 className={styles.communityName}>{currentCreator?.name}</h3>
+                                    <p>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="4"><path d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20Z"/><path stroke-linecap="round" d="M24.008 12v12.01l8.479 8.48"/></g></svg>
+                                        {creator && `established ${isoToAgo(creator?.timePublished)}`}
+                                    </p>
 
-                            <p className={styles.communityPublicDescription}>{currentCreator?.bio}</p>
+                                    <p>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M18.385 20H5.615q-.666 0-1.14-.475T4 18.386V5.615q0-.666.475-1.14T5.615 4h12.77q.666 0 1.14.475T20 5.615v12.77q0 .666-.475 1.14t-1.14.475m-.154-3.346H5.769v1.807h12.462zm-12.462-.885h12.462v-1.808H5.769zm0-2.923h12.462V5.77H5.769zm0 3.808v1.807zm0-.885v-1.808zm0-2.923V5.77zm0 1.115v-1.115zm0 2.693v-.885z"/></svg>
+                                        {`${formatNumberWithSpaces(creator?.counts.posts ?? 0)} posts`}
+                                    </p>
 
-                     
+                                    <p>
+                                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16">
+                                            <path fill="currentColor" d="M16 11.1c0-1.5-1.5-2.8-3.2-3.3c-1.3 1.5-3.9 2.4-6.4 2.4h-.5c-.1.3-.1.5-.1.8c0 2 2.2 3.6 5 3.6h.6c.4.5 1.7 1.4 3.4 1.4c0 0-.8-.4-.8-1.8c0-.6 2-1.8 2-3.1"></path>
+                                            <path fill="currentColor" d="M13 4.6C13 2.1 10.2 0 6.6 0S0 2.1 0 4.6c0 1.7 2 3.2 3 4C3 10.4 1.6 11 1.6 11c2.3 0 3.6-1.1 4.2-1.8h.8c3.5.1 6.4-2 6.4-4.6"></path>
+                                        </svg>
+                                        {`${formatNumberWithSpaces(creator?.counts.comments ?? 0)} comments`}
+                                    </p>
+
+    
+
+                                </aside>
+                                
+                            </div>
+                            
+
+                            
+                   
+                            {creator?.description &&
+                            <p className={styles.communityPublicDescription}
+                                dangerouslySetInnerHTML={renderSelfText()}/>}
+                            
+
+                            
                         </div>
+                        }
+                        
                     </motion.section>
                 </motion.div>
             )}

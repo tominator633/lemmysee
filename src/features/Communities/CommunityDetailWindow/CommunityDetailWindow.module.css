@@ -4,6 +4,7 @@
     box-sizing: border-box;
     font-family: "Urbanist", sans-serif;
     line-height: 1.4;
+   /*  border: 1px solid red; */
   
 
 }
@@ -142,13 +143,31 @@
     color: #DAF6FB;
 }
 
+.communityNameTag {
+     font-size: 1rem;
+    display: flex;
+    align-items: center;
+    align-content:center;
+    color: #FEE;
+    font-weight: 700;
+    font-style: italic;
 
+}
+.communityNameTag svg {
+     width: 1rem;
+    height: 1rem;
+    display: block;
+    margin-right: 5px;
+
+}
 .communityInfoBlock{
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-direction: row;
     width: 80%;
+    margin-top: 50px;
+    margin-bottom: 50px;
 
 }
 
@@ -162,8 +181,8 @@
     align-content:center;
 }
 .communityInfo p svg {
-    width: 16px;
-    height: 16px;
+    width: 1rem;
+    height: 1rem;
     display: block;
     margin-right: 5px;
 }
@@ -266,7 +285,9 @@
     justify-content: space-between;
     flex-direction: column;
     width: 80%;
-
+    }
+.communityInfo {
+    width: 100%;
 }
 .communityInfo p {
     font-size: 0.8rem;
