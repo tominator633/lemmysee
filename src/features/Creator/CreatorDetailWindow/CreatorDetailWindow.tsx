@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import styles from "./CreatorDetailWindow.module.css";
 import { motion, AnimatePresence } from 'framer-motion';
 import { useParams, useNavigate } from "react-router-dom";
-import { selectCurrentCreator, type Creator } from "../../features/Creator/creatorSlice";
-import { useAppSelector } from "../../app/reduxHooks";
+import { selectCurrentCreator, type Creator } from "../creatorSlice";
+import { useAppSelector } from "../../../app/reduxHooks";
 import { windowBarrierVar, communityDetailWindowVar } from "./CreatorDetailWindowFMVariants";
 
 

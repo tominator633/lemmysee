@@ -30,6 +30,7 @@
 
 
 .communityDetailWindow {
+    position: relative;
     width: 700px;
     height: 90%;
     background-color: #005792;
@@ -57,11 +58,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
+    position: absolute;
     right: 10px;
     top: 10px;
-    position: sticky;
-    float: right;
+
     transition: scale 0.3s linear;
 }
 .closeBtn svg {
@@ -80,7 +80,7 @@
 
 
 .communityDetail {
-    padding-top: 20px;
+
     width: 100%;
     display: flex;
     flex-direction: column;

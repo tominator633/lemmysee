@@ -4,7 +4,7 @@ import Posts from '../features/Posts/Posts';
 import Comments from '../features/Comments/Comments';
 import Communities from '../features/Communities/Communities';
 import CommunityDetailWindow from '../features/Communities/CommunityDetailWindow/CommunityDetailWindow';
-import CreatorDetailWindow from "../components/CreatorDetailWindow/CreatorDetailWindow";
+import CreatorDetailWindow from "../features/Creator/CreatorDetailWindow/CreatorDetailWindow";
 import SavedPosts from '../features/Posts/SavedPosts/SavedPosts';
 import { RouterProvider, createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
 
