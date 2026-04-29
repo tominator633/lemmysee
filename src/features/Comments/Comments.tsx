@@ -35,6 +35,7 @@ export default function Comments (): React.ReactElement {
     const hasCommentsError = useAppSelector(selectHasCommentsError);
 
     const handleCloseButtonClick = (): void => {
+        setIsVisible(false);
         dispatch(emptyComments());
         navigate('..', { relative: 'path' });
     };
