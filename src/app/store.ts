@@ -16,7 +16,8 @@ const initialCommunitiesIds = [
   "761207",
   "2475",
   "2508",
-  "1496",]
+  "1496",
+  "4464"];
 
 
 /* tohle celé musí být zabalené, celý store musí být připravený

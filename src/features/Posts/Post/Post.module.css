@@ -217,6 +217,8 @@
    
 }
 .externalContentImg {
+    max-width: 100%;
+    max-height: 70svh;
     display: block;
     position: relative;
     margin-top: 10px;
@@ -308,7 +310,7 @@
 }
 .videoContent {
     max-width: 100%;
-    max-height: 80svh;
+    max-height: 70svh;
     margin-top: 10px;
     border-radius: 10px;
 }

@@ -38,7 +38,7 @@ export default function Post ({ content }: PostProps): React.ReactElement {
         dispatch(unsavePost({ id: content.id }));
     };
 
-    useEffect(() => {
+  /*   useEffect(() => {
         if (content.videoUrl && videoRef.current) {
             const player = MediaPlayer().create();
             player.initialize(videoRef.current, content.videoUrl, false);
@@ -50,7 +50,7 @@ export default function Post ({ content }: PostProps): React.ReactElement {
                 player.reset();
             }
         };
-    }, [content.videoUrl]);
+    }, [content.videoUrl]); */
 
     const renderSelfText = (): { __html: string } | null => {
         if (content.text) {
@@ -153,6 +153,7 @@ export default function Post ({ content }: PostProps): React.ReactElement {
                     {content.videoUrl && 
                         <video
                             ref={videoRef}
+                            src={content.videoUrl}
                             className={styles.videoContent} 
                             controls 
                             preload="metadata" 
