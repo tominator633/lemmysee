@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import styles from "./CommunityDetailWindow.module.css";
 import { motion, AnimatePresence } from 'framer-motion';
 import { useParams, useNavigate } from "react-router-dom";
-import { addCommunity, deleteCommunity, selectSwiperCommunities, selectCurrentCommunity, type Community } from "../../features/Communities/communitiesSlice";
-import { useAppSelector, useAppDispatch } from "../../app/reduxHooks";
+import { addCommunity, deleteCommunity, selectSwiperCommunities, selectCurrentCommunity, type Community } from "../communitiesSlice";
+import { useAppSelector, useAppDispatch } from "../../../app/reduxHooks";
 import { windowBarrierVar, communityDetailWindowVar } from "./communityDetailWindowFMVariants";
-import { formatNumberWithSpaces } from "../../utils/utils";
+import { formatNumberWithSpaces } from "../../../utils/utils";
 import MarkdownIt from 'markdown-it';
 import DOMPurify from 'dompurify';
 

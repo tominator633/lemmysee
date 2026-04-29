@@ -3,7 +3,7 @@ import AppLayout from './AppLayout';
 import Posts from '../features/Posts/Posts';
 import Comments from '../features/Comments/Comments';
 import Communities from '../features/Communities/Communities';
-import CommunityDetailWindow from '../components/CommunityDetailWindow/CommunityDetailWindow';
+import CommunityDetailWindow from '../features/Communities/CommunityDetailWindow/CommunityDetailWindow';
 import CreatorDetailWindow from "../components/CreatorDetailWindow/CreatorDetailWindow";
 import SavedPosts from '../features/Posts/SavedPosts/SavedPosts';
 import { RouterProvider, createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';

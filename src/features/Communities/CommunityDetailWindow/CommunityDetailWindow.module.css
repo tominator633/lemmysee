@@ -104,6 +104,9 @@
     width: 70px;
     height: 70px;
     border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     overflow: hidden;
     margin-top: -35px;
     background-color: white;
@@ -113,8 +116,8 @@
     height: auto;
 }
 .communityIcon svg {
-    width: 100%;
-    height: 100%;
+    width: 80%;
+    height: 80%;
     color: #FF6B6B;
 }
 
@@ -254,6 +257,18 @@
     flex-direction: column;
     width: 80%;
 
+}
+.communityInfo p {
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    align-content:center;
+}
+.communityInfo p svg {
+    width: 0.8rem;
+    height: 0.8rem;
+    display: block;
+    margin-right: 5px;
 }
 }
 

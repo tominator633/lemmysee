@@ -11,7 +11,7 @@ export default function AppLayout(): React.ReactElement {
 
     useEffect(() => {
         if (path === "/") {
-            navigate("/technology");
+            navigate("/12");
         }
     }, [navigate, path]);
     
