@@ -61,7 +61,15 @@
     margin-top: -20px;
 }
 
-
+.srIconWrapper {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    border-radius: 50%;
+}
 .srIcon {
     width: 40px;
     height: 40px;
@@ -151,6 +159,10 @@
     .srInfo {
         margin-top: -17px;
     }
+    .srIconWrapper {
+    width: 32px;
+    height: 32px;
+}
     .srIcon {
         width: 30px;
         height: 30px;
@@ -179,6 +191,10 @@
     .srInfo {
         margin-top: -15px;
     }
+    .srIconWrapper {
+        width: 30px;
+        height: 30px;
+}
     .srIcon {
         width: 28px;
         height: 28px;

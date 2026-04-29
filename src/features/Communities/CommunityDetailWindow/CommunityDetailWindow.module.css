@@ -4,6 +4,7 @@
     box-sizing: border-box;
     font-family: "Urbanist", sans-serif;
     line-height: 1.4;
+  
 
 }
 
@@ -100,6 +101,16 @@
     width: 100%;
     height: auto
 }
+.communityIconWrapper {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #005792;
+    margin-top: -40px;
+}
 .communityIcon {
     width: 70px;
     height: 70px;
@@ -108,7 +119,6 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    margin-top: -35px;
     background-color: white;
 }
 .communityIcon img {
