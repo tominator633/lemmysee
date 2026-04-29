@@ -1,6 +1,8 @@
-import React from "react";
+import React, {useState} from "react";
 import styles from "./ReplyComment.module.css";
 import { isoToAgo, formatNumberWithSpaces } from "../../utils/utils";
+import { motion, AnimatePresence } from 'framer-motion';
+import {replyCommentVar} from "../../features/Comments/Comment/commentFMVariants";
 import MarkdownIt from "markdown-it";
 import DOMPurify from "dompurify";
 import type { Comment } from "../../features/Comments/commentsSlice";
@@ -12,6 +14,13 @@ interface ReplyCommentProps {
 }
 
 export default function ReplyComment({ replyContent }: ReplyCommentProps): React.ReactElement {
+    
+    const [repliesButton, setRepliesButton] = useState<boolean>(false);
+
+    const handleRepliesButtonClick = (): void => {
+        setRepliesButton(!repliesButton);
+    };
+    
     const renderSelfText = (): { __html: string } | null => {
         if (replyContent.content) {
             const sanitizedHtml = DOMPurify.sanitize(md.render(replyContent.content));
@@ -58,7 +67,40 @@ export default function ReplyComment({ replyContent }: ReplyCommentProps): React
                     aria-label={`the score of this comment is: ${replyContent.score ?? 0}`}>
                     {formatNumberWithSpaces(replyContent.score ?? 0)}
                 </p>
+                {replyContent.replies.length > 0 && 
+                <button onClick={handleRepliesButtonClick} 
+                        className={styles.repliesButton}
+                        style={repliesButton ? {backgroundColor: "#FF6B6B", color: "white"}:{backgroundColor: "#005792", color: "white"}}
+                        aria-expanded={repliesButton} 
+                        aria-controls="replies-section"
+                        aria-label={repliesButton ? "Collapse replies" : "Expand replies"}>
+                            <span>Replies </span>
+                            <span>{`(${replyContent.replies.length}) `}</span>
+                            {repliesButton && 
+                            <span className={styles.closeCross}><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 1024 1024"><path fill="currentColor" d="M195.2 195.2a64 64 0 0 1 90.496 0L512 421.504L738.304 195.2a64 64 0 0 1 90.496 90.496L602.496 512L828.8 738.304a64 64 0 0 1-90.496 90.496L512 602.496L285.696 828.8a64 64 0 0 1-90.496-90.496L421.504 512L195.2 285.696a64 64 0 0 1 0-90.496"/></svg></span>}
+                    
+                </button>}
             </footer>
+            <AnimatePresence>
+                {repliesButton && (
+                    <section id="replies-section" 
+                            aria-label="Replies">
+                        {replyContent.replies.map((reply: Comment, index: number) => (
+                            <motion.div
+                                key={index}
+                                variants={replyCommentVar}
+                                initial="hidden"
+                                animate="visible"
+                                exit="hidden"
+                                aria-live="polite"
+                                aria-atomic="true">
+                                <ReplyComment replyContent={reply}
+                                                key={index} />
+                            </motion.div>
+                        ))}
+                    </section>
+                )}
+            </AnimatePresence>
         </article>
     );
 }
