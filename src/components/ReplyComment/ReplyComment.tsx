@@ -3,6 +3,7 @@ import styles from "./ReplyComment.module.css";
 import { isoToAgo, formatNumberWithSpaces } from "../../utils/utils";
 import { motion, AnimatePresence } from 'framer-motion';
 import {replyCommentVar} from "../../features/Comments/Comment/commentFMVariants";
+import { Link } from "react-router-dom";
 import MarkdownIt from "markdown-it";
 import DOMPurify from "dompurify";
 import type { Comment } from "../../features/Comments/commentsTypes";
@@ -33,15 +34,11 @@ export default function ReplyComment({ replyContent }: ReplyCommentProps): React
         <article className={styles.replyComment} 
                 aria-label={`Reply by ${replyContent.author ?? "unknown"}`}>
             <header className={styles.replyCommentInfo}>
-                <a
-                    className={styles.replyAuthor}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    href={`https://www.post.com/user/${replyContent.author ?? ""}/`}
-                    aria-label={`Visit profile of ${replyContent.author ?? "unknown"}`}
-                >
+                <Link to={`comment_creator/${replyContent.authorId}`}
+                        className={styles.replyAuthor}
+                        aria-label={`Visit profile of ${replyContent.author ?? "unknown"}`}>
                     {replyContent.author}
-                </a>
+                </Link>
                 <time
                     className={styles.replyTimePosted}
                     aria-label={`Posted ${isoToAgo(replyContent.timePublished ?? 0)}`}
