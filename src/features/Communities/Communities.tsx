@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useMemo } from "react";
 import styles from "./Communities.module.css";
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
-import { submitBtnVar, myCommunityVar, searchedCommunityVar } from "./communitiesFMVariants";
+import { submitBtnVar} from "./communitiesFMVariants";
 import CommunityCard from "./CommunityCard/CommunityCard";
 import Loading from "../../components/Loading/Loading";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";

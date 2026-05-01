@@ -1,106 +1,9 @@
-import { createAsyncThunk, createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { ApiPostItem, ApiPostListResponse } from './postsApiTypes';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../../app/store';
+import { type PostType, type PostsState } from "./postsTypes";
 
-
-/* Types */
-
-export interface PostType {
-    id: string;
-    creator: string;
-    creatorId: string;
-    creatorAvatar: string | null;
-    creatorBanner: string | null;
-    creatorBio: string | null;
-    timePublished: string;
-    community: string;
-    title: string;
-    text: string | null;
-    postUrl: string;
-    imgUrl: string | null;
-    score: number;
-    upvotes: number;
-    downvotes: number;
-    videoUrl: string | null;
-    externalUrl: string | null;
-} 
-
-
-export interface PostsState {
-    resultPosts: PostType[];
-    isLoading: boolean;
-    hasError: boolean;
-    savedPosts: PostType[];
-}
-
-
-
-
-//const baseUrl = "https://lemmy.ml/api/v3";
-const baseUrl = "https://lemmy.world/api/v3";
-
-/* Thunk */
-export const loadPosts = createAsyncThunk<
-    PostType[],
-    string,
-    { rejectValue: string }
->(
-    "posts/loadPosts",
-    async (communityId: string, thunkAPI) => {
-        try {
-            const searchEndpoint = `/post/list?community_id=${encodeURIComponent(communityId)}&sort=Hot&limit=40`;
-            const response = await fetch(baseUrl + searchEndpoint);
-            
-            if (!response.ok) {
-                return thunkAPI.rejectWithValue(`Network error: ${response.status}`);
-            }
-
-            const jsonResponse: ApiPostListResponse = await response.json();
-            
-            const postsArr: PostType[] = jsonResponse.posts.map((apiPostItem: ApiPostItem) => {
-
-
-                return {
-                    id: String(apiPostItem.post.id),
-                    creator: apiPostItem.creator.name,
-                    creatorId: String(apiPostItem.creator.id),
-                    creatorAvatar: apiPostItem.creator.avatar ?? null,
-                    creatorBanner: apiPostItem.creator.banner ?? null,
-                    creatorBio: apiPostItem.creator.bio ?? null,
-                    timePublished: apiPostItem.post.published,
-                    community: apiPostItem.community.name,
-                    title: apiPostItem.post.name,
-                    text: apiPostItem.post.body ?? null,
-                    postUrl: apiPostItem.post.ap_id,
-                    imgUrl: apiPostItem.image_details?.link 
-                        ?? apiPostItem.post.thumbnail_url 
-                        ?? null,
-                    score: apiPostItem.counts.score,
-                    upvotes: apiPostItem.counts.upvotes,
-                    downvotes: apiPostItem.counts.downvotes,
-                    videoUrl: apiPostItem.post.url_content_type?.startsWith("video/")
-                        ? apiPostItem.post.url
-                        : null,
-                    externalUrl: apiPostItem.post.url_content_type?.startsWith("text/html")
-                        ? apiPostItem.post.url
-                        : null,
-                } as PostType;
-            });
-            
-            console.log(postsArr);
-            return postsArr;
-        } catch (error: any) {
-            return thunkAPI.rejectWithValue(error?.message ?? "Unknown error");
-        }
-    }
-);
-
-/* Slice */
 
 const initialState: PostsState = {
-    resultPosts: [],
-    isLoading: false,
-    hasError: false,
     savedPosts: [],
 };
 
@@ -117,36 +20,13 @@ export const postsSlice = createSlice({
             const updatedSavedPostsArr = state.savedPosts.filter(post => post.id !== action.payload.id);
             state.savedPosts = updatedSavedPostsArr;
         }
-    },
-    extraReducers: (builder) => {
-        builder
-            .addCase(loadPosts.pending, (state) => {
-                state.isLoading = true;
-                state.hasError = false;
-            })
-            .addCase(loadPosts.rejected, (state) => {
-                state.isLoading = false;
-                state.hasError = true;
-                state.resultPosts = [];
-            })
-            .addCase(loadPosts.fulfilled, (state, action: PayloadAction<PostType[]>) => {
-                state.resultPosts = action.payload;
-                state.isLoading = false;
-                state.hasError = false;
-            });
     }
 });
 
+
+
 /* Selectors */
-
-export const selectResultPosts = (state: RootState): PostType[] => state.posts.resultPosts;
-export const selectIsLoading = (state: RootState): boolean => state.posts.isLoading;
-export const selectHasError = (state: RootState): boolean => state.posts.hasError;
 export const selectSavedPosts = (state: RootState): PostType[] => state.posts.savedPosts;
-
-export const filterPosts = (query: string, posts: PostType[]): PostType[] => {
-    return posts.filter(post => post.title.toLowerCase().includes(query.toLowerCase()));
-};
 
 export const { savePost, unsavePost } = postsSlice.actions;
 

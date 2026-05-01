@@ -2,15 +2,13 @@ import React , { useRef, useState } from "react";
 import styles from "./Post.module.css";
 import { Link } from "react-router-dom";
 import { setCurrentPost } from "../../Comments/commentsSlice";
-import { loadComments } from "../../Comments/commentsThunks";
 import { savePost, unsavePost, selectSavedPosts } from "../postsSlice";
 import { useAppDispatch,  useAppSelector } from "../../../app/reduxHooks";
 import {  isoToAgo, formatNumberWithSpaces } from "../../../utils/utils";
 /* import { MediaPlayer } from 'dashjs'; */
 import MarkdownIt from 'markdown-it';
 import DOMPurify from 'dompurify'; 
-import { type PostType } from "../postsSlice";
-import { getCreator } from "../../Creator/creatorSlice";
+import { type PostType } from "../postsTypes";
 const md = new MarkdownIt(); 
 
 interface PostProps {
@@ -22,16 +20,17 @@ export default function Post ({ content }: PostProps): React.ReactElement {
     const dispatch = useAppDispatch();
     const savedPosts = useAppSelector(selectSavedPosts);
     const videoRef = useRef<HTMLVideoElement | null>(null);
-
     const [urlImgError, setUrlImgError] = useState<boolean>(false)
 
-    const handleCreatorClick = (): void => {
+   /*  const handleCreatorClick = (): void => {
         dispatch(getCreator(content.creatorId));
-    };
+    }; */
     const handleDetailsClick = (): void => {
         dispatch(setCurrentPost(content));
-        dispatch(loadComments(content.id));
+        //dispatch(loadComments(content.id));
     };
+
+
     const handleSavePostBtnClick = (): void => {
         dispatch(savePost(content));
     };
@@ -73,7 +72,8 @@ export default function Post ({ content }: PostProps): React.ReactElement {
                     <svg xmlns="http://www.w3.org/2000/svg" width={20} height={20} viewBox="0 0 20 20"><path fill="currentColor" d="M10 2.5L16.5 9H13v8H7V9H3.5z"></path></svg>
                 </figure>
                 <p className={styles.votes} 
-                    aria-label={`The score of this post is ${content.score}`}>{formatNumberWithSpaces(content.score)}</p>
+                    aria-label={`The score of this post is ${content.score}`}>
+                    {formatNumberWithSpaces(content.score)}</p>
                 <figure className={styles.arrowDown}
                         aria-hidden="true">
                     <span aria-label={`${content.downvotes} upvotes`}>{content.downvotes}</span>
@@ -90,7 +90,7 @@ export default function Post ({ content }: PostProps): React.ReactElement {
                     <Link className={styles.postUser}
                         to={`post_creator/${content.creatorId}`}
                         aria-label={`The link to user profile of ${content.creator}`}
-                        onClick={handleCreatorClick}>
+                       >
                             {content.creator}
                     </Link>
                     <time className={styles.postTimePosted}>{isoToAgo(content.timePublished)}</time>

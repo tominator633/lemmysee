@@ -2,10 +2,9 @@ import React, { useState, useEffect } from "react";
 import styles from "./CreatorDetailWindow.module.css";
 import { motion, AnimatePresence } from 'framer-motion';
 import { useParams, useNavigate } from "react-router-dom";
-import { selectCurrentCreator, selectIsGetCreatorLoading, selectHasGetCreatorError, getCreator, type Creator } from "../creatorSlice";
-import { useAppSelector, useAppDispatch } from "../../../app/reduxHooks";
 import { windowBarrierVar, communityDetailWindowVar } from "./CreatorDetailWindowFMVariants";
 import { formatNumberWithSpaces, isoToAgo } from "../../../utils/utils";
+import { useGetCreatorQuery } from "../creatorApi";
 import Loading from "../../../components/Loading/Loading";
 import ErrorMessage from "../../../components/ErrorMessage/ErrorMessage";
 import MarkdownIt from 'markdown-it';
@@ -20,7 +19,6 @@ the Record utility type and put additional constraint that communityId is string
 not string | undefined.*/
 type RouteParams = {
   creatorId: string;
-  [key: string]: string | undefined;
 };
 
 export default function CreatorDetailWindow(): React.ReactElement {
@@ -31,24 +29,21 @@ export default function CreatorDetailWindow(): React.ReactElement {
 
     const { creatorId } = useParams<RouteParams>();
     const navigate = useNavigate();
-    const dispatch = useAppDispatch();
   
-
-    const creator: Creator | null = useAppSelector(selectCurrentCreator);
-    const hasGetCreatorError = useAppSelector(selectHasGetCreatorError);
-    const isGetCreatorLoading = useAppSelector(selectIsGetCreatorLoading);
-
+     const {
+        data: creator,
+        isFetching,
+        isError,
+        refetch,
+      } = useGetCreatorQuery(creatorId!, {
+        skip: !creatorId,
+      });
 
 
     const handleCloseCreatorButtonClick = (): void => {
         setIsCreatorWindowVisible(false);
     };
     
-    const handleErrorGetUserReloadBtn = (): void => {
-        if (creatorId) {
-            dispatch(getCreator(creatorId))
-        }
-    }
 
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent): void => {
@@ -61,6 +56,8 @@ export default function CreatorDetailWindow(): React.ReactElement {
     }, [isCreatorWindowVisible]);
 
 
+
+
  // Sanitize and convert selftext markdown to HTML
     const renderSelfText = (): { __html: string } | undefined => {
         if (creator?.description) {
@@ -70,7 +67,7 @@ export default function CreatorDetailWindow(): React.ReactElement {
         return undefined;
     };
 
-    
+     
 
     return (
         <AnimatePresence onExitComplete={() => { navigate(-1); }}>
@@ -105,12 +102,12 @@ export default function CreatorDetailWindow(): React.ReactElement {
                         </button>
 
 
-                        {isGetCreatorLoading ?
+                        {isFetching ?
                         <Loading loadingText="Loading comments..."/> 
                         :
-                        hasGetCreatorError ?
+                        isError ?
                         <ErrorMessage message="Request failed."
-                                    onClick={handleErrorGetUserReloadBtn}/>
+                                    onClick={() => {refetch}}/>
                         :
                         <div className={styles.communityDetail} 
                                 role="presentation">

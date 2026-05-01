@@ -1,7 +1,8 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useMemo} from "react";
 import styles from "./SavedPosts.module.css";
 import { useAppSelector } from "../../../app/reduxHooks";
-import { selectSavedPosts, filterPosts, type PostType } from "../postsSlice";
+import { selectSavedPosts } from "../postsSlice";
+import { type PostType } from "../postsTypes";
 import { Outlet, useSearchParams } from 'react-router-dom';
 import ErrorMessage from "../../../components/ErrorMessage/ErrorMessage";
 import PostComponent from "../Post/Post";
@@ -15,7 +16,13 @@ export default function SavedPosts (): React.ReactElement {
     const [searchParams] = useSearchParams();
     const title = searchParams.get("title");
 
-    const postsToRender = title ? filterPosts(title, savedPosts) : savedPosts;
+
+    const postsToRender = useMemo(() => {
+        if (!title) return savedPosts;
+        return savedPosts.filter((post) =>
+        post.title.toLowerCase().includes(title.toLowerCase())
+        );
+    }, [savedPosts, title]);
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: "smooth" });

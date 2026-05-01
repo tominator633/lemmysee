@@ -1,57 +1,67 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import styles from "./Posts.module.css";
-import { useAppDispatch, useAppSelector } from "../../app/reduxHooks";
+import { useAppSelector } from "../../app/reduxHooks";
 import { useParams, Outlet, useSearchParams } from 'react-router-dom';
 import Post from "./Post/Post";
-import { loadPosts, selectResultPosts, selectIsLoading, selectHasError, filterPosts } from "./postsSlice";
 import Loading from "../../components/Loading/Loading";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import { selectSwiperCommunities} from "../Communities/communitiesSlice";
 import { type Community  } from "../Communities/communitiesTypes";
+import { useGetPostsByCommunityQuery } from "./postsApi";
 
 
 export default function Posts(): React.ReactElement {
-    const dispatch = useAppDispatch();
-    const resultPosts = useAppSelector(selectResultPosts);
-    const isLoading = useAppSelector(selectIsLoading);
-    const hasError = useAppSelector(selectHasError);
-    const swiperCommunities = useAppSelector(selectSwiperCommunities);
 
     const { communityId } = useParams<{ communityId?: string }>();
+    const swiperCommunities = useAppSelector(selectSwiperCommunities);
     const targetCommunity: Community | undefined = swiperCommunities.find(community => community.id === communityId);
-    
     const [searchParams] = useSearchParams();
     const title = searchParams.get("title");
 
-    const postsToRender = title ? filterPosts(title, resultPosts) : resultPosts;
+    const {
+        data: posts = [],
+        isFetching,
+        isError,
+        refetch,
+      } = useGetPostsByCommunityQuery(communityId!, {
+        skip: !communityId,
+      });
 
-    useEffect(() => {
+    const postsToRender = useMemo(() => {
+        if (!title) return posts;
+        return posts.filter((post) =>
+        post.title.toLowerCase().includes(title.toLowerCase())
+        );
+    }, [posts, title]);
+
+
+
+
+/*     useEffect(() => {
         if (targetCommunity) {
             dispatch(loadPosts(targetCommunity.id));
         }
-    }, [dispatch, targetCommunity]);
+    }, [dispatch, targetCommunity]); */
+
+
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: "smooth" });
     }, [communityId]);
 
-    const handleErrorBtnClick = (): void => {
-        if (communityId) {
-            dispatch(loadPosts(communityId));
-        }
-    };
+
     
-    if (isLoading) {
+    if (isFetching) {
         return (
             <Loading loadingText="Loading posts..." />
         );
-    } else if (hasError) {
+    } else if (isError) {
         return (
             <section role="presentation">
                 <h2 className={styles.postsH2}>{targetCommunity?.name}</h2>
                 <ErrorMessage 
                     message="Request failed" 
-                    onClick={handleErrorBtnClick}
+                    onClick={refetch}
                 />
             </section>
         );

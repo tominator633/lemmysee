@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {replyCommentVar} from "../../features/Comments/Comment/commentFMVariants";
 import MarkdownIt from "markdown-it";
 import DOMPurify from "dompurify";
-import type { Comment } from "../../features/Comments/commentsSlice";
+import type { Comment } from "../../features/Comments/commentsTypes";
 
 const md = new MarkdownIt();
 

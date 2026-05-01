@@ -3,13 +3,6 @@
 
 
 
-
-
-
-
-
-
-
 export interface ApiPersonResponse {
   person_view: PersonView;
   posts: Object[];

@@ -3,14 +3,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import styles from "./Comments.module.css";
 import Comment from "./Comment/Comment";
 import { useParams, useNavigate, Outlet } from "react-router-dom";
-import { selectCurrentPost, selectComments, emptyComments, selectIsCommentsLoading, selectHasCommentsError } from "./commentsSlice";
-import { loadComments } from "./commentsThunks";
-import { useAppDispatch, useAppSelector } from "../../app/reduxHooks";
+import { selectCurrentPost } from "./commentsSlice";
+import { useAppSelector } from "../../app/reduxHooks";
 import Loading from "../../components/Loading/Loading";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import { isoToAgo, formatNumberWithSpaces} from "../../utils/utils";
-import { getCreator } from "../Creator/creatorSlice";
 import { Link } from "react-router-dom";
+import { useGetCommentsQuery } from "./commentsApi"; 
 import {windowBarrierVar, postDetailWindowVar, commentVar} from "./commentsFMVariants";
 
 
@@ -29,28 +28,30 @@ export default function Comments (): React.ReactElement {
     const [isVisible, setIsVisible] = useState<boolean>(true);
     const {postId} = useParams<RouteParams>();
     const navigate = useNavigate();
-    const dispatch = useAppDispatch();
+
+    const {
+        data: comments = [],
+        isFetching,
+        isError,
+        refetch,
+    } = useGetCommentsQuery(postId!, {
+        skip: !postId,
+    });
+
+
     const currentPost = useAppSelector(selectCurrentPost);
-    const comments = useAppSelector(selectComments);
-    const isCommentsLoading = useAppSelector(selectIsCommentsLoading);
-    const hasCommentsError = useAppSelector(selectHasCommentsError);
 
     const handleCloseButtonClick = (): void => {
         setIsVisible(false);
-        dispatch(emptyComments());
+       // dispatch(emptyComments());
         navigate('..', { relative: 'path' });
     };
 
-    const handleErrorCommentsReloadBtn = (): void => {
-        if (currentPost) {
-            dispatch(loadComments(currentPost.id));
-        }
-    }
-    const handleCreatorClick = (): void => {
+/*     const handleCreatorClick = (): void => {
         if (currentPost) {
           dispatch(getCreator(currentPost?.creatorId));
         }
-        };
+        }; */
 
     useEffect((): (() => void) => {
         const handleKeyDown = (event: KeyboardEvent): void => {
@@ -116,7 +117,7 @@ export default function Comments (): React.ReactElement {
                                 aria-label={`The score of this post is ${currentPost.score}`}>{`score: ${formatNumberWithSpaces(currentPost.score)}`}</p>
                         </div>
                         <Link to={`comment_creator/${currentPost.creatorId}`}
-                                onClick={handleCreatorClick}
+                          
                                 className={styles.postUser}
                                 aria-label={`Visit profile of ${currentPost.creator}`}>
                             {currentPost.creator}
@@ -134,12 +135,12 @@ export default function Comments (): React.ReactElement {
                 <div className={styles.commentsSection}
                     aria-live="polite">
                     <AnimatePresence>
-                    {isCommentsLoading ? 
+                    {isFetching ? 
                     <Loading loadingText="Loading comments..."/> 
                     :
-                    hasCommentsError ?
+                    isError ?
                     <ErrorMessage message="Request failed."
-                                    onClick={handleErrorCommentsReloadBtn}/>
+                                    onClick={refetch}/>
                     :
                     comments.length === 0 ?
                     <p className={styles.noComments}>This post has no comments</p>

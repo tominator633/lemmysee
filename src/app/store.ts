@@ -2,10 +2,12 @@ import { configureStore } from '@reduxjs/toolkit';
 import postsReducer from '../features/Posts/postsSlice';
 import communitiesReducer from '../features/Communities/communitiesSlice';
 import commentsReducer from '../features/Comments/commentsSlice';
-import  creatorReducer from "../features/Creator/creatorSlice";
 import { preloadInitialCommunities } from "../features/Communities/communitiesApi";
-import { communitiesApi } from "../features/Communities/communitiesApi"; // Importuj tvé nové API
-import { store } from "../main";
+import { communitiesApi } from "../features/Communities/communitiesApi";
+import { creatorApi } from "../features/Creator/creatorApi";
+import { commentsApi } from "../features/Comments/commentsApi";
+import { postsApi } from "../features/Posts/postsApi";
+
 
 
 
@@ -34,19 +36,24 @@ export async function createAppStore() {
       posts: postsReducer,
       communities: communitiesReducer,
       comments: commentsReducer,
-      creator: creatorReducer,
       // 1. Přidej RTK Query reducer pod jeho unikátním klíčem
       [communitiesApi.reducerPath]: communitiesApi.reducer,
+      [creatorApi.reducerPath]: creatorApi.reducer,
+      [commentsApi.reducerPath]: commentsApi.reducer,
+      [postsApi.reducerPath]: postsApi.reducer,
     },
     // 2. Middleware je nezbytný pro cache, polling a další funkce RTK Query
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(communitiesApi.middleware),
+      getDefaultMiddleware().concat(
+        communitiesApi.middleware, 
+        creatorApi.middleware, 
+        commentsApi.middleware,
+        postsApi.middleware
+      ),
     
     preloadedState: {
       communities: {
         swiperCommunities: initialCommunities,
-        // Pokud jsi ze slicu odstranil searchedCommunities a loading stavy (jak jsme si psali),
-        // tak je sem už nemusíš psát. Nech tu jen to, co v tom slicu zbylo.
         currentCommunity: {},
       },
     },
@@ -54,8 +61,9 @@ export async function createAppStore() {
 }
 
 // Get the type of our store variable
-export type AppStore = typeof store;
+export type AppStore = Awaited<ReturnType<typeof createAppStore>>;
 // Infer the `RootState` and `AppDispatch` types from the store itself
-export type RootState = ReturnType<AppStore['getState']>;
+export type RootState = ReturnType<AppStore["getState"]>;
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = AppStore['dispatch'];
+
