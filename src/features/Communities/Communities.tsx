@@ -73,6 +73,7 @@ export default function Communities(): React.ReactElement {
 
     return (
         <>
+        <LayoutGroup>
             <div className={styles.srManagerCon}
                 role="presentation">
                 <section className={styles.myCommunitiesCon}
@@ -84,20 +85,20 @@ export default function Communities(): React.ReactElement {
                             {swiperCommunities.length > 0 ?
                                 swiperCommunities.map((community) => {
                                     return (
-                                        <LayoutGroup key={community.id}>
-                                            <motion.div 
-                                                variants={myCommunityVar}
+                                            <motion.div
+                                            key={community.id}
                                                 layout
+                                                layoutId={`community-${community.id}`}
+                                              
                                                 initial="hidden"
                                                 animate="visible"
-                                                exit="exit"
                                                 transition={{ duration: 0.2 }}
                                                 role="presentation">
                                                 <CommunityCard content={community} 
-                                                            key={community.id}
+                                                            
                                                             isSwiperCommunity={true}/>
                                             </motion.div>
-                                        </LayoutGroup>
+                  
                                     );
                                 })
                                 :
@@ -141,11 +142,12 @@ export default function Communities(): React.ReactElement {
                         }
                     </AnimatePresence>
 
-                    <div className={styles.searchedCommunities}
+                    <motion.div className={styles.searchedCommunities}
+                        layout
                         aria-label="Search results"
                         role="region" 
                         aria-live="polite">
-                        <AnimatePresence mode="wait"> 
+                        <AnimatePresence mode="popLayout"> 
                             {isFetching ?
                                 <Loading loadingText="Searching communities..."/>
                                 : isError ?
@@ -161,27 +163,30 @@ export default function Communities(): React.ReactElement {
                                 :
                                 filteredResults.map((community: Community) => {
                                     return (
-                                        <LayoutGroup key={community.id}>
                                             <motion.div 
-                                                variants={searchedCommunityVar}
+                                                key={community.id}
                                                 layout
+                                                layoutId={`community-${community.id}`}
+                                            
                                                 initial="hidden"
                                                 animate="visible"
-                                                exit="exit"
+                                         
                                                 transition={{ duration: 0.2 }}
                                                 role="presentation">
                                                 <CommunityCard content={community} 
-                                                            key={community.id}
+                                                         
                                                             isSwiperCommunity={false}/>
                                             </motion.div>
-                                        </LayoutGroup>
                                     );
                                 })
                             }
                         </AnimatePresence>
-                    </div>
+                    </motion.div>
                 </section>
             </div>
+        </LayoutGroup>
+
+
             <Outlet/>
         </>
     );
