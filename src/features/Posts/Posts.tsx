@@ -6,7 +6,8 @@ import Post from "./Post/Post";
 import { loadPosts, selectResultPosts, selectIsLoading, selectHasError, filterPosts } from "./postsSlice";
 import Loading from "../../components/Loading/Loading";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
-import { selectSwiperCommunities, type Community } from "../Communities/communitiesSlice";
+import { selectSwiperCommunities} from "../Communities/communitiesSlice";
+import { type Community  } from "../Communities/communitiesTypes";
 
 
 export default function Posts(): React.ReactElement {

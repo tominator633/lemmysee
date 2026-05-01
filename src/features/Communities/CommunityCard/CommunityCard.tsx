@@ -1,9 +1,10 @@
 import React from "react";
-import styles from "./Community.module.css";
+import styles from "./CommunityCard.module.css";
 import { Link } from "react-router-dom";
 import { useAppDispatch } from "../../../app/reduxHooks";
-import { addCommunity, deleteCommunity, setCurrentCommunity, type Community } from "../communitiesSlice";
+import { addCommunity, deleteCommunity, setCurrentCommunity } from "../communitiesSlice";
 import { useState } from "react";
+import { type Community } from "../communitiesTypes";
 import { formatNumberWithSpaces } from "../../../utils/utils";
 
 interface CommunityProps {
@@ -11,7 +12,7 @@ interface CommunityProps {
     isSwiperCommunity: boolean;
 }
 
-export default function Community({ content, isSwiperCommunity }: CommunityProps): React.ReactElement {
+export default function CommunityCard ({ content, isSwiperCommunity }: CommunityProps): React.ReactElement {
     const [iconImgError, setIconImgError] = useState<boolean>(false);
     const [bannerImgError, setBannerImgError] = useState<boolean>(false);
     const dispatch = useAppDispatch();

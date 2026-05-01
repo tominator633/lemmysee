@@ -1,57 +1,4 @@
 
-import type { Community } from "../features/Communities/communitiesSlice";
-import type { CommunityResponse, CommunityView } from "../features/Communities/initialCommunityApiTypes";
-
-
-
-
-
-export const preloadInitialCommunities = async (initialCommunitiesIds: string[]): Promise<Community[]> => {
-  try {
-    //here we have to wait until every promise is resolved, thats why Promise.all
-    const initialCommunities: Community[] = await Promise.all(
-      initialCommunitiesIds.map(async (id) => {
-        const urlToFetch = `https://lemmy.world/api/v3/community?id=${id}`;
-        const response = await fetch(urlToFetch);
-
-        if (!response.ok) {
-          throw new Error(`Failed to fetch community ${id}: ${response.statusText}`);
-        }
-
-        const jsonResponse: CommunityResponse = await response.json();
-        const communityView: CommunityView = jsonResponse.community_view;
-
-        return {
-          id: String(communityView.community.id),
-          name: communityView.community.name,
-          headerTitle: communityView.community.title,
-          iconImg: communityView.community.icon ?? null,
-          bannerImg: communityView.community.banner ?? null,
-          description: communityView.community.description ?? null,
-          isHidden: communityView.community.hidden,
-          isBlocked: communityView.blocked,
-          timePublished: communityView.community.published,
-          counts: {
-            posts: communityView.counts.posts,
-            comments: communityView.counts.comments,
-            subscribers: communityView.counts.subscribers,
-            usersActivePerWeek: communityView.counts.users_active_week,
-            usersActivePerMonth: communityView.counts.users_active_month,
-          },
-        };
-      })
-    );
-
-    return initialCommunities;
-  } catch (error: any) {
-    console.log(error);
-    return [];
-  }
-}
-
-
-
-
 
 
 
@@ -96,5 +43,12 @@ export const formatNumberWithSpaces = (num: number): string => {
     const numStr = num.toString();
     return numStr.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 };
+
+
+
+
+
+
+
 
 

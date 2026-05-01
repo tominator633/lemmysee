@@ -1,35 +1,53 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import styles from "./Communities.module.css";
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
 import { submitBtnVar, myCommunityVar, searchedCommunityVar } from "./communitiesFMVariants";
-import Community from "./Community/Community";
+import CommunityCard from "./CommunityCard/CommunityCard";
 import Loading from "../../components/Loading/Loading";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import { Outlet } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from "../../app/reduxHooks";
-import { selectSwiperCommunities, selectSearchedCommunities, searchCommunities, selectIsSearchCommunitiesLoading, selectHasSearchCommunitiesError } from "./communitiesSlice";
+import { useAppSelector } from "../../app/reduxHooks";
+import { selectSwiperCommunities } from "./communitiesSlice";
+import { useSearchCommunitiesQuery } from "./communitiesApi";
+import type { Community } from "./communitiesTypes";
+
 
 export default function Communities(): React.ReactElement {
-
-    const dispatch = useAppDispatch();
+    
+    // searchInput ovládá pouze text v inputu (tzv. "draft")
+    const [searchInput, setSearchInput] = useState<string>("");
+     // confirmedTerm je to, co skutečně posíláme do API (až po Enteru nebo kliku)
+    const [confirmedTerm, setConfirmedTerm] = useState<string>("");
+    
+    // RTK Query hook - automaticky se spustí, když se změní confirmedTerm
+    const { 
+        data: searchedResults = [], 
+        isFetching, // isFetching je true při každém novém požadavku (i při změně termínu)
+        isError,
+        refetch 
+    } = useSearchCommunitiesQuery(confirmedTerm, { 
+        skip: confirmedTerm === "" // Nehledej, pokud je termín prázdný
+    });
 
     const swiperCommunities = useAppSelector(selectSwiperCommunities);
-    const searchedCommunities = useAppSelector(selectSearchedCommunities);
-    const isSearchCommunitiesLoading = useAppSelector(selectIsSearchCommunitiesLoading);
-    const hasSearchCommunitiesError = useAppSelector(selectHasSearchCommunitiesError);
-
-    const [searchInput, setSearchInput] = useState<string>("");
+    
     const searchInputRef = useRef<HTMLInputElement | null>(null);
+
+
+ // Industry standard: Filtrujeme výsledky přímo v komponentě (tzv. Derived State)
+    // Nechceme v hledání nabízet komunity, které už uživatel má ve výběru.
+    const filteredResults = useMemo(() => {
+        return searchedResults.filter(
+            (searchResult) => !swiperCommunities.some((myCom) => myCom.id === searchResult.id)
+        ).sort((a: Community, b: Community) => b.counts.subscribers - a.counts.subscribers);
+    }, [searchedResults, swiperCommunities]);
+
+    
+
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: "smooth" });
     }, []);
-
-    const sanitizeInput = (input: string): string => {
-        const tempElement = document.createElement('div');
-        tempElement.textContent = input; // Sanitizes input
-        return tempElement.innerHTML;
-    };
 
     const handleSearchFieldChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         const regex = /^[A-Za-zÀ-ÖØ-öø-ÿ0-9\sěščřžůú]*$/;
@@ -40,26 +58,18 @@ export default function Communities(): React.ReactElement {
         }
     };
 
-    const handleSubmitSearchCommunitiesBtnClick = (): void => {
-        const sanitizedInput = sanitizeInput(searchInput);
-        const encodedInput = encodeURIComponent(sanitizedInput);
-        dispatch(searchCommunities(encodedInput));
-    };
-
-    const handleKeyDown = (event: React.KeyboardEvent<HTMLElement>): void => {
-        if (event.key === 'Enter' && searchInput) {
-            event.preventDefault();
-            const sanitizedInput = sanitizeInput(searchInput);
-            const encodedInput = encodeURIComponent(sanitizedInput);
-            dispatch(searchCommunities(encodedInput));
+    const triggerSearch = () => {
+        if (searchInput.trim()) {
+            setConfirmedTerm(searchInput.trim());
         }
-    };
-
-    const handleErrorSearchSubmitReloadClick = (): void => {
-        const sanitizedInput = sanitizeInput(searchInput);
-        const encodedInput = encodeURIComponent(sanitizedInput);
-        dispatch(searchCommunities(encodedInput));
-    };
+        };
+    
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLElement>): void => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            triggerSearch();
+        }
+        };
 
     return (
         <>
@@ -83,7 +93,7 @@ export default function Communities(): React.ReactElement {
                                                 exit="exit"
                                                 transition={{ duration: 0.2 }}
                                                 role="presentation">
-                                                <Community content={community} 
+                                                <CommunityCard content={community} 
                                                             key={community.id}
                                                             isSwiperCommunity={true}/>
                                             </motion.div>
@@ -119,7 +129,7 @@ export default function Communities(): React.ReactElement {
                         {searchInput &&
                             <motion.button 
                                 className={styles.submitSearchCommunitiesBtn}
-                                onClick={handleSubmitSearchCommunitiesBtnClick}
+                                onClick={triggerSearch}
                                 aria-label="Submit community search"
                                 variants={submitBtnVar}
                                 initial="hidden"
@@ -130,20 +140,26 @@ export default function Communities(): React.ReactElement {
                             </motion.button>
                         }
                     </AnimatePresence>
+
                     <div className={styles.searchedCommunities}
                         aria-label="Search results"
                         role="region" 
                         aria-live="polite">
-                        <AnimatePresence> 
-                            {isSearchCommunitiesLoading ?
-                                <Loading loadingText="Loading communities..."/>
-                                : hasSearchCommunitiesError ?
-                                <ErrorMessage message="Request failed."
-                                                onClick={handleErrorSearchSubmitReloadClick} />
-                                : searchedCommunities.length === 0 ?
-                                <p>No communities found</p>
+                        <AnimatePresence mode="wait"> 
+                            {isFetching ?
+                                <Loading loadingText="Searching communities..."/>
+                                : isError ?
+                                <ErrorMessage key="error"
+                                                message="Request failed."
+                                                onClick={refetch} />
+                                : confirmedTerm && filteredResults.length === 0 ?
+                                <motion.p key="empty" 
+                                            initial={{ opacity: 0 }} 
+                                            animate={{ opacity: 1 }}>
+                                        No communities found
+                                </motion.p>
                                 :
-                                searchedCommunities.map((community) => {
+                                filteredResults.map((community: Community) => {
                                     return (
                                         <LayoutGroup key={community.id}>
                                             <motion.div 
@@ -154,7 +170,7 @@ export default function Communities(): React.ReactElement {
                                                 exit="exit"
                                                 transition={{ duration: 0.2 }}
                                                 role="presentation">
-                                                <Community content={community} 
+                                                <CommunityCard content={community} 
                                                             key={community.id}
                                                             isSwiperCommunity={false}/>
                                             </motion.div>

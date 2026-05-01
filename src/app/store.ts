@@ -3,7 +3,8 @@ import postsReducer from '../features/Posts/postsSlice';
 import communitiesReducer from '../features/Communities/communitiesSlice';
 import commentsReducer from '../features/Comments/commentsSlice';
 import  creatorReducer from "../features/Creator/creatorSlice";
-import { preloadInitialCommunities } from "../utils/utils";
+import { preloadInitialCommunities } from "../features/Communities/communitiesApi";
+import { communitiesApi } from "../features/Communities/communitiesApi"; // Importuj tvé nové API
 import { store } from "../main";
 
 
@@ -34,13 +35,18 @@ export async function createAppStore() {
       communities: communitiesReducer,
       comments: commentsReducer,
       creator: creatorReducer,
+      // 1. Přidej RTK Query reducer pod jeho unikátním klíčem
+      [communitiesApi.reducerPath]: communitiesApi.reducer,
     },
+    // 2. Middleware je nezbytný pro cache, polling a další funkce RTK Query
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(communitiesApi.middleware),
+    
     preloadedState: {
       communities: {
         swiperCommunities: initialCommunities,
-        searchedCommunities: [],
-        isSearchCommunitiesLoading: false,
-        hasSearchCommunitiesError: false,
+        // Pokud jsi ze slicu odstranil searchedCommunities a loading stavy (jak jsme si psali),
+        // tak je sem už nemusíš psát. Nech tu jen to, co v tom slicu zbylo.
         currentCommunity: {},
       },
     },
