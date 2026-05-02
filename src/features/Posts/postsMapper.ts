@@ -24,10 +24,10 @@ export const mapApiPostItemToPost = (apiPostItem: ApiPostItem): PostType => {
     upvotes: apiPostItem.counts.upvotes,
     downvotes: apiPostItem.counts.downvotes,
     videoUrl: apiPostItem.post.url_content_type?.startsWith("video/")
-      ? apiPostItem.post.url
+      ? apiPostItem.post.url ?? null
       : null,
     externalUrl: apiPostItem.post.url_content_type?.startsWith("text/html")
-      ? apiPostItem.post.url
+      ? apiPostItem.post.url ?? null
       : null,
   };
 };
