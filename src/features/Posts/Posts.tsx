@@ -23,7 +23,7 @@ export default function Posts(): React.ReactElement {
         isFetching,
         isError,
         refetch,
-      } = useGetPostsByCommunityQuery(communityId!, {
+      } = useGetPostsByCommunityQuery({ communityId: communityId! }, {
         skip: !communityId,
       });
 
