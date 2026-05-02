@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styles from "./Comment.module.css";
-import ReplyComment from "../../../components/ReplyComment/ReplyComment";
 import { isoToAgo, formatNumberWithSpaces} from "../../../utils/utils";
 import { motion, AnimatePresence } from 'framer-motion';
 import {replyCommentVar} from "./commentFMVariants";
@@ -44,7 +43,9 @@ export default function Comment ({ content }: CommentProps): React.ReactElement 
                 </Link>
             
                 <time className={styles.commentTimePosted}
-                    aria-label={`Posted ${isoToAgo(content.timePublished)}`}>{isoToAgo(content.timePublished)}</time>
+                    aria-label={`Posted ${isoToAgo(content.timePublished)}`}>
+                        {isoToAgo(content.timePublished)}
+                </time>
             </header>
             <section className={styles.commentContent}
                     aria-live="polite" 
@@ -88,8 +89,8 @@ export default function Comment ({ content }: CommentProps): React.ReactElement 
                                 exit="hidden"
                                 aria-live="polite"
                                 aria-atomic="true">
-                                <ReplyComment replyContent={reply}
-                                                key={index} />
+                                <Comment content={reply}
+                                        key={index} />
                             </motion.div>
                         ))}
                     </section>
