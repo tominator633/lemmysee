@@ -1,7 +1,7 @@
 import React , { useRef, useState } from "react";
 import styles from "./Post.module.css";
 import { Link } from "react-router-dom";
-import { setCurrentPost } from "../../Comments/commentsSlice";
+import { setCurrentPost } from "../../comments/commentsSlice";
 import { savePost, unsavePost, selectSavedPosts } from "../postsSlice";
 import { useAppDispatch,  useAppSelector } from "../../../app/reduxHooks";
 import {  isoToAgo, formatNumberWithSpaces } from "../../../utils/utils";

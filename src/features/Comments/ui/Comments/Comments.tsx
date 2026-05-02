@@ -1,15 +1,15 @@
 import React, {useState, useEffect} from "react";
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from "./Comments.module.css";
-import Comment from "./Comment/Comment";
+import Comment from "../Comment/Comment";
 import { useParams, useNavigate, Outlet } from "react-router-dom";
 import { selectCurrentPost } from "./commentsSlice";
-import { useAppSelector } from "../../app/reduxHooks";
-import Loading from "../../components/Loading/Loading";
-import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
-import { isoToAgo, formatNumberWithSpaces} from "../../utils/utils";
+import { useAppSelector } from "../../../../app/reduxHooks";
+import Loading from "../../../../components/Loading/Loading";
+import ErrorMessage from "../../../../components/ErrorMessage/ErrorMessage";
+import { isoToAgo, formatNumberWithSpaces} from "../../../../utils/utils";
 import { Link } from "react-router-dom";
-import { useGetCommentsQuery } from "./commentsApi"; 
+import { useGetCommentsQuery } from "../../api/commentsApi"; 
 import {windowBarrierVar, postDetailWindowVar, commentVar} from "./commentsFMVariants";
 
 

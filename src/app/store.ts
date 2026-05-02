@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import postsReducer from '../features/Posts/postsSlice';
 import communitiesReducer from '../features/Communities/communitiesSlice';
-import commentsReducer from '../features/Comments/commentsSlice';
+import commentsReducer from '../features/comments/commentsSlice';
 import { preloadInitialCommunities } from "../features/Communities/communitiesApi";
 import { communitiesApi } from "../features/Communities/communitiesApi";
 import { creatorApi } from "../features/Creator/creatorApi";
-import { commentsApi } from "../features/Comments/commentsApi";
+import { commentsApi } from "../features/comments/api/commentsApi";
 import { postsApi } from "../features/Posts/postsApi";
 
 
