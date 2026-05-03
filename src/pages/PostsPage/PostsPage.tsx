@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from "react";
-import styles from "./Posts.module.css";
+import styles from "./PostsPage.module.css";
 import { useAppSelector } from "../../app/store/reduxHooks";
 import { useParams, Outlet, useSearchParams } from 'react-router-dom';
 import Post from "../../features/posts/ui/Post/Post";
@@ -10,7 +10,7 @@ import { type Community  } from "../../features/communities/model/communitiesTyp
 import { useGetPostsByCommunityQuery } from "../../features/posts/api/postsApi";
 
 
-export default function Posts(): React.ReactElement {
+export default function PostsPage (): React.ReactElement {
 
     const { communityId } = useParams<{ communityId?: string }>();
     const swiperCommunities = useAppSelector(selectSwiperCommunities);

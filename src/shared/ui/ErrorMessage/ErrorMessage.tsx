@@ -9,7 +9,8 @@ interface ErrorMessageProps {
 }
 
 export default function ErrorMessage({ message, onClick }: ErrorMessageProps): React.ReactElement {
-    const errorRef = useRef<HTMLElement | null>(null);
+
+    const errorRef = useRef<HTMLElement>(null);
 
     useEffect(() => {
         errorRef.current?.focus();
@@ -24,7 +25,7 @@ export default function ErrorMessage({ message, onClick }: ErrorMessageProps): R
             role="alert"
             aria-live="assertive"
             tabIndex={-1}
-            ref={errorRef as unknown as React.Ref<HTMLDivElement>}
+            ref={errorRef}
         >
             <div className={styles.errorDiv} 
                     role="presentation">

@@ -1,8 +1,8 @@
 
 import AppLayout from '../../widgets/AppLayout/AppLayout';
-import Posts from '../../pages/Posts/Posts';
+import Posts from '../../pages/PostsPage/PostsPage';
 import Comments from '../../features/comments/ui/Comments/Comments';
-import Communities from '../../pages/Communities/Communities';
+import Communities from '../../pages/CommunitiesPage/CommunitiesPage';
 import CommunityDetailWindow from '../../features/communities/ui/CommunityDetailWindow/CommunityDetailWindow';
 import CreatorDetailWindow from "../../features/creator/ui/CreatorDetailWindow/CreatorDetailWindow";
 import SavedPosts from '../../pages/SavedPosts/SavedPosts';

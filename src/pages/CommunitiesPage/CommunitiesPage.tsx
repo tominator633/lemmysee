@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useMemo } from "react";
-import styles from "./Communities.module.css";
+import styles from "./CommunitiesPage.module.css";
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
-import { submitBtnVar} from "./communitiesFMVariants";
+import { submitBtnVar} from "./CommunitiesPageFMVariants";
 import CommunityCard from "../../features/communities/ui/CommunityCard/CommunityCard";
 import Loading from "../../shared/ui/Loading/Loading";
 import ErrorMessage from "../../shared/ui/ErrorMessage/ErrorMessage";
@@ -12,7 +12,7 @@ import { useSearchCommunitiesQuery } from "../../features/communities/api/commun
 import type { Community } from "../../features/communities/model/communitiesTypes";
 
 
-export default function Communities(): React.ReactElement {
+export default function CommunitiesPage (): React.ReactElement {
     
     // searchInput ovládá pouze text v inputu (tzv. "draft")
     const [searchInput, setSearchInput] = useState<string>("");
