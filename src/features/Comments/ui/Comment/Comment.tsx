@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import styles from "./Comment.module.css";
-import { isoToAgo, formatNumberWithSpaces} from "../../../../utils/utils";
+import { isoToAgo} from "../../../../shared/lib/dates/dates";
+import { formatNumberWithSpaces } from "../../../../shared/lib/formatting/formatting";
+import { renderSelfText } from "../../../../shared/lib/markdown/markdown";
 import { motion, AnimatePresence } from 'framer-motion';
 import {replyCommentVar} from "./commentFMVariants";
 import { Link } from "react-router-dom";
-import MarkdownIt from 'markdown-it';
-import DOMPurify from 'dompurify';
-import type { Comment } from "../../commentsTypes";
+import type { Comment } from "../../model/commentsTypes";
 
-const md = new MarkdownIt();
+
 
 interface CommentProps {
     content: Comment;
@@ -22,14 +22,6 @@ export default function Comment ({ content }: CommentProps): React.ReactElement 
         setRepliesButton(!repliesButton);
     };
 
-    // Sanitize and convert selftext markdown to HTML
-    const renderSelfText = (): { __html: string } | undefined => {
-        if (content.content) {
-            const sanitizedHtml = DOMPurify.sanitize(md.render(content.content));
-            return { __html: sanitizedHtml };
-        }
-        return undefined;
-    };
 
     return (
         <article className={styles.comment}
@@ -51,7 +43,7 @@ export default function Comment ({ content }: CommentProps): React.ReactElement 
                     aria-live="polite" 
                     aria-atomic="true">
                 <p  className={styles.commentText}
-                    dangerouslySetInnerHTML={renderSelfText()}
+                    dangerouslySetInnerHTML={renderSelfText(content.content)}
                     />
             </section>
             <section className={styles.infoLine}>

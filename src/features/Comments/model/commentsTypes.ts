@@ -1,13 +1,13 @@
-import { type PostType } from "../Posts/postsTypes";
 
-/* Types */
+
+
 
 export interface Comment {
     id: string;
     parentId: number | null;
     author: string | null;
     authorId: string;
-    content: string | null;
+    content: string;
     timePublished: string;
     score: number | null;
     path: string;
@@ -15,8 +15,3 @@ export interface Comment {
     replies: Comment[];
 }
 
-
-export interface CommentsState {
-    currentPost: PostType | null;
-    comments: Comment[];
-}

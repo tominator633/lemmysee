@@ -3,11 +3,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import styles from "./Comments.module.css";
 import Comment from "../Comment/Comment";
 import { useParams, useNavigate, Outlet } from "react-router-dom";
-import { selectCurrentPost } from "./commentsSlice";
-import { useAppSelector } from "../../../../app/reduxHooks";
-import Loading from "../../../../components/Loading/Loading";
-import ErrorMessage from "../../../../components/ErrorMessage/ErrorMessage";
-import { isoToAgo, formatNumberWithSpaces} from "../../../../utils/utils";
+import { selectCurrentPost } from "../../../posts/model/postsSlice";
+import { useAppSelector } from "../../../../app/store/reduxHooks";
+import Loading from "../../../../shared/ui/Loading/Loading";
+import ErrorMessage from "../../../../shared/ui/ErrorMessage/ErrorMessage";
+import { isoToAgo} from "../../../../shared/lib/dates/dates";
+import { formatNumberWithSpaces} from "../../../../shared/lib/formatting/formatting";
 import { Link } from "react-router-dom";
 import { useGetCommentsQuery } from "../../api/commentsApi"; 
 import {windowBarrierVar, postDetailWindowVar, commentVar} from "./commentsFMVariants";
@@ -43,15 +44,8 @@ export default function Comments (): React.ReactElement {
 
     const handleCloseButtonClick = (): void => {
         setIsVisible(false);
-       // dispatch(emptyComments());
         navigate('..', { relative: 'path' });
     };
-
-/*     const handleCreatorClick = (): void => {
-        if (currentPost) {
-          dispatch(getCreator(currentPost?.creatorId));
-        }
-        }; */
 
     useEffect((): (() => void) => {
         const handleKeyDown = (event: KeyboardEvent): void => {

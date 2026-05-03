@@ -1,5 +1,5 @@
 
-import { type ApiCommentView } from "./commentsApiTypes";
+import { type ApiCommentView } from "../api/commentsApiTypes";
 
 
 

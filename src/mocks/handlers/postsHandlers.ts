@@ -1,5 +1,5 @@
 import { http, HttpResponse } from "msw";
-import type { ApiPostListResponse } from "../../features/Posts/postsApiTypes";
+import type { ApiPostListResponse } from "../../features/posts/api/postsApiTypes";
 
 
 

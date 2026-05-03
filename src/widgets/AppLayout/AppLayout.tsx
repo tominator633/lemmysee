@@ -1,0 +1,27 @@
+import React, { useEffect } from "react";
+import Header from "../Header/Header";
+import Footer from "../Footer/Footer";
+import styles from "./AppLayout.module.css";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
+
+export default function AppLayout(): React.ReactElement {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const path = location.pathname;
+
+    useEffect(() => {
+        if (path === "/") {
+            navigate("/12");
+        }
+    }, [navigate, path]);
+    
+    return (
+        <>
+            <Header/>
+            <main className={styles.appMain}>
+                <Outlet/>
+            </main>
+            <Footer/>
+        </>
+    );
+}

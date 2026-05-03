@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { mapApiCommentViewToCommentDomain } from "./commentsMapper";
+import { mapApiCommentViewToCommentDomain } from "../lib/commentsMapper";
 import { type ApiCommentListResponse } from "./commentsApiTypes";
-import { type Comment } from "../commentsTypes";
+import { type Comment } from "../model/commentsTypes";
 
 
 
