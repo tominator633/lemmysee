@@ -1,5 +1,5 @@
 import { afterAll, afterEach, beforeAll } from 'vitest';
-import { server } from './mocks/node';
+import { server } from './shared/testing/mocks/node';
 import '@testing-library/jest-dom/vitest';
 
 beforeAll(() => {

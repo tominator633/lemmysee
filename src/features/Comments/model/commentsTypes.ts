@@ -1,10 +1,5 @@
-
-
-
-
 export interface Comment {
     id: string;
-    parentId: number | null;
     author: string | null;
     authorId: string;
     content: string;
