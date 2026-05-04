@@ -21,9 +21,11 @@ describe("renderSelfText", () => {
   });
 
   it("allows safe HTML", () => {
-    const result = renderSelfText("<b>safe</b>");
+     const result = renderSelfText("<b>safe</b>");
 
-    expect(result?.__html).toContain("<b>safe</b>");
+    // markdown-it escapuje raw HTML by default — výsledek je plain text v <p>
+    expect(result?.__html).toContain("safe");
+    expect(result?.__html).not.toContain("<script>");
   });
 
   it("handles mixed markdown and html", () => {

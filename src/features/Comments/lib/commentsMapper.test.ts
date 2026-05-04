@@ -2,11 +2,6 @@ import { describe, it, expect } from "vitest";
 import { mapApiCommentViewToCommentDomain } from "./commentsMapper";
 import { mockApiCommentView } from "../../../shared/testing/mocks/data/commentsMocks";
 
-
-
-
-// ── tests ─────────────────────────────────────────────────────────────────────
-
 describe("mapApiCommentViewToCommentDomain", () => {
   it("maps id as string", () => {
     const result = mapApiCommentViewToCommentDomain(mockApiCommentView);
@@ -17,7 +12,7 @@ describe("mapApiCommentViewToCommentDomain", () => {
   it("maps author name", () => {
     const result = mapApiCommentViewToCommentDomain(mockApiCommentView);
 
-    expect(result.author).toBe("john_doe");
+    expect(result.author).toBe("user1");
   });
 
   it("maps authorId as string", () => {
@@ -29,7 +24,7 @@ describe("mapApiCommentViewToCommentDomain", () => {
   it("maps content", () => {
     const result = mapApiCommentViewToCommentDomain(mockApiCommentView);
 
-    expect(result.content).toBe("Test comment");
+    expect(result.content).toBe("Root comment");
   });
 
   it("maps timePublished", () => {
@@ -41,7 +36,7 @@ describe("mapApiCommentViewToCommentDomain", () => {
   it("maps score", () => {
     const result = mapApiCommentViewToCommentDomain(mockApiCommentView);
 
-    expect(result.score).toBe(42);
+    expect(result.score).toBe(5);
   });
 
   it("maps path", () => {

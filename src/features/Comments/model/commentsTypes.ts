@@ -4,7 +4,7 @@ export interface Comment {
     authorId: string;
     content: string;
     timePublished: string;
-    score: number | null;
+    score: number;
     path: string;
     postId: string;
     replies: Comment[];

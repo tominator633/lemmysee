@@ -19,17 +19,6 @@ vi.mock("framer-motion", () => ({
 
 // ── helpers ───────────────────────────────────────────────────────────────────
 
-beforeEach(() => {
-  vi.useFakeTimers();
-  vi.setSystemTime(new Date("2024-06-01T00:00:00.000Z"));
-});
-
-afterEach(() => {
-  vi.useRealTimers();
-});
-
-
-
 function renderComment(overrides?: Partial<CommentType>) {
   return render(
     <MemoryRouter>
@@ -41,6 +30,26 @@ function renderComment(overrides?: Partial<CommentType>) {
 // ── tests ─────────────────────────────────────────────────────────────────────
 
 describe("Comment", () => {
+
+  // fake timers pouze pro testy závislé na čase
+  describe("time display", () => {
+    beforeEach(() => {
+      vi.useFakeTimers();
+      vi.setSystemTime(new Date("2024-06-01T00:00:00.000Z"));
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    it("renders relative time", () => {
+      renderComment();
+
+      expect(screen.getByText("2 hours ago")).toBeInTheDocument();
+    });
+  });
+
+  // ostatní testy běží s reálnými timers
   it("renders author name", () => {
     renderComment();
 
@@ -55,12 +64,6 @@ describe("Comment", () => {
     ).toHaveAttribute("href", "/comment_creator/10");
   });
 
-  it("renders relative time", () => {
-    renderComment();
-
-    expect(screen.getByText("2 hours ago")).toBeInTheDocument();
-  });
-
   it("renders comment content", () => {
     renderComment();
 
@@ -72,14 +75,6 @@ describe("Comment", () => {
 
     expect(
       screen.getByLabelText(/the score of this comment is: 42/i)
-    ).toBeInTheDocument();
-  });
-
-  it("falls back to 0 when score is null", () => {
-    renderComment({ score: null });
-
-    expect(
-      screen.getByLabelText(/the score of this comment is: 0/i)
     ).toBeInTheDocument();
   });
 
@@ -117,7 +112,7 @@ describe("Comment", () => {
   });
 
   it("expands replies on button click", async () => {
-    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+    const user = userEvent.setup();
     renderComment({ replies: [makeMockReply("2", "0.1.2", "Reply content")] });
 
     await user.click(screen.getByRole("button", { name: /expand replies/i }));
@@ -126,7 +121,7 @@ describe("Comment", () => {
   });
 
   it("collapses replies on second button click", async () => {
-    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+    const user = userEvent.setup();
     renderComment({ replies: [makeMockReply("2", "0.1.2", "Reply content")] });
 
     await user.click(screen.getByRole("button", { name: /expand replies/i }));
@@ -136,7 +131,7 @@ describe("Comment", () => {
   });
 
   it("renders nested reply recursively but collapsed by default", async () => {
-    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+    const user = userEvent.setup();
     const nestedReply = makeMockReply("3", "0.1.2.3", "Nested reply");
     const reply = { ...makeMockReply("2", "0.1.2", "Child reply"), replies: [nestedReply] };
 

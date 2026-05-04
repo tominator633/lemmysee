@@ -112,7 +112,7 @@ export function makeMockComment(id: string, path: string): Comment {
     authorId: "",
     content: "",
     timePublished: "",
-    score: null,
+    score: 0,
     postId: "",
   };
 }

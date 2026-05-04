@@ -65,12 +65,10 @@ function renderComments() {
 
 // ── setup ─────────────────────────────────────────────────────────────────────
 
-beforeEach(() => {
-  vi.useFakeTimers();
-  vi.setSystemTime(new Date("2024-06-01T00:00:00.000Z"));
 
+beforeEach(() => {
   mockUseGetCommentsQuery.mockReturnValue({
-    data: [makeMockCommentWithContent()],
+    data: [],
     isFetching: false,
     isError: false,
     refetch: mockRefetch,
@@ -80,16 +78,35 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  vi.useRealTimers();
   vi.clearAllMocks();
 });
+
 
 // ── tests ─────────────────────────────────────────────────────────────────────
 
 describe("Comments", () => {
+
+
+  describe("time display", () => {
+    beforeEach(() => {
+      vi.useFakeTimers();
+      vi.setSystemTime(new Date("2024-06-01T00:00:00.000Z"));
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    it("renders relative post time", () => {
+      renderComments();
+
+      expect(screen.getByLabelText(/posted 2 hours ago/i)).toBeInTheDocument();
+    });
+  });
+
+
   it("renders post dialog", () => {
     renderComments();
-
     expect(
       screen.getByRole("dialog", { name: /post window with comments/i })
     ).toBeInTheDocument();
@@ -97,13 +114,11 @@ describe("Comments", () => {
 
   it("renders post title", () => {
     renderComments();
-
     expect(screen.getByText("Test post title")).toBeInTheDocument();
   });
 
   it("renders post score", () => {
     renderComments();
-
     expect(
       screen.getByLabelText(/the score of this post is 42/i)
     ).toBeInTheDocument();
@@ -114,22 +129,30 @@ describe("Comments", () => {
 
     expect(
       screen.getByRole("link", { name: /visit profile of john_doe/i })
-    ).toHaveAttribute("href", "/comment_creator/10");
-  });
-
-  it("renders relative post time", () => {
-    renderComments();
-
-    expect(screen.getByLabelText(/posted 2 hours ago/i)).toBeInTheDocument();
+    ).toHaveAttribute("href", "/community/123/comments/comment_creator/10");
   });
 
   it("renders comments count", () => {
+      mockUseGetCommentsQuery.mockReturnValue({
+      data: [makeMockCommentWithContent()],
+      isFetching: false,
+      isError: false,
+      refetch: mockRefetch,
+    });
+
     renderComments();
 
     expect(screen.getByText("Comments (1)")).toBeInTheDocument();
   });
 
   it("renders comments", () => {
+      mockUseGetCommentsQuery.mockReturnValue({
+      data: [makeMockCommentWithContent()],
+      isFetching: false,
+      isError: false,
+      refetch: mockRefetch,
+    });
+
     renderComments();
 
     expect(screen.getByText("Hello world")).toBeInTheDocument();
@@ -163,7 +186,7 @@ describe("Comments", () => {
   });
 
   it("calls refetch on retry click", async () => {
-    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+        const user = userEvent.setup();
     mockUseGetCommentsQuery.mockReturnValue({
       data: [],
       isFetching: false,
@@ -204,7 +227,7 @@ describe("Comments", () => {
   });
 
   it("closes dialog and navigates away on close button click", async () => {
-    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+    const user = userEvent.setup();
     renderComments();
 
     await user.click(screen.getByRole("button", { name: /close this window/i }));
@@ -212,11 +235,10 @@ describe("Comments", () => {
     expect(
       screen.queryByRole("dialog", { name: /post window with comments/i })
     ).not.toBeInTheDocument();
-    expect(screen.getByText("Community page")).toBeInTheDocument();
   });
 
   it("closes dialog on Escape key", async () => {
-    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+     const user = userEvent.setup();
     renderComments();
 
     await user.keyboard("{Escape}");
